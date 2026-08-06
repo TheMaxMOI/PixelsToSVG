@@ -1,9 +1,4 @@
-import sys
-from pathlib import Path
-sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-
-from tagClass import Tag
-from declarationClass import Declaration
+from xmlGen import Tag, Declaration
 
 d=Declaration([("version", "1.0"), ("encoding", "UTF-8")])
 
@@ -29,7 +24,6 @@ svg.addAttribute(("width", "53px"))
 .addAttribute(("viewBox", "0 0 53 52"))
 .addAttribute(("version", "1.1"))
 .addAttribute(("xmlns", "http://www.w3.org/2000/svg"))
-.addAttribute(("xmlns:xlink", "http://www.w3.org/1999/xlink"))
 )
 svg.setData(
     Tag("g").setData(

@@ -1,5 +1,5 @@
-from tagClass import Tag
-import sys
+from .tagClass import Tag
+from sys import stderr
 
 allowedAttributes=["version", "encoding", "standalone"]
 mandatoryAttr="version"
@@ -23,7 +23,7 @@ class Declaration(Tag):
             raise ValueError(f"Declaration: __repr__: declaration must have {mandatoryAttr}")
 
         if getAttrValue("version", self.attributes) not in ["1.0", "1.1"]:
-            print("You are using an unofficial version of XML", file=sys.stderr)
+            print("You are using an unofficial version of XML", file=stderr)
 
         if getAttrValue("standalone", self.attributes) not in [None, "yes", "no"]:
             raise ValueError("The attribute \"standalone\" must have the value \"yes\" or \"no\"")
