@@ -17,8 +17,10 @@ class Cursor:
     def moveTo(self, x, y):
         self.x = x
         self.y = y
-        self.history.append(f"M{x},{y}")
+        self.history.append(f"M{x:.3f},{y:.3f}")
         self.edit = True
+
+        return self
 
     def __init__(self, x, y):
         self.x = 0
@@ -30,74 +32,92 @@ class Cursor:
 
     def lineTo(self, x, y):
         if not self.edit:
-            return
+            return self
 
         self.x = x
         self.y = y
-        self.history.append(f"L{x},{y}")
+        self.history.append(f"L{x:.3f},{y:.3f}")
+
+        return self
 
     def horizontalTo(self, x):
         if not self.edit:
-            return
+            return self
 
         self.x = x
-        self.history.append(f"H{x}")
+        self.history.append(f"H{x:.3f}")
+
+        return self
 
     def verticalTo(self, y):
         if not self.edit:
-            return
+            return self
 
         self.y = y
-        self.history.append(f"V{y}")
+        self.history.append(f"V{y:.3f}")
+
+        return self
 
     def quadraticTo(self, cx, cy, x, y):
         if not self.edit:
-            return
+            return self
 
         self.x = x
         self.y = y
-        self.history.append(f"Q{cx},{cy},{x},{y}")
+        self.history.append(f"Q{cx:.3f},{cy:.3f},{x:.3f},{y:.3f}")
+
+        return self
 
     def cubicTo(self, cx1, cy1, cx2, cy2, x, y):
         if not self.edit:
-            return
+            return self
 
         self.x = x
         self.y = y
-        self.history.append(f"C{cx1},{cy1},{cx2},{cy2},{x},{y}")
+        self.history.append(f"C{cx1:.3f},{cy1:.3f},{cx2:.3f},{cy2:.3f},{x:.3f},{y:.3f}")
+
+        return self
 
     def smoothQuadraticTo(self, x, y):
         if not self.edit:
-            return
+            return self
 
         self.x = x
         self.y = y
-        self.history.append(f"T{x},{y}")
+        self.history.append(f"T{x:.3f},{y:.3f}")
+
+        return self
 
     def smoothCubicTo(self, cx, cy, x, y):
         if not self.edit:
-            return
+            return self
 
         self.x = x
         self.y = y
-        self.history.append(f"S{cx},{cy},{x},{y}")
+        self.history.append(f"S{cx:.3f},{cy:.3f},{x:.3f},{y:.3f}")
+
+        return self
 
     def ellipticalArcTo(self, r1, r2, rot, flip, sweep, x, y):
         if not self.edit:
-            return
+            return self
 
         self.x = x
         self.y = y
         self.history.append(
-            f"A{r1},{r2},{rot},{Boolean(flip)},{Boolean(sweep)},{x},{y}"
+            f"A{r1:.3f},{r2:.3f},{rot:.3f},{Boolean(flip)},{Boolean(sweep)},{x:.3f},{y:.3f}"
         )
+
+        return self
 
     def stopHere(self):
         if not self.edit:
-            return
+            return self
 
         self.edit = False
         self.history.append("Z")
+
+        return self
 
     def toPath(self):
         if not self.edit:
