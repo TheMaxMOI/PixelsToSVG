@@ -1,5 +1,6 @@
-from .tagClass import Tag
-from .declarationClass import Declaration
 from .comment import comment
+from .declarationClass import Declaration
+from .tagClass import Tag
+from .utils import getAttrValue
 
-__all__ = ["Tag", "Declaration", "comment"]
+__all__ = ["Declaration", "Tag", "comment", "getAttrValue"]
