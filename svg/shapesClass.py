@@ -20,8 +20,8 @@ class Rectangle(Tag):
 
         super().__init__("rect", attributes, True)
 
-        self.rx = int(getAttrValue("rx")) or 0
-        self.ry = int(getAttrValue("ry")) or 0
+        self.rx = int(getAttrValue("rx", self.attributes) or 0)
+        self.ry = int(getAttrValue("ry", self.attributes) or 0)
 
     def changeTopLeftCorner(self, x, y):
         update("x", f"{x}", self.attributes)
@@ -73,8 +73,8 @@ class Ellipse(Tag):
 
         attributes = additionalAttributes if (additionalAttributes) else []
         attributes += [
-            ("r", f"{self.rX}"),
-            ("r", f"{self.rY}"),
+            ("rx", f"{self.rX}"),
+            ("ry", f"{self.rY}"),
             ("cx", f"{self.x}"),
             ("cy", f"{self.y}"),
         ]

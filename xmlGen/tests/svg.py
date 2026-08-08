@@ -26,9 +26,7 @@ svg.addAttribute(("width", "53px"))
 .addAttribute(("xmlns", "http://www.w3.org/2000/svg"))
 )
 svg.setData(
-    Tag("g").setData(
-        Tag("g").setData([r,g_bottom,g_left,g_right,g_top,path])
-    )
+    Tag("g").setData(Tag("g").setData([r, g_bottom, g_left, g_right, g_top, path]))
 )
 
 print(d)

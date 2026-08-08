@@ -14,7 +14,7 @@ def isAttributeList(lst):
 
 
 def isData(lst):
-    return type(lst) == list and len(lst) != 0 and type(lst[0]) in (Tag, str)
+    return type(lst) == list and len(lst) != 0 and isinstance(lst[0], (Tag, str))
 
 
 def isEmptyList(lst):

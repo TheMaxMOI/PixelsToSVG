@@ -3,7 +3,6 @@ from enum import Enum
 from xmlGen import Tag
 
 from .utils.mathUtils import Rounder, cos, dist2, distInf, sin
-from .utils.shapeUtils import update
 
 
 class Boolean:
@@ -241,6 +240,9 @@ class Turtle:
         self.cursor.stopHere()
         return self.cursor.toPath()
 
-# class Path(Tag):
-#     def __init__(self, additionalAttributes=None):
-#         super().__init__("path", attributes, True)
+class Path(Tag):
+    def __init__(self, d, additionalAttributes=None):
+        attributes = additionalAttributes if (additionalAttributes) else []
+        attributes.append(("d", d))
+
+        super().__init__("path", attributes, True)

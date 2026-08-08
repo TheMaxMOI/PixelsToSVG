@@ -7,5 +7,10 @@ class SVG(Tag):
         self.height = height
 
         attributes = additionalAttributes if (additionalAttributes) else []
-        attributes += [("width", f"{width}"), ("height", f"{height}")]
+        attributes += [
+            ("width", f"{width}"),
+            ("height", f"{height}"),
+            ("xmlns", "http://www.w3.org/2000/svg"),
+        ]
+
         super().__init__("svg", attributes, False)
