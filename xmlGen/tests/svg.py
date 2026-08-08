@@ -1,4 +1,4 @@
-from xmlGen import Tag, Declaration
+from xmlGen import Declaration, Tag
 
 d=Declaration([("version", "1.0"), ("encoding", "UTF-8")])
 

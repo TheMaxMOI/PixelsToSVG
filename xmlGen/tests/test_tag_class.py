@@ -2,6 +2,7 @@ import unittest
 
 from xmlGen import Tag
 
+
 class TestTag(unittest.TestCase):
     def test_duplicate_attributes_raise_value_error(self):
         with self.assertRaises(ValueError):
@@ -52,7 +53,9 @@ class TestTag(unittest.TestCase):
 
         self.assertNotIn(("class", "copy"), parent.attributes)
         self.assertNotIn(("height", "20"), child.attributes)
-        self.assertEqual("<g id=\"group\">\n    <rect width=\"10\"/>\n    text\n</g>", repr(parent))
+        self.assertEqual(
+            '<g id="group">\n    <rect width="10"/>\n    text\n</g>', repr(parent)
+        )
 
 
 if __name__ == "__main__":
