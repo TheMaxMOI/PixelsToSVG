@@ -20,20 +20,22 @@ class Turtle:
         SMOOTH_C = 3
         ARC = 4
 
-    def __init__(self, x=0, y=0):
+    def __init__(self, x=0, y=0, rot=0, precision=3):
         self.x = x
         self.y = y
-        self.angle = 0
+        self.angle = rot
         self.pen = self.Pen.UP
         self.cursor = Cursor(x, y)
-        self.round = Rounder()
+        self.round = Rounder(precision)
 
     def switchPen(self):
-        self.pen = not self.pen
+        self.pen = self.Pen.DOWN if self.pen == self.Pen.UP else self.Pen.UP
 
     def rotate(self, angle):
         self.angle += angle
         self.angle %= 360
+
+        return self
 
     def goto(self, x, y):
         if self.pen == self.Pen.UP:
@@ -49,9 +51,13 @@ class Turtle:
         self.x = self.cursor.x
         self.y = self.cursor.y
 
+        return self
+
     def move(self, d):
         dx, dy = self.round(d * cos(self.angle), d * sin(self.angle))
         self.goto(self.x + dx, self.y + dy)
+
+        return self
 
     def sidewaysOffset(self, distance, side):
         """Vector of length `distance`, normal to current direction.
@@ -81,7 +87,7 @@ class Turtle:
     def curveTo(self, x, y, side: Side = Side.LEFT, type: Curve = Curve.QUADRATIC):
         if self.pen == self.Pen.UP:
             self.goto(x, y)
-            return
+            return self
 
         if type < self.Curve.ARC:
             distance = dist2((x, y), (self.x, self.y))
@@ -133,6 +139,8 @@ class Turtle:
 
         self.x = self.cursor.x
         self.y = self.cursor.y
+
+        return self
 
     def terminate(self):
         self.cursor.stopHere()

@@ -4,14 +4,19 @@ from math import radians as r
 from math import sin as S
 
 
+def my_round(x, p):
+    return round(floor(x * 10**p) / 10**p, ndigits=3)
+
+
 class Rounder:
-    def __init__(self):
+    def __init__(self, precision=0):
         self.dx = 0
         self.dy = 0
+        self.precision = precision
 
     def __call__(self, x: float, y: float) -> tuple[int, int]:
-        newX = floor(self.dx + x)
-        newY = floor(self.dy + y)
+        newX = my_round(self.dx + x, self.precision)
+        newY = my_round(self.dy + y, self.precision)
         self.dx += x - newX
         self.dy += y - newY
 
