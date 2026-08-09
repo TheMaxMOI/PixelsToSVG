@@ -89,7 +89,7 @@ class Turtle:
             self.goto(x, y)
             return self
 
-        if type < self.Curve.ARC:
+        if type.value < self.Curve.ARC.value:
             distance = dist2((x, y), (self.x, self.y))
         else:
             radius = distInf((x, y), (self.x, self.y))
