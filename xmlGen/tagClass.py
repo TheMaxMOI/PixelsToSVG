@@ -124,3 +124,11 @@ class Tag:
         s += f"</{self.name}>"
 
         return s
+
+    def visit(self, func):
+        func(self)
+
+        if self.data:
+            for child in self.data:
+                if isinstance(child, Tag):
+                    child.visit(func)
