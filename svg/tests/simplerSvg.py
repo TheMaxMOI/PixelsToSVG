@@ -1,7 +1,5 @@
 from svg import SVG, Cursor, Path, Rectangle
-from xmlGen import Declaration, Tag
-
-d = Declaration([("version", "1.0"), ("encoding", "UTF-8")])
+from xmlGen import Tag
 
 r = Rectangle(
     29, 36, additionalAttributes=[("transform", "translate(13 8)"), ("fill", "#2582fb")]
@@ -46,5 +44,4 @@ svg = SVG(53, 52, [("viewBox", "0 0 53 52"), ("version", "1.1")]).setData(
     [r, g_bottom, g_left, g_right, g_top, path]
 )
 
-print(d)
-print(svg)
+print(svg.export())

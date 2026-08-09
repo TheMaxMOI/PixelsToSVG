@@ -1,4 +1,4 @@
-from xmlGen import Tag
+from xmlGen import Declaration, Tag
 
 
 class SVG(Tag):
@@ -14,3 +14,7 @@ class SVG(Tag):
         ]
 
         super().__init__("svg", attributes, False)
+
+    def export(self):
+        d = Declaration([("version", "1.0"), ("encoding", "UTF-8")])
+        return f"{d}\n{self}"

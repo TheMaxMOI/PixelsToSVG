@@ -1,7 +1,4 @@
 from svg import SVG, Polygon
-from xmlGen import Declaration
-
-d = Declaration([("version", "1.0"), ("encoding", "UTF-8")])
 
 attrs = [("stroke", "#ff0000"), ("stroke-width", "1")]
 sqrt3 = round(3**0.5, ndigits=3)
@@ -22,5 +19,4 @@ svg = SVG(420, 370, [("viewBox", "-1 -1 42 37"), ("fill-opacity", "0")]).setData
     [shape]
 )
 
-print(d)
-print(svg)
+print(svg.export())
