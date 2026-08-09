@@ -1,4 +1,6 @@
-from .pathClass import Cursor, Path, Turtle
+from .path.cursor import Cursor
+from .path.pathClass import Path
+from .path.turtle import Turtle
 from .shapesClass import Circle, Ellipse, Line, Polygon, Polyline, Rectangle
 from .svgClass import SVG
 

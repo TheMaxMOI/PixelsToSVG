@@ -1,10 +1,8 @@
 import re
 
-NUMBER_PATTERN = re.compile(
-    r"[+-]?(?:(?:\d+(?:\.\d*)?)|(?:\.\d+))(?:[eE][+-]?\d+)?"
-)
+numberRegex = re.compile(r"[+-]?(?:(?:\d+(?:\.\d*)?)|(?:\.\d+))(?:[eE][+-]?\d+)?")
 
-COMMAND_ARGUMENT_COUNTS = {
+InstrToNumOfArgsNonNull = {
     "M": 2,
     "L": 2,
     "H": 1,
@@ -15,8 +13,6 @@ COMMAND_ARGUMENT_COUNTS = {
     "S": 4,
     "A": 7,
 }
-
-InstrToNumOfArgs = COMMAND_ARGUMENT_COUNTS | {"Z": 0}
 
 
 def makeInstr(fmt, numOfArgs):
@@ -29,6 +25,7 @@ def makeInstr(fmt, numOfArgs):
     return instr
 
 
+InstrToNumOfArgs = InstrToNumOfArgsNonNull | {"Z": 0}
 M = makeInstr(".moveTo({},{})", InstrToNumOfArgs["M"])
 L = makeInstr(".LineTo({},{})", InstrToNumOfArgs["L"])
 H = makeInstr(".horizontalTo({})", InstrToNumOfArgs["H"])
@@ -91,7 +88,7 @@ class Lexer:
                 yield Separator(char)
                 i += 1
             else:
-                match = NUMBER_PATTERN.match(s, i)
+                match = numberRegex.match(s, i)
                 if match is None:
                     raise ValueError(f"Invalid number at position {i}")
 
@@ -123,6 +120,7 @@ class Lexer:
                 self.peeked_token = None
 
         return self.peeked_token
+
 
 def parser(s):
     instructions = []
@@ -164,18 +162,26 @@ def parser(s):
             return (current_point[1],)
         if command == "Q":
             values = (
-                args[0] + x,
-                args[1] + y,
-                args[2] + x,
-                args[3] + y,
-            ) if relative else tuple(args)
+                (
+                    args[0] + x,
+                    args[1] + y,
+                    args[2] + x,
+                    args[3] + y,
+                )
+                if relative
+                else tuple(args)
+            )
             current_point = values[2:4]
             return values
         if command in ("C", "S"):
-            values = tuple(
-                value + (x if index % 2 == 0 else y)
-                for index, value in enumerate(args)
-            ) if relative else tuple(args)
+            values = (
+                tuple(
+                    value + (x if index % 2 == 0 else y)
+                    for index, value in enumerate(args)
+                )
+                if relative
+                else tuple(args)
+            )
             current_point = values[-2:]
             return values
         if command == "A":
@@ -204,17 +210,19 @@ def parser(s):
             current_point = subpath_start
             continue
 
-        if command not in COMMAND_ARGUMENT_COUNTS:
+        if command not in InstrToNumOfArgsNonNull:
             raise ValueError(f"Unknown command: {command}")
 
-        argument_count = COMMAND_ARGUMENT_COUNTS[command]
-        first_group = True
+        argCount = InstrToNumOfArgsNonNull[command]
+        isFirstGroup = True
         while True:
-            args = [getNumber() for _ in range(argument_count)]
-            effective_command = "L" if command == "M" and not first_group else command
-            absolute_args = makeAbsolute(effective_command, args, relative)
-            add(charToInstr[effective_command], *absolute_args)
-            first_group = False
+            args = [getNumber() for _ in range(argCount)]
+
+            theCommand = "L" if command == "M" and not isFirstGroup else command
+            AbsArgs = makeAbsolute(theCommand, args, relative)
+
+            add(charToInstr[theCommand], *AbsArgs)
+            isFirstGroup = False
 
             skipSeparators()
             if not isinstance(lexer.peek(), Number):
@@ -222,7 +230,7 @@ def parser(s):
 
     return "\n".join(instructions)
 
+
 ### On the fly example
 # curve="M13.968,15.171a2.7,2.7,0,0,1-2.427-1.251,6.713,6.713,0,0,1-.813-3.644,7.215,7.215,0,0,1,.868-3.9,2.784,2.784,0,0,1,2.481-1.343,2.684,2.684,0,0,1,2.468,1.251,7.283,7.283,0,0,1,.772,3.76,6.981,6.981,0,0,1-.861,3.8A2.79,2.79,0,0,1,13.968,15.171ZM14.05,6.3a1.365,1.365,0,0,0-1.289.981,7.967,7.967,0,0,0-.414,2.943,7.039,7.039,0,0,0,.414,2.758,1.345,1.345,0,0,0,1.268.919,1.323,1.323,0,0,0,1.268-.94,7.716,7.716,0,0,0,.393-2.827A7.991,7.991,0,0,0,15.3,7.258,1.315,1.315,0,0,0,14.05,6.3Z"
 # print(parser(curve))
-
