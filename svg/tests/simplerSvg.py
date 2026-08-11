@@ -1,10 +1,10 @@
-from svg import SVG, Cursor, Path, Rectangle
+from svg import SVG, Coloring, Cursor, Path, Rectangle
 from xmlGen import Tag
 
-r = Rectangle(
-    29, 36, additionalAttributes=[("transform", "translate(13 8)"), ("fill", "#2582fb")]
+r = Rectangle(29, 36, inner=Coloring("#2582fb", 1)).addAttribute(
+    ("transform", "translate(13 8)")
 )
-rbase = Rectangle(14, 14).addAttribute(("fill", "#2582fb"))
+rbase = Rectangle(14, 14, inner=Coloring("#2582fb", 1))
 r1 = rbase.copy().addAttribute(("transform", "translate(18 39) rotate(-45)"))
 r2 = rbase.copy().addAttribute(("transform", "translate(7.899 26) rotate(-45)"))
 r3 = rbase.copy().addAttribute(("transform", "translate(26.899 26) rotate(-45)"))

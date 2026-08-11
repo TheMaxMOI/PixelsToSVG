@@ -1,9 +1,11 @@
 class Appearance:
     color_key = ""
 
-    def __init__(self, color: str, opacity: float):
+    def __init__(self, color: str, opacity: float = 1):
         if type(self) == Appearance:
-            raise TypeError("User should not initialize such a class (trigger by Appearance)!")
+            raise TypeError(
+                "User should not initialize such a class (trigger by Appearance)!"
+            )
 
         self.color = color
         self.opacity = opacity
@@ -11,14 +13,14 @@ class Appearance:
     def use(self) -> list[tuple[str, str]]:
         return [
             (self.color_key, f"{self.color}"),
-            ("opacity", f"{self.opacity}"),
+            (f"{self.color_key}-opacity", f"{self.opacity}"),
         ]
 
 
 class Outline(Appearance):
     color_key = "stroke"
 
-    def __init__(self, stroke: str, width: float, opacity: float):
+    def __init__(self, stroke: str, width: float, opacity: float = 1):
         self.width = width
         super().__init__(stroke, opacity)
 
@@ -31,5 +33,5 @@ class Outline(Appearance):
 class Coloring(Appearance):
     color_key = "fill"
 
-    def __init__(self, fill: str, opacity: float):
+    def __init__(self, fill: str, opacity: float = 1):
         super().__init__(fill, opacity)

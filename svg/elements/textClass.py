@@ -1,18 +1,20 @@
-from xmlGen import Tag, getAttrValue
+from xmlGen import getAttrValue
 
-from ..utils.shapeUtils import update
+from .svgElementClass import SvgElement
+from .utils.attributeUpdater import update
 
 
-class Text(Tag):
+class Text(SvgElement):
     # Careful: set the corner low enough so the text appears
-    def __init__(self, bottomLeftPos=(0, 0), additionalAttributes=None):
+    def __init__(
+        self, bottomLeftPos=(0, 0), inner=None, outer=None
+    ):
         self.x = bottomLeftPos[0]
         self.y = bottomLeftPos[1]
 
-        attributes = additionalAttributes if (additionalAttributes) else []
-        attributes += [("x", f"{self.x}"), ("y", f"{self.y}")]
+        attributes = [("x", f"{self.x}"), ("y", f"{self.y}")]
 
-        super().__init__("text", attributes, False)
+        super().__init__("text", attributes, inner, outer, isEmpty=False)
 
         self.rot = int(getAttrValue("rotate", self.attributes) or 0)
 
@@ -24,13 +26,14 @@ class Text(Tag):
 
 
 class Tspan(Text):
-    def __init__(self, bottomLeftPos=(0, 0), additionalAttributes=None):
+    def __init__(
+        self, bottomLeftPos=(0, 0), inner=None, outer=None
+    ):
         self.x = bottomLeftPos[0]
         self.y = bottomLeftPos[1]
 
-        attributes = additionalAttributes if (additionalAttributes) else []
-        attributes += [("x", f"{self.x}"), ("y", f"{self.y}")]
+        attributes = [("x", f"{self.x}"), ("y", f"{self.y}")]
 
-        Tag.__init__(self, "tspan", attributes, False)
+        SvgElement.__init__(self, "tspan", attributes, inner, outer, isEmpty=False)
 
         self.rot = int(getAttrValue("rotate", self.attributes) or 0)

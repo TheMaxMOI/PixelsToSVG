@@ -16,6 +16,6 @@ class SvgElement(Tag):
         if inner != None:
             allAttributes += inner.use()
         if outer != None:
-            allAttributes += inner.use()
+            allAttributes += outer.use()
 
         super().__init__(name, allAttributes, isEmpty)
