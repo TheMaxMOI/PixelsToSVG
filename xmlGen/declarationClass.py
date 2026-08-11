@@ -8,6 +8,23 @@ mandatoryAttr = "version"
 
 
 class Declaration(Tag):
+    """Class for XML declaration.
+
+    Declaration is often discarded by xml parsers but keeping it might be useful for some applications.
+
+    Parameters
+    ----------
+    attributes : list of attributes represented as tuples (name, value)
+
+    Attributes
+    ----------
+    name : str
+        name = "xml"
+
+    attributes : list[tuple[str, str]]
+        List of attributes.
+
+    """
     def __init__(self, attributes):
         super().__init__("xml", attributes, True)
 
@@ -16,6 +33,23 @@ class Declaration(Tag):
                 raise ValueError(f"Declaration: __init__: {key} is not allowed!")
 
     def __repr__(self):
+        """Convert the declaration to code.
+
+        Returns
+        -------
+        s : str
+            code representation of the declaration.
+
+        Raises
+        ------
+        ValueError
+            If the declaration misses mandatory attributes or has invalid values.
+
+        Writes
+        ------
+        stderr
+            If the declaration has an unofficial version.
+        """
         if mandatoryAttr not in [key for (key, _) in self.attributes]:
             raise ValueError(
                 f"Declaration: __repr__: declaration must have {mandatoryAttr}"

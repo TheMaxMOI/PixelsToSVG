@@ -3,7 +3,8 @@ from __future__ import annotations
 from .utils import hasAttribute
 
 
-def isAttributeList(lst):
+def isAttributeList(lst) -> bool:
+    """Check an object is a list of attributes."""
     return (
         type(lst) == list
         and len(lst) != 0
@@ -13,15 +14,18 @@ def isAttributeList(lst):
     )
 
 
-def isData(lst):
+def isData(lst) -> bool:
+    """Check an object is a list of data."""
     return type(lst) == list and len(lst) != 0 and isinstance(lst[0], (Tag, str))
 
 
-def isEmptyList(lst):
+def isEmptyList(lst) -> bool:
+    """Check an object is an empty list."""
     return type(lst) == list and len(lst) == 0
 
 
-def toString(elm):
+def toString(elm) -> str:
+    """Wrap the str function to extend it to lists of attributes or data."""
     if isAttributeList(elm):
         s = ""
         isFirst = True
@@ -40,7 +44,8 @@ def toString(elm):
         return str(elm)
 
 
-def indent(s: str):
+def indent(s: str) -> str:
+    """Indent lines from a string."""
     INDENT = " " * 4
     lines = s.splitlines(keepends=True)
 
@@ -51,7 +56,8 @@ def indent(s: str):
     return string
 
 
-def areUniqueAttributes(lst):
+def areUniqueAttributes(lst: list[tuple[str, str]]) -> bool:
+    """Check if a list of attributes is unique."""
     if not lst:
         return True
 
@@ -63,6 +69,34 @@ def areUniqueAttributes(lst):
 
 
 class Tag:
+    """A class to represent an XML tag.
+
+    xml is a tree-like structure where each node is a tag with multiple attributes or simple strings.
+
+    Parameters
+    ----------
+    name : str
+        The name of the tag.
+
+    attributes : list[tuple[str, str]], optional
+        List of attributes for the tag. Each attribute is a tuple of name and value.
+
+    isEmpty : bool, optional
+        If True, the tag is considered empty and cannot have data.
+
+    Attributes
+    ----------
+    name : str
+        The name of the tag.
+
+    attributes : list[tuple[str, str]]
+        List of attributes.
+
+    data : list[str | Tag] | None
+        List of string or tags that are children.
+
+    """
+
     def __init__(
         self, name: str, attributes: list[tuple[str, str]] | None = None, isEmpty=False
     ):
@@ -74,13 +108,47 @@ class Tag:
             raise ValueError("Tag: __init__: All given attributes must be unique!")
 
     def addAttribute(self, attr: tuple[str, str]):
+        """Add an attribute to the tag.
+
+        Parameters
+        ----------
+        attr : tuple[str, str]
+            The attribute to add.
+
+        Returns
+        -------
+        self : Tag
+            The updated tag instance. This allows chaining.
+
+        Raises
+        ------
+        ValueError
+            If the tag already has the given attribute.
+        """
         if hasAttribute(attr[0], self.attributes):
             raise ValueError("Tag: __init__: All attributes must be unique!")
 
         self.attributes.append(attr)
-        return self  # so the addAttributes can be chained
+        return self
 
     def setData(self, data: list[str | Tag]):
+        """Set the data for the tag.
+
+        Parameters
+        ----------
+        data : list[str | Tag]
+            List of strings or Tag instances to set as tag's children nodes.
+
+        Returns
+        -------
+        self : Tag
+            The updated tag instance. This allows chaining even though it's not super helpful for this method.
+
+        Raises
+        ------
+        TypeError
+            If the tag was declared as empty.
+        """
         if self.data == None:
             raise TypeError(
                 f"Tag: setData: The tag name {self.name} is meant to be empty!"
@@ -88,9 +156,16 @@ class Tag:
 
         self.data = data
 
-        return self  # chaining possible but really for declaration with update
+        return self
 
-    def copy(self):
+    def copy(self) -> Tag:
+        """Create a copy of the tag instance.
+
+        Returns
+        -------
+        t : Tag
+            A new Tag instance with the exact name, attributes, and data.
+        """
         isEmpty = self.data == None
         t = Tag(self.name, self.attributes, isEmpty)
 
@@ -106,7 +181,14 @@ class Tag:
 
         return t
 
-    def __repr__(self):
+    def __repr__(self) -> str:
+        """Convert the tag to code.
+
+        Returns
+        -------
+        s : str
+            code representation of the tag.
+        """
         s = f"<{self.name}"
 
         if self.attributes:
@@ -125,7 +207,19 @@ class Tag:
 
         return s
 
-    def visit(self, func):
+    def visit(self, func) -> None:
+        """Visit the tree while applying a function
+
+        Parameters
+        ----------
+        func : callable
+            A function to apply on each node wheter it's a tag or a string.
+
+        Returns
+        -------
+        result : None
+            For that matter, one should use nonlocal variables to store useful information.
+        """
         func(self)
 
         if self.data:

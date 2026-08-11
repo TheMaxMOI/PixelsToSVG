@@ -16,6 +16,8 @@ InstrToNumOfArgsNonNull = {
 
 
 def makeInstr(fmt, numOfArgs):
+    """Make a function that formats an instruction with a given number of arguments."""
+
     def instr(*args):
         if len(args) != numOfArgs:
             raise TypeError(f"Expected {numOfArgs} arguments but got {len(args)}")
