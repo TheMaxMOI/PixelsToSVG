@@ -6,9 +6,7 @@ from .utils.attributeUpdater import update
 
 class Text(SvgElement):
     # Careful: set the corner low enough so the text appears
-    def __init__(
-        self, bottomLeftPos=(0, 0), inner=None, outer=None
-    ):
+    def __init__(self, bottomLeftPos=(0, 0), inner=None, outer=None):
         self.x = bottomLeftPos[0]
         self.y = bottomLeftPos[1]
 
@@ -26,9 +24,7 @@ class Text(SvgElement):
 
 
 class Tspan(Text):
-    def __init__(
-        self, bottomLeftPos=(0, 0), inner=None, outer=None
-    ):
+    def __init__(self, bottomLeftPos=(0, 0), inner=None, outer=None):
         self.x = bottomLeftPos[0]
         self.y = bottomLeftPos[1]
 

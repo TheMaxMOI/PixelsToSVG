@@ -16,8 +16,6 @@ vertices = [(scale * x, scale * y) for x, y in vertices]
 
 shape = Polygon(vertices, inner=inner, outer=outer)
 
-svg = SVG(420, 370, [("viewBox", "-1 -1 42 37")]).setData(
-    [shape]
-)
+svg = SVG(420, 370, [("viewBox", "-1 -1 42 37")]).setData([shape])
 
 print(svg.export())

@@ -38,7 +38,9 @@ curve = (
     .stopHere()
     .toPath()
 )
-path = Path(curve, [("transform", "translate(13.5 15.689)"), ("fill", "#fff")])
+path = Path(curve, inner=Coloring("#fff")).addAttribute(
+    ("transform", "translate(13.5 15.689)")
+)
 
 svg = SVG(53, 52, [("viewBox", "0 0 53 52"), ("version", "1.1")]).setData(
     [r, g_bottom, g_left, g_right, g_top, path]

@@ -2,7 +2,7 @@ from ..svgElementClass import SvgElement
 
 
 class Line(SvgElement):
-    def __init__(self, pos1, pos2, inner=None, outer=None):
+    def __init__(self, pos1, pos2, outer=None):
         self.x1 = pos1[0]
         self.y1 = pos1[1]
         self.x2 = pos2[0]
@@ -15,4 +15,4 @@ class Line(SvgElement):
             ("y2", f"{self.y2}"),
         ]
 
-        super().__init__("line", attributes, inner, outer, isEmpty=True)
+        super().__init__("line", attributes, None, outer, isEmpty=True)

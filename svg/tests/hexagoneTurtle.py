@@ -1,6 +1,6 @@
-from svg import SVG, Path, Turtle
+from svg import SVG, Outline, Path, Turtle
 
-attrs = [("stroke", "#ff0000"), ("stroke-width", "1")]
+outer = Outline("#ff0000", 1)
 length = 20
 angle = 60
 
@@ -11,7 +11,7 @@ for _ in range(6):
     t.rotate(-angle)
 
 curve = t.terminate()
-shape = Path(curve, attrs)
+shape = Path(curve, outer=outer)
 
 svg = SVG(420, 370, [("viewBox", "0 -1 43 37"), ("fill-opacity", "0")]).setData([shape])
 

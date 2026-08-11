@@ -1,6 +1,6 @@
-from svg import SVG, Path, Turtle
+from svg import SVG, Outline, Path, Turtle
 
-attrs = [("stroke", "#ff0000"), ("stroke-width", "1")]
+outer = Outline("#ff0000", 1)
 sqrt3 = round(3**0.5, ndigits=3)
 vertices = [
     (1.5, sqrt3),
@@ -20,13 +20,13 @@ isFirst = True
 for x, y in path:
     if isFirst:
         isFirst = False
-        t.goto(x,y)
+        t.goto(x, y)
         t.switchPen()
     else:
-        t.curveTo(x,y, type = Turtle.Curve.ARC)
+        t.curveTo(x, y, type=Turtle.Curve.ARC)
 
 curve = t.terminate()
-shape = Path(curve, attrs)
+shape = Path(curve, outer=outer)
 
 svg = SVG(420, 370, [("viewBox", "-1 -1 42 37"), ("fill-opacity", "0")]).setData(
     [shape]

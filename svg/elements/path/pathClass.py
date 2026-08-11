@@ -1,9 +1,8 @@
-from xmlGen import Tag
+from ..svgElementClass import SvgElement
 
 
-class Path(Tag):
-    def __init__(self, d, additionalAttributes=None):
-        attributes = additionalAttributes if (additionalAttributes) else []
-        attributes.append(("d", d))
+class Path(SvgElement):
+    def __init__(self, d, outer=None):
+        attributes = [("d", d)]
 
-        super().__init__("path", attributes, True)
+        super().__init__("path", attributes, None, outer, isEmpty=True)
