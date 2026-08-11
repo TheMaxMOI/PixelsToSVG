@@ -1,0 +1,99 @@
+class Tag:
+    def __init__(self, name: str, attributes: list[tuple[str, str]] | None = None, isEmpty=False)
+    def addAttribute(self, attr: tuple[str, str]):
+        """Add an attribute to the tag.
+    def setData(self, data: list[str | Tag]):
+        """Set the data for the tag.
+    def copy(self) -> Tag:
+        """Create a copy of the tag instance.
+    def __repr__(self) -> str:
+        """Convert the tag to code.
+    def visit(self, func) -> None:
+        """Visit the tree while applying a function
+
+
+class Declaration(Tag):
+    def __init__(self, attributes):
+    def __repr__(self):
+        """Convert the declaration to code.
+
+
+class SVG(Tag):
+    def __init__(self, width, height, additionalAttributes=None):
+    def export(self):
+    def checkTspan(self):
+
+
+class Rectangle(Tag):
+    def __init__(self, width, height, topLeftPos=(0, 0), additionalAttributes=None):
+    def changeTopLeftCorner(self, x, y):
+    def setCornerXRadius(self, rx):
+    def setCornerYRadius(self, ry):
+
+
+class Circle(Tag):
+    def __init__(self, radius, center=(0, 0), additionalAttributes=None):
+    def changeCenter(self, x, y):
+
+
+class Ellipse(Tag):
+    def __init__(self, rX, rY, center=(0, 0), additionalAttributes=None):
+    def changeCenter(self, x, y):
+
+
+class Line(Tag):
+    def __init__(self, pos1, pos2, additionalAttributes=None):
+
+
+class Polygon(Tag):
+    def __init__(self, positions, additionalAttributes=None):
+    def popPoint(self):
+    def addPoint(self, pos):
+
+
+class Polyline(Tag):
+    def __init__(self, positions, additionalAttributes=None):
+    def popPoint(self):
+    def addPoint(self, pos):
+
+
+class Text(Tag):
+    def __init__(self, bottomLeftPos=(0, 0), additionalAttributes=None):
+    def rotate(self, degree):
+
+
+class Tspan(Text):
+    def __init__(self, bottomLeftPos=(0, 0), additionalAttributes=None):
+
+
+class Path(Tag):
+    def __init__(self, d, additionalAttributes=None):
+
+
+class Cursor: # Wraps xml path syntaxe with functions - similar to an api
+    def __init__(self, val):
+    def __repr__(self):
+    def moveTo(self, x, y):
+    def __init__(self, x, y):
+    def lineTo(self, x, y):
+    def horizontalTo(self, x):
+    def verticalTo(self, y):
+    def quadraticTo(self, cx, cy, x, y):
+    def cubicTo(self, cx1, cy1, cx2, cy2, x, y):
+    def smoothQuadraticTo(self, x, y):
+    def smoothCubicTo(self, cx, cy, x, y):
+    def ellipticalArcTo(self, r1, r2, rot, flip, sweep, x, y):
+    def stopHere(self):
+    def toPath(self):
+
+
+class Turtle: # Play with this api
+    def __init__(self, x=0, y=0, rot=0, precision=3):
+    def switchPen(self):
+    def rotate(self, angle):
+    def goto(self, x, y):
+    def move(self, d):
+    def sidewaysOffset(self, distance, side):
+    def forwardOffset(self, distance):
+    def curveTo(self, x, y, side: Side = Side.LEFT, type: Curve = Curve.QUADRATIC):
+    def terminate(self):
