@@ -24,50 +24,62 @@ class SVG(Tag):
     def checkTspan(self):
 
 
-class Rectangle(Tag):
-    def __init__(self, width, height, topLeftPos=(0, 0), additionalAttributes=None):
+class SvgElement(Tag):
+    def __init__(self, name, attributes=None, inner=None, outer=None, isEmpty=False):
+
+
+class Rectangle(SvgElement):
+    def __init__(self, width, height, topLeftPos=(0, 0), inner=None, outer=None):
     def changeTopLeftCorner(self, x, y):
     def setCornerXRadius(self, rx):
     def setCornerYRadius(self, ry):
 
 
-class Circle(Tag):
-    def __init__(self, radius, center=(0, 0), additionalAttributes=None):
+class Circle(SvgElement):
+    def __init__(self, radius, center=(0, 0), inner=None, outer=None):
     def changeCenter(self, x, y):
 
 
-class Ellipse(Tag):
-    def __init__(self, rX, rY, center=(0, 0), additionalAttributes=None):
+class Ellipse(SvgElement):
+    def __init__(self, rX, rY, center=(0, 0), inner=None, outer=None):
     def changeCenter(self, x, y):
 
 
-class Line(Tag):
-    def __init__(self, pos1, pos2, additionalAttributes=None):
+class Line(SvgElement):
+    def __init__(self, pos1, pos2, outer=None):
 
 
-class Polygon(Tag):
-    def __init__(self, positions, additionalAttributes=None):
+class Polygon(SvgElement):
+    def __init__(self, positions, inner=None, outer=None):
     def popPoint(self):
     def addPoint(self, pos):
 
 
-class Polyline(Tag):
-    def __init__(self, positions, additionalAttributes=None):
+class Polyline(SvgElement):
+    def __init__(self, positions, outer=None):
     def popPoint(self):
     def addPoint(self, pos):
 
 
-class Text(Tag):
-    def __init__(self, bottomLeftPos=(0, 0), additionalAttributes=None):
+class Text(SvgElement):
+    def __init__(self, bottomLeftPos=(0, 0), inner=None, outer=None):
     def rotate(self, degree):
 
 
 class Tspan(Text):
-    def __init__(self, bottomLeftPos=(0, 0), additionalAttributes=None):
+    def __init__(self, bottomLeftPos=(0, 0), inner=None, outer=None):
 
 
-class Path(Tag):
-    def __init__(self, d, additionalAttributes=None):
+class Path(SvgElement):
+    def __init__(self, d, outer=None):
+
+
+class Coloring:
+    def __init__(self, fill, opacity=1):
+
+
+class Outline:
+    def __init__(self, stroke, width, opacity=1):
 
 
 class Cursor: # Wraps xml path syntaxe with functions - similar to an api
