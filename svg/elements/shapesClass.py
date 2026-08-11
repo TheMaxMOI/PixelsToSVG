@@ -1,6 +1,6 @@
 from xmlGen import Tag, getAttrValue
 
-from .utils.shapeUtils import update
+from ..utils.shapeUtils import update
 
 
 class Rectangle(Tag):

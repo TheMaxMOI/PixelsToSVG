@@ -1,6 +1,6 @@
 from enum import Enum
 
-from ..utils.mathUtils import Rounder, cos, dist2, distInf, sin
+from ...utils.mathUtils import Rounder, cos, dist2, distInf, sin
 from .cursor import Cursor
 
 

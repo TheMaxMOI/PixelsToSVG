@@ -1,6 +1,6 @@
 from xmlGen import Declaration, Tag
 
-from .textClass import Text, Tspan
+from .elements.textClass import Text, Tspan
 
 
 class SVG(Tag):
