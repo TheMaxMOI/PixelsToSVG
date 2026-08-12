@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from .config import INDENT
 from .utils import hasAttribute
 
 
@@ -46,7 +47,6 @@ def toString(elm) -> str:
 
 def indent(s: str) -> str:
     """Indent lines from a string."""
-    INDENT = " " * 4
     lines = s.splitlines(keepends=True)
 
     string = ""
