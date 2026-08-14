@@ -61,11 +61,14 @@ def dfs(i, j, mask, func):
 def findPolygon(mask):
     points = []
     mask = mask.copy()
+    collect = lambda x, y: points.append((x, y))
+
     i, j = 0, 0
     while i < mask.shape[0] and j < mask.shape[1]:
         if mask[i, j]:
-            dfs(i, j, mask, lambda x, y: points.append((x, y)))
+            dfs(i, j, mask, collect)
             break
+
         j += 1
         if j == mask.shape[1]:
             j = 0
