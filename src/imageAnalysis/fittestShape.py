@@ -57,6 +57,44 @@ def dfs(i, j, mask, func):
     for n in neighbours(i, j, mask):
         dfs(n[0], n[1], mask, func)
 
+def distToLine(p, a, b):
+    p = np.array(p, dtype=float)
+    a = np.array(a, dtype=float)
+    b = np.array(b, dtype=float)
+
+    if np.all(a == b):
+        return np.linalg.norm(p - a)
+
+    v = b - a
+    t = np.dot(p - a, v) / np.dot(v, v)
+    proj = a + t * v
+
+    return np.linalg.norm(p - proj)
+
+
+def locatedSmoother(points, begin, end, eps):
+    if end - begin < 3:
+        return [points[begin], points[end - 1]]
+
+    distMax = 0
+    idxMax = 0
+
+    for i in range(begin + 1, end - 1):
+        dist = distToLine(points[i], points[begin], points[end - 1])
+        if dist > distMax:
+            distMax = dist
+            idxMax = i
+
+    if distMax > eps:
+        left = locatedSmoother(points, begin, idxMax + 1, eps)
+        right = locatedSmoother(points, idxMax, end, eps)
+        return left[:-1] + right
+    else:
+        return [points[begin], points[end - 1]]
+
+
+def smoothPolygon(points, eps=1.0):  # RDP Ramer-Douglas-Peucker
+    return locatedSmoother(points, 0, len(points), eps)
 
 def findPolygon(mask):
     points = []
@@ -73,4 +111,8 @@ def findPolygon(mask):
         if j == mask.shape[1]:
             j = 0
             i += 1
-    return np.array(points)
+
+    return smoothPolygon(points) # because most of the time an edge is described by too many points.
+
+def findfittestShape(points):
+    pass # TODO -> Making everything a polygon is maybe not the fittest...
