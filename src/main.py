@@ -1,7 +1,7 @@
 from cv2 import IMREAD_UNCHANGED, destroyAllWindows, imread, imshow, waitKey
 
-from fittestShape import *
-from primaryColor import *
+from imageAnalysis.fittestShape import *
+from imageAnalysis.primaryColor import *
 
 img = imread("img_output/hexagone_small.png", IMREAD_UNCHANGED)
 outline = findOutline(findArea(img, findPrimary(img)))
