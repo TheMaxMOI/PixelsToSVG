@@ -40,4 +40,4 @@ class Circle(SvgElement):
             ("cy", f"{y}"),
         ]
 
-        return super().generate(Circle.name, attributes, Circle.isEmpty)
+        return SvgElement.generate(Circle.name, attributes, Circle.isEmpty)

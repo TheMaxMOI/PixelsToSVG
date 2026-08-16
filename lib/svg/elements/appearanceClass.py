@@ -32,8 +32,9 @@ class Outline(Appearance):
         attributes.append(("stroke-width", f"{self.width}"))
         return attributes
 
+    @staticmethod
     def generate():
-        return Outline(rgb(*randint(0, MAX_UINT8, 3)), randint(0, 10), random())
+        return Outline(rgb(*randint(0, MAX_UINT8, 3)), randint(0, 10), round(random(), 2))
 
 
 class Coloring(Appearance):
@@ -42,5 +43,6 @@ class Coloring(Appearance):
     def __init__(self, fill: str, opacity: float = 1):
         super().__init__(fill, opacity)
 
+    @staticmethod
     def generate():
-        return Coloring(rgb(*randint(0, MAX_UINT8, 3)), random())
+        return Coloring(rgb(*randint(0, MAX_UINT8, 3)), round(random(), 2))

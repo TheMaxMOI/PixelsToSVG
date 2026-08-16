@@ -45,4 +45,4 @@ class Ellipse(SvgElement):
             ("cy", f"{y}"),
         ]
 
-        return super().generate(Ellipse.name, attributes, Ellipse.isEmpty)
+        return SvgElement.generate(Ellipse.name, attributes, Ellipse.isEmpty)

@@ -22,7 +22,6 @@ class SvgElement(Tag):
 
     @staticmethod
     def generate(name, attributes, isEmpty):
-        allAttributes = attributes.copy() if (attributes) else []
-        allAttributes += Coloring.generate().use() + Outline.generate().use()
-
-        return SvgElement(name, allAttributes, isEmpty)
+        return SvgElement(
+            name, attributes, Coloring.generate(), Outline.generate(), isEmpty
+        )

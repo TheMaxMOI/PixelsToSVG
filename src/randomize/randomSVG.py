@@ -4,10 +4,8 @@ from numpy.random import randint
 from lib.svg import (
     SVG,
     Circle,
-    Coloring,
     Ellipse,
     Line,
-    Outline,
     # Polygon,
     # Polyline,
     Rectangle,
@@ -21,10 +19,8 @@ MAX_WIDTH = 4128
 shapes = np.array(
     [
         Circle,
-        Coloring,
         Ellipse,
         Line,
-        Outline,
         # Polygon,
         # Polyline,
         Rectangle,
@@ -47,7 +43,6 @@ def getSVG(shapeAmount: int):
 
     data = []
     for constr in getShapeConstr(shapeAmount):
-        print(constr)
         data.append(constr.generate(h, w))
 
     svg = SVG(h, w).setData(data)

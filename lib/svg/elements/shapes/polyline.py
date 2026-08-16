@@ -48,4 +48,4 @@ class Polyline(SvgElement):
 
     #     attributes = [("points", stringify(points))]
 
-    #     return super().generate(Polyline.name, attributes, Polyline.isEmpty)
+    #     return SvgElement.generate(Polyline.name, attributes, Polyline.isEmpty)

@@ -65,4 +65,4 @@ class Rectangle(SvgElement):
             ("y", f"{y}"),
         ]
 
-        return super().generate(Rectangle.name, attributes, Rectangle.isEmpty)
+        return SvgElement.generate(Rectangle.name, attributes, Rectangle.isEmpty)

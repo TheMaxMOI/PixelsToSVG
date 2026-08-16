@@ -49,4 +49,4 @@ class Polygon(SvgElement):
 
     #     attributes = [("points", stringify(points))]
 
-    #     return super().generate(Polygon.name, attributes, Polygon.isEmpty)
+    #     return SvgElement.generate(Polygon.name, attributes, Polygon.isEmpty)

@@ -32,4 +32,4 @@ class Line(SvgElement):
             ("y2", f"{y2}"),
         ]
 
-        return super().generate(Line.name, attributes, Line.isEmpty)
+        return SvgElement.generate(Line.name, attributes, Line.isEmpty)

@@ -79,6 +79,14 @@ def F(x):  # repartition
 def random():
     u = RAND()
     x = u
+    eps = 1e-9
     for _ in range(6):
-        x -= (F(x) - u) / f(x)
+        if abs(x - 0.5) < eps:
+            x += eps
+
+        fx = f(x)
+        if fx != 0:
+            x -= (F(x) - u) / fx
+
+        x = min(max(x, eps), 1 - eps)
     return x
