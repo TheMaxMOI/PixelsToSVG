@@ -52,13 +52,21 @@ class Line(SvgElement):
 class Polygon(SvgElement):
     def __init__(self, positions, inner=None, outer=None):
     def popPoint(self):
-    def addPoint(self, pos):
+    def addPoint(self, point):
+    def insertPoint(self, point, i):
+    def removePoint(self, i):
+    def updatePoint(self, point, i):
+    def __repr__(self):
 
 
 class Polyline(SvgElement):
     def __init__(self, positions, outer=None):
     def popPoint(self):
-    def addPoint(self, pos):
+    def addPoint(self, point):
+    def insertPoint(self, point, i):
+    def removePoint(self, i):
+    def updatePoint(self, point, i):
+    def __repr__(self):
 
 
 class Text(SvgElement):
