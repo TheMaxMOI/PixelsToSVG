@@ -1,3 +1,7 @@
+from ...rgb import MAX_UINT8, rgb
+from .utils.mathHelpers import randint, random
+
+
 class Appearance:
     color_key = ""
 
@@ -16,7 +20,6 @@ class Appearance:
             (f"{self.color_key}-opacity", f"{self.opacity}"),
         ]
 
-
 class Outline(Appearance):
     color_key = "stroke"
 
@@ -29,9 +32,15 @@ class Outline(Appearance):
         attributes.append(("stroke-width", f"{self.width}"))
         return attributes
 
+    def generate():
+        return Outline(rgb(*randint(0, MAX_UINT8, 3)), randint(0, 10), random())
+
 
 class Coloring(Appearance):
     color_key = "fill"
 
     def __init__(self, fill: str, opacity: float = 1):
         super().__init__(fill, opacity)
+
+    def generate():
+        return Coloring(rgb(*randint(0, MAX_UINT8, 3)), random())

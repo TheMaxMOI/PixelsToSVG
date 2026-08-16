@@ -1,9 +1,15 @@
 from ..svgElementClass import SvgElement
 from ..utils.attributeUpdater import update
+from ..utils.mathHelpers import randint
 
 
 class Circle(SvgElement):
-    def __init__(self, radius, center=(0, 0), inner=None, outer=None):
+    isEmpty = True
+    name = "circle"
+
+    def __init__(
+        self, radius: int, center: tuple[int, int] = (0, 0), inner=None, outer=None
+    ):
         self.r = radius
         self.x = center[0]
         self.y = center[1]
@@ -14,7 +20,7 @@ class Circle(SvgElement):
             ("cy", f"{self.y}"),
         ]
 
-        super().__init__("circle", attributes, inner, outer, isEmpty=True)
+        super().__init__(Circle.name, attributes, inner, outer, isEmpty=True)
 
     def changeCenter(self, x, y):
         update("cx", f"{x}", self.attributes)
@@ -22,3 +28,16 @@ class Circle(SvgElement):
 
         self.x = int(x)
         self.y = int(y)
+
+    @staticmethod
+    def generate(height, width):
+        r = randint(min(height, width))
+        x, y = randint(width), randint(height)
+
+        attributes = [
+            ("r", f"{r}"),
+            ("cx", f"{x}"),
+            ("cy", f"{y}"),
+        ]
+
+        return super().generate(Circle.name, attributes, Circle.isEmpty)

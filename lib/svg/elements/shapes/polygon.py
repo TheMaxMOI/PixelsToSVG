@@ -1,17 +1,19 @@
 from ..svgElementClass import SvgElement
 from ..utils.attributeUpdater import update
 from ..utils.format import stringify
+from ..utils.mathHelpers import randint
 
 
 class Polygon(SvgElement):
-    def __init__(
-        self, positions: list[tuple[int | str, int | str]], inner=None, outer=None
-    ):
+    isEmpty = True
+    name = "polygon"
+
+    def __init__(self, positions: list[tuple[int, int]], inner=None, outer=None):
         self.points = positions
 
         attributes = [("points", stringify(self.points))]
 
-        super().__init__("polygon", attributes, inner, outer, isEmpty=True)
+        super().__init__(Polygon.name, attributes, inner, outer, isEmpty=Polygon.isEmpty)
 
     def popPoint(self):
         self.points.pop()
@@ -37,3 +39,14 @@ class Polygon(SvgElement):
         update("points", stringify(self.points), self.attributes)
 
         return super().__repr__()
+
+    # @staticmethod
+    # def generate(height, width):
+    #     X = randint(width, len=N)
+    #     Y = randint(height, len=N)
+
+    #     points = zip(X, Y)
+
+    #     attributes = [("points", stringify(points))]
+
+    #     return super().generate(Polygon.name, attributes, Polygon.isEmpty)

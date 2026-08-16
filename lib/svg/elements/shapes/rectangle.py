@@ -1,11 +1,22 @@
-from xmlGen import getAttrValue
+from lib.xmlGen import getAttrValue
 
 from ..svgElementClass import SvgElement
 from ..utils.attributeUpdater import update
+from ..utils.mathHelpers import randint
 
 
 class Rectangle(SvgElement):
-    def __init__(self, width, height, topLeftPos=(0, 0), inner=None, outer=None):
+    isEmpty = True
+    name = "rect"
+
+    def __init__(
+        self,
+        width: int,
+        height: int,
+        topLeftPos: tuple[int, int] = (0, 0),
+        inner=None,
+        outer=None,
+    ):
         self.width = width
         self.height = height
         self.x = topLeftPos[0]
@@ -18,7 +29,9 @@ class Rectangle(SvgElement):
             ("y", f"{self.y}"),
         ]
 
-        super().__init__("rect", attributes, inner, outer, isEmpty=True)
+        super().__init__(
+            Rectangle.name, attributes, inner, outer, isEmpty=Rectangle.isEmpty
+        )
 
         self.rx = int(getAttrValue("rx", self.attributes) or 0)
         self.ry = int(getAttrValue("ry", self.attributes) or 0)
@@ -39,3 +52,17 @@ class Rectangle(SvgElement):
         update("ry", f"{ry}", self.attributes)
 
         self.ry = int(ry)
+
+    @staticmethod
+    def generate(height, width):
+        x, w = randint(width, len=2)
+        y, h = randint(height, len=2)
+
+        attributes = [
+            ("width", f"{w}"),
+            ("height", f"{h}"),
+            ("x", f"{x}"),
+            ("y", f"{y}"),
+        ]
+
+        return super().generate(Rectangle.name, attributes, Rectangle.isEmpty)

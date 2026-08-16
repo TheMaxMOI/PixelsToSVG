@@ -4,12 +4,15 @@ from ..utils.format import stringify
 
 
 class Polyline(SvgElement):
-    def __init__(self, positions: list[tuple[int | str, int | str]], outer=None):
+    isEmpty = True
+    name = "polyline"
+
+    def __init__(self, positions: list[tuple[int, int]], outer=None):
         self.points = positions
 
         attributes = [("points", stringify(self.points))]
 
-        super().__init__("polyline", attributes, None, outer, isEmpty=True)
+        super().__init__(Polyline.name, attributes, None, outer, isEmpty=Polyline.isEmpty)
 
     def popPoint(self):
         self.points.pop()
@@ -35,3 +38,14 @@ class Polyline(SvgElement):
         update("points", stringify(self.points), self.attributes)
 
         return super().__repr__()
+
+    # @staticmethod
+    # def generate(height, width):
+    #     X = randint(width, len=N)
+    #     Y = randint(height, len=N)
+
+    #     points = zip(X, Y)
+
+    #     attributes = [("points", stringify(points))]
+
+    #     return super().generate(Polyline.name, attributes, Polyline.isEmpty)

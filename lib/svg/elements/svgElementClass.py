@@ -1,4 +1,4 @@
-from xmlGen import Tag
+from lib.xmlGen import Tag
 
 from .appearanceClass import Coloring, Outline
 
@@ -19,3 +19,10 @@ class SvgElement(Tag):
             allAttributes += outer.use()
 
         super().__init__(name, allAttributes, isEmpty)
+
+    @staticmethod
+    def generate(name, attributes, isEmpty):
+        allAttributes = attributes.copy() if (attributes) else []
+        allAttributes += Coloring.generate().use() + Outline.generate().use()
+
+        return SvgElement(name, allAttributes, isEmpty)

@@ -1,7 +1,11 @@
-from math import cos as C
-from math import floor
-from math import radians as r
-from math import sin as S
+from math import cos as COS
+from math import floor, pi, sqrt
+from math import log as ln
+from math import radians as rad
+from math import sin as SIN
+from math import tan as TAN
+from random import randint as RANDN
+from random import random as RAND
 
 
 def my_round(x, p):
@@ -24,11 +28,11 @@ class Rounder:
 
 
 def sin(angle):
-    return S(r(angle))
+    return SIN(rad(angle))
 
 
 def cos(angle):
-    return C(r(angle))
+    return COS(rad(angle))
 
 
 def norm2(v):
@@ -45,3 +49,36 @@ def normInf(v):
 
 def distInf(a, b):
     return normInf((a[0] - b[0], a[1] - b[1]))
+
+
+def randint(a, b=None, len=1):
+    if b is None:
+        b = a
+        a = 0
+
+    if len > 1:
+        return (RANDN(a, b) for _ in range(len))
+    else:
+        return RANDN(a, b)
+
+
+a = 2 * pi / 3
+I = (3 / pi) * ln(2 + sqrt(3)) - 0.96
+K = 1 / I
+
+
+def f(x):  # distribution
+    return K * (1 / (a * (x - 0.5)) - 0.96)
+
+
+def F(x):  # repartition
+    u = a * (x - 0.5)
+    return K * ((1 / a) * (ln(1 / COS(u) + TAN(u)) + ln(2 + sqrt(3))) - 0.96 * x)
+
+
+def random():
+    u = RAND()
+    x = u
+    for _ in range(6):
+        x -= (F(x) - u) / f(x)
+    return x

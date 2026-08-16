@@ -2,7 +2,10 @@ from ..svgElementClass import SvgElement
 
 
 class Path(SvgElement):
+    isEmpty = True
+    name = "path"
+
     def __init__(self, d, outer=None):
         attributes = [("d", d)]
 
-        super().__init__("path", attributes, None, outer, isEmpty=True)
+        super().__init__(Path.name, attributes, None, outer, isEmpty=Path.isEmpty)

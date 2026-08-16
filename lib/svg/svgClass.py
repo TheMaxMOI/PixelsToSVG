@@ -1,4 +1,4 @@
-from xmlGen import Declaration, Tag
+from lib.xmlGen import Declaration, Tag
 
 from .elements.textClass import Text, Tspan
 
