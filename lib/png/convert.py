@@ -27,8 +27,15 @@ def SVGtoPNG(
 
     return theDest
 
+def SVGtoBytes(svg: str, targetSize: tuple[int, int] | None = None) -> bytes:
+    renderOpts = {}
+    if targetSize is not None:
+        renderOpts["width"], renderOpts["height"] = targetSize
+
+    return resvg_py.svg_to_bytes(svg_string=svg, **renderOpts)
+
 
 # On the fly example
-svg='<?xml version="1.0" encoding="UTF-8"?>\n<svg viewBox="-1 -1 42 37" fill-opacity="0" width="420" height="370" xmlns="http://www.w3.org/2000/svg">\n    <polygon stroke="#ff0000" stroke-width="1" points="30.0,34.64 10.0,34.64 0,17.32 10.0,0 30.0,0 40,17.32"/></svg>'
-SVGtoPNG(svg, "hexagone")
-SVGtoPNG(svg, "hexagone_small", targetSize=(42,37))
+# svg='<?xml version="1.0" encoding="UTF-8"?>\n<svg viewBox="-1 -1 42 37" fill-opacity="0" width="420" height="370" xmlns="http://www.w3.org/2000/svg">\n    <polygon stroke="#ff0000" stroke-width="1" points="30.0,34.64 10.0,34.64 0,17.32 10.0,0 30.0,0 40,17.32"/></svg>'
+# SVGtoPNG(svg, "hexagone")
+# SVGtoPNG(svg, "hexagone_small", targetSize=(42,37))
