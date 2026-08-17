@@ -1,0 +1,8 @@
+{
+    "python.analysis.supportRestructuredText": false,
+    "python.analysis.diagnosticMode": "openFilesOnly",
+    "python.analysis.exclude": [
+        "**/.venv/**",
+        "**/__pycache__/**", "**/node_modules"
+    ]
+}
