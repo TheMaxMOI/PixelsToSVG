@@ -2,6 +2,8 @@ import numpy as np
 from scipy import ndimage
 from skimage.morphology import dilation
 
+from lib.svg import Circle, Ellipse, Line, Rectangle
+
 
 def neighbours(i,j, mat: np.ndarray):
     N = [

@@ -1,3 +1,3 @@
-from .convert import SVGtoPNG
+from .convert import SVGtoBytes, SVGtoPNG
 
-__all__ = ["SVGtoPNG"]
+__all__ = ["SVGtoBytes", "SVGtoPNG"]
