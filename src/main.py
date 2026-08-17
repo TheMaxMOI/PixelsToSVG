@@ -15,4 +15,4 @@
 
 from src.randomize import getSVG
 
-print(getSVG(5).export())
+print(getSVG(40).export())

@@ -1,5 +1,5 @@
 import numpy as np
-from numpy.random import randint
+from numpy.random import randint as np_randint
 
 from lib.svg import (
     SVG,
@@ -33,13 +33,13 @@ shapes = np.array(
 
 def getShapeConstr(amount=None):
     if amount > 0:
-        return shapes[randint(0, len(shapes)-1, amount)]
+        return shapes[np_randint(0, len(shapes), amount)]
     else:
-        return shapes[randint(0, len(shapes)-1)]
+        return shapes[np_randint(0, len(shapes))]
 
 
 def getSVG(shapeAmount: int):
-    h, w = randint(MIN_HEIGHT, MAX_HEIGHT), randint(MIN_WIDTH, MAX_WIDTH)
+    h, w = np_randint(MIN_HEIGHT, MAX_HEIGHT), np_randint(MIN_WIDTH, MAX_WIDTH)
 
     data = []
     for constr in getShapeConstr(shapeAmount):
