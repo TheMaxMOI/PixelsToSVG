@@ -17,24 +17,25 @@ def diameters(points):
 
     vectors = np.array(vectors)
     refs = np.array(refs)
+    norms = np.linalg.norm(vectors, axis=1)
 
-    maxIdx = np.argmax(np.linalg.norm(vectors, axis=1))
+    maxIdx = np.argmax(norms)
 
     u = refs[maxIdx]
 
     otherVectors = np.delete(vectors, maxIdx, axis=0)
+    otherNorms = np.delete(norms, maxIdx, axis=0)
 
     orthogonality = np.abs(otherVectors @ vectors[maxIdx])
-    lengths = np.linalg.norm(otherVectors, axis=1)
 
     m1 = np.max(orthogonality)
-    m2 = np.max(lengths)
+    m2 = np.max(otherNorms)
     if m1:
         orthogonality = orthogonality / m1
     if m2:
-        lengths = lengths / m2
+        otherNorms = otherNorms / m2
 
-    coeff = orthogonality - lengths
+    coeff = orthogonality - otherNorms
     otherIdx = np.argmin(coeff)
 
     v = refs[otherIdx]

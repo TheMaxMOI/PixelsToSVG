@@ -1,5 +1,5 @@
-from cv2 import IMREAD_UNCHANGED, destroyAllWindows, imdecode, imshow, waitKey
-from numpy import frombuffer, uint8, where
+from cv2 import IMREAD_UNCHANGED, imdecode
+from numpy import frombuffer, uint8
 
 from lib.png import SVGtoBytes
 
