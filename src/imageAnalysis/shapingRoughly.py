@@ -24,6 +24,7 @@ def diameters(points):
     u = refs[maxIdx]
 
     otherVectors = np.delete(vectors, maxIdx, axis=0)
+    otherRefs = np.delete(refs, maxIdx, axis=0)
     otherNorms = np.delete(norms, maxIdx, axis=0)
 
     orthogonality = np.abs(otherVectors @ vectors[maxIdx])
@@ -38,13 +39,13 @@ def diameters(points):
     coeff = orthogonality - otherNorms
     otherIdx = np.argmin(coeff)
 
-    v = refs[otherIdx]
+    v = otherRefs[otherIdx]
 
     return u, v
 
 
 def circleScore(points, r, c):
-    onDisk = ((points - c) ** 2).sum(axis=0) < r**2
+    onDisk = ((points - c) ** 2).sum(axis=1) < r**2
     if np.all(onDisk):
         return np.pi * r**2
     else:
@@ -52,7 +53,7 @@ def circleScore(points, r, c):
 
 
 def ellipseScore(points, rX, rY, c):
-    onEllipse = ((points - c) ** 2 / np.array([rX**2, rY**2])).sum(axis=0) < 1
+    onEllipse = ((points - c) ** 2 / np.array([rX**2, rY**2])).sum(axis=1) < 1
     if np.all(onEllipse):
         return np.pi * rX * rY
     else:
@@ -94,9 +95,11 @@ def fittestShape(points):
     score = circleScore(points, r_rX, center)
     if score < bestArea:
         bestFit = Circle(center, r_rX)
+        bestArea = score
     score = ellipseScore(points, r_rX, rY, center)
     if score < bestArea:
         bestFit = Ellipse(center, r_rX, rY)
+        bestArea = score
 
     # Rectangle
     topLeft = np.min(points, axis=0)
@@ -106,12 +109,14 @@ def fittestShape(points):
     score = rectangleScore(points, w, h, topLeft)
     if score < bestArea:
         bestFit = Rectangle(w, h, topLeft)
+        bestArea = score
 
     # Line
     width = rY * 2
     score = lineScore(points, u[0], u[1], width)
     if score < bestArea:
         bestFit = Line(u[0], u[1]), width
+        bestArea = score
 
     if bestArea == np.inf:
         return None
