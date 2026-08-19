@@ -108,7 +108,7 @@ def fittestShape(points: list[tuple[int, int]] | np.ndarray):
 
     score = rectangleScore(points, w, h, topLeft)
     if score < bestArea:
-        bestFit = Rectangle(w, h, topLeft)
+        bestFit = Rectangle(h, w, topLeft)
         bestArea = score
 
     # Line

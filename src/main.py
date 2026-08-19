@@ -1,17 +1,31 @@
 import numpy as np
-from cv2 import IMREAD_UNCHANGED, destroyAllWindows, imdecode, imread, imshow, waitKey
+from cv2 import (
+    COLOR_BGR2RGB,
+    COLOR_BGRA2RGBA,
+    IMREAD_UNCHANGED,
+    cvtColor,
+    destroyAllWindows,
+    imdecode,
+    imshow,
+    waitKey,
+)
 
 from lib.png import SVGtoBytes
 
 from .imageAnalysis.baseSVG import getBaseSVG
 from .imageAnalysis.tests.models.circle import getCircle
+from .imageAnalysis.tests.models.rectangle import getRectangle
 
-src=getCircle()
+src = getCircle()
 srcBytes = SVGtoBytes(src)
 arr0 = np.frombuffer(srcBytes, np.uint8)
 srcImg = imdecode(arr0, IMREAD_UNCHANGED)
+if srcImg.shape[2] == 4:  # cv2 opens the image in BGR
+    srcImg = cvtColor(srcImg, COLOR_BGRA2RGBA)
+else:
+    srcImg = cvtColor(srcImg, COLOR_BGR2RGB)
 
-res = getBaseSVG(srcImg)
+res = getBaseSVG(srcImg,background=True)
 svgStr = res.export()
 print(svgStr)
 

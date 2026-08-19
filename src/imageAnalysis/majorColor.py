@@ -18,10 +18,11 @@ def findPrimary(img: np.ndarray):
     foundColors, freq = np.unique(pixelsArray, axis=0, return_counts=True)
     return foundColors[np.argmax(freq)]
 
-def findBackground(img:np.ndarray, primaryColor=None):
+
+def findBackground(img: np.ndarray, primaryColor: np.ndarray | None = None):
     assert len(img.shape) == 3
 
-    primaryColor = primaryColor if (primaryColor) else findPrimary(img)
+    primaryColor = primaryColor if (primaryColor is not None) else findPrimary(img)
 
     nChannels = img.shape[2]
     pixelsArray = img.reshape(-1, nChannels)
@@ -35,11 +36,11 @@ def findBackground(img:np.ndarray, primaryColor=None):
     foundColors, freq = np.unique(pixelsArray, axis=0, return_counts=True)
 
     mask = ~np.all(foundColors == primaryColor, axis=1)
-    
+
     otherColors = foundColors[mask]
     otherFreq = freq[mask]
-    
+
     if len(otherFreq) == 0:
         return np.zeros(nChannels, dtype=img.dtype)
-    
+
     return np.sum(otherColors * otherFreq[:, np.newaxis], axis=0) / np.sum(otherFreq)
