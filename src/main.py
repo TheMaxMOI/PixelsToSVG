@@ -2,19 +2,20 @@ import numpy as np
 from cv2 import IMREAD_UNCHANGED, destroyAllWindows, imdecode, imread, imshow, waitKey
 
 from lib.png import SVGtoBytes
-from src.randomize import getSVG
 
-# from imageAnalysis.fittestShape import *
-# from imageAnalysis.primaryColor import *
+from .imageAnalysis.baseSVG import getBaseSVG
+from .imageAnalysis.tests.models.circle import getCircle
 
-# img = imread("img_output/hexagone_small.png", IMREAD_UNCHANGED)
+src=getCircle()
+srcBytes = SVGtoBytes(src)
+arr0 = np.frombuffer(srcBytes, np.uint8)
+srcImg = imdecode(arr0, IMREAD_UNCHANGED)
 
-# outline = findOutline(findArea(img, findPrimary(img)))
-# i = np.where(outline[..., None], img, 0)
+res = getBaseSVG(srcImg)
+svgStr = res.export()
+print(svgStr)
 
-# print(findPolygon(outline))
-
-imgBytes = SVGtoBytes(getSVG(40).export())
+imgBytes = SVGtoBytes(svgStr)
 arr = np.frombuffer(imgBytes, np.uint8)
 img = imdecode(arr, IMREAD_UNCHANGED)
 

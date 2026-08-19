@@ -5,7 +5,7 @@ from skimage.morphology import dilation
 from .utils import distToLine
 
 
-def neighbours(i, j, mat: np.ndarray):
+def neighbours(i: int, j: int, mat: np.ndarray):
     N = [
         [(-1, -1), (-1, 0), (-1, 1)],
         [(0, -1), (0, 1)],
@@ -19,7 +19,7 @@ def neighbours(i, j, mat: np.ndarray):
                 yield x, y
 
 
-def neighbourValues(i, j, mat: np.ndarray):
+def neighbourValues(i: int, j: int, mat: np.ndarray):
     h, w = mat.shape[:2]
     hSlice = (max(0, i - 1), min(h, i + 2))
     vSlice = (max(0, j - 1), min(w, j + 2))
@@ -36,7 +36,7 @@ def neighbourValues(i, j, mat: np.ndarray):
     return np.delete(sample, center, axis=0)
 
 
-def findArea(img, color):
+def findArea(img, color: np.ndarray):
     assert len(img.shape) == 3
 
     mask = np.all(img == color, axis=2)
@@ -48,13 +48,13 @@ def findArea(img, color):
     return labels == bigClass
 
 
-def findOutline(mask):
+def findOutline(mask: np.ndarray):
     mask = mask.astype(bool)
     dilated = dilation(mask)
     return dilated & ~mask
 
 
-def dfs(i, j, mask, func):
+def dfs(i: int, j: int, mask: np.ndarray, func):
     if not mask[i, j]:
         return
 
@@ -64,7 +64,7 @@ def dfs(i, j, mask, func):
         dfs(n[0], n[1], mask, func)
 
 
-def locatedSmoother(points, begin, end, eps):
+def locatedSmoother(points: list[tuple[int, int]], begin: int, end: int, eps: float):
     if end - begin < 3:
         return [points[begin], points[end - 1]]
 
@@ -86,11 +86,11 @@ def locatedSmoother(points, begin, end, eps):
 
 
 # RDP Ramer-Douglas-Peucker # because most of the time an edge is described by too many points.
-def smoothPolygon(points, eps=1.0):
+def smoothPolygon(points: list[tuple[int, int]], eps: float = 1.0):
     return locatedSmoother(points, 0, len(points), eps)
 
 
-def findPolygon(mask):
+def findPolygon(mask: list[tuple[int, int]]):
     points = []
     mask = mask.copy()
     collect = lambda x, y: points.append((x, y))

@@ -5,7 +5,7 @@ from lib.svg import Circle, Coloring, Ellipse, Line, Outline, Polygon, Rectangle
 from .utils import distToLine
 
 
-def diameters(points):
+def diameters(points: list[tuple[int, int]] | np.ndarray):
     points = np.array(points)
 
     vectors = []
@@ -44,7 +44,7 @@ def diameters(points):
     return u, v
 
 
-def circleScore(points, r, c):
+def circleScore(points: np.ndarray, r: float, c: np.ndarray):
     onDisk = ((points - c) ** 2).sum(axis=1) <= r**2
     if np.all(onDisk):
         return np.pi * r**2
@@ -52,7 +52,7 @@ def circleScore(points, r, c):
         return np.inf
 
 
-def ellipseScore(points, rX, rY, c):
+def ellipseScore(points: np.ndarray, rX: float, rY: float, c: np.ndarray):
     onEllipse = ((points - c) ** 2 / np.array([rX**2, rY**2])).sum(axis=1) <= 1
     if np.all(onEllipse):
         return np.pi * rX * rY
@@ -60,7 +60,7 @@ def ellipseScore(points, rX, rY, c):
         return np.inf
 
 
-def rectangleScore(points, w, h, topLeft):
+def rectangleScore(points: np.ndarray, w: float, h: float, topLeft: np.ndarray):
     onRectangle = np.all(
         (points >= topLeft) & (points <= topLeft + np.array([w, h])), axis=1
     )
@@ -70,7 +70,7 @@ def rectangleScore(points, w, h, topLeft):
         return np.inf
 
 
-def lineScore(points, a, b, width):
+def lineScore(points: np.ndarray, a: np.ndarray, b: np.ndarray, width: float):
     onLine = np.array([distToLine(p, a, b) for p in points]) <= width / 2
     if np.all(onLine):
         return np.linalg.norm(a - b) * width
@@ -78,7 +78,7 @@ def lineScore(points, a, b, width):
         return np.inf
 
 
-def fittestShape(points):
+def fittestShape(points: list[tuple[int, int]] | np.ndarray):
     if len(points) < 2:
         return None
     elif len(points) == 2:
@@ -124,7 +124,7 @@ def fittestShape(points):
     return bestFit
 
 
-def getfittestShape(points, color):
+def getfittestShape(points: list[tuple[int, int]] | np.ndarray, color: str):
     res = fittestShape(points)
 
     if res is None:
@@ -137,17 +137,3 @@ def getfittestShape(points, color):
         return l
     elif isinstance(res, (Circle, Ellipse, Rectangle)):
         return res.addAttribute(Coloring(color).use()[0])
-
-
-# def getBaseSVG(img, smoothed: bool = False):
-#     color = findPrimary(img)
-#     outline = findOutline(findArea(img, color))
-#     points = findPolygon(outline)
-
-#     if smoothed:
-#         points = smoothPolygon(points)
-
-#     shape = getfittestShape(points, color)
-#     background = Rectangle(img.shape[1], img.shape[0], inner=Coloring)
-
-#     return SVG(img.shape[1], img.shape[0]).setData([shape, background])
