@@ -1,12 +1,13 @@
-DONE = '█'
-LAST_2_DONE = '▒'
-LEFT = '░'
+DONE = "█"
+LAST_2_DONE = "▒"
+LEFT = "░"
+
 
 class ProgressBar:
     def __init__(self):
         self.current = 0
         self.max = 0
-    
+
     def set(self, current, max):
         self.current = current
         self.max = max
@@ -28,7 +29,7 @@ class ProgressBar:
         else:
             s = LAST_2_DONE * t + LEFT * (100 - t)
             end = "\r"
-        
+
         s += f" {x:.2f}%"
 
         print(s, end=end, flush=True)
