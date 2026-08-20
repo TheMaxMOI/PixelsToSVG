@@ -51,7 +51,7 @@ class Mutator:
             self.addShape()
         elif strategy == Mutation.REMOVE and len(self.elms) > 1:
             self.removeShape()
-        else: # default
+        else:  # default
             self.alterGeometry()
 
     def swapLayer(self):
@@ -81,20 +81,25 @@ class Mutator:
         shape = getRandShape().generate(self.height, self.width)
         self.elms.append(shape)
 
-
     def alterAppearance(self):
         elm = random.choice(self.elms)
 
         r, g, b = randint(255, len=3)
 
-        if random.choice([True, False]): # Coloring
+        if random.choice([True, False]):  # Coloring
             opacity = max(0.05, min(1.0, elm.inner.opacity + random.uniform(-0.1, 0.1)))
             elm.updateColoring(Coloring(fill=rgb(r, g, b), opacity=round(opacity, 2)))
-        else: # Outline
+        else:  # Outline
             opacity = max(0.05, min(1.0, elm.outer.opacity + random.uniform(-0.1, 0.1)))
             width = max(0.5, elm.outer.width + random.uniform(-0.5, 0.5))
 
-            elm.updateOutline(Outline(stroke=rgb(r, g, b), width=round(width, 2), opacity=round(opacity, 2)))
+            elm.updateOutline(
+                Outline(
+                    stroke=rgb(r, g, b),
+                    width=round(width, 2),
+                    opacity=round(opacity, 2),
+                )
+            )
 
     def removeShape(self):
         idx = random.randrange(len(self.elms))
