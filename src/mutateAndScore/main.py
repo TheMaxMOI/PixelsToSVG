@@ -46,7 +46,8 @@ for _ in range(MAX_ITER):
         currScore = score
         currSVG = candidate
 
-
+print(f"The following SVG was found after {MAX_ITER} iterations and has a MSE of {currScore}.")
+print()
 print(currSVG.export())
 
 img = bytesToImage(
