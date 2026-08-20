@@ -1,21 +1,21 @@
 class Tag:
     def __init__(self, name: str, attributes: list[tuple[str, str]] | None = None, isEmpty=False)
     def addAttribute(self, attr: tuple[str, str]):
-        """Add an attribute to the tag.
+        """Add an attribute to the tag."""
     def setData(self, data: list[str | Tag]):
-        """Set the data for the tag.
+        """Set the data for the tag."""
     def copy(self) -> Tag:
-        """Create a copy of the tag instance.
+        """Create a copy of the tag instance."""
     def __repr__(self) -> str:
-        """Convert the tag to code.
+        """Convert the tag to code."""
     def visit(self, func) -> None:
-        """Visit the tree while applying a function
+        """Visit the tree while applying a function"""
 
 
 class Declaration(Tag):
     def __init__(self, attributes):
     def __repr__(self):
-        """Convert the declaration to code.
+        """Convert the declaration to code."""
 
 
 class SVG(Tag):
@@ -26,28 +26,32 @@ class SVG(Tag):
 
 class SvgElement(Tag):
     def __init__(self, name, attributes=None, inner=None, outer=None, isEmpty=False):
+    def generate(name, attributes, isEmpty):
 
 
 class Rectangle(SvgElement):
-    def __init__(self, width, height, topLeftPos=(0, 0), inner=None, outer=None):
+    def __init__(
     def changeTopLeftCorner(self, x, y):
     def setCornerXRadius(self, rx):
     def setCornerYRadius(self, ry):
+    def generate(height, width):
 
 
 class Circle(SvgElement):
-    def __init__(self, radius, center=(0, 0), inner=None, outer=None):
+    def __init__(
     def changeCenter(self, x, y):
+    def generate(height, width):
 
 
 class Ellipse(SvgElement):
-    def __init__(self, rX, rY, center=(0, 0), inner=None, outer=None):
+    def __init__(
     def changeCenter(self, x, y):
+    def generate(height, width):
 
 
 class Line(SvgElement):
-    def __init__(self, pos1, pos2, outer=None):
-
+    def __init__(self, pos1: tuple[int, int], pos2: tuple[int, int], outer=None):
+    def generate(height, width):
 
 class Polygon(SvgElement):
     def __init__(self, positions, inner=None, outer=None):
@@ -82,12 +86,13 @@ class Path(SvgElement):
     def __init__(self, d, outer=None):
 
 
-class Coloring:
-    def __init__(self, fill, opacity=1):
-
-
-class Outline:
-    def __init__(self, stroke, width, opacity=1):
+class Outline(Appearance):
+    def __init__(self, stroke: str, width: float, opacity: float = 1):
+    def use(self) -> list[tuple[str, str]]:
+    def generate():
+class Coloring(Appearance):
+    def __init__(self, fill: str, opacity: float = 1):
+    def generate():
 
 
 class Cursor: # Wraps xml path syntaxe with functions - similar to an api
