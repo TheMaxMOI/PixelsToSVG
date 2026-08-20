@@ -1,6 +1,7 @@
 from lib.xmlGen import Tag
 
 from .appearanceClass import Coloring, Outline
+from .utils.attributeUpdater import update
 
 
 class SvgElement(Tag):
@@ -12,6 +13,9 @@ class SvgElement(Tag):
         outer: Outline = None,
         isEmpty: bool = False,
     ):
+        self.inner = inner
+        self.outer = outer
+
         allAttributes = attributes.copy() if (attributes) else []
         if inner != None:
             allAttributes += inner.use()
@@ -25,3 +29,21 @@ class SvgElement(Tag):
         return SvgElement(
             name, attributes, Coloring.generate(), Outline.generate(), isEmpty
         )
+
+    def updateColoring(self, inner: Coloring):
+        if self.inner is None:
+            self.attributes += inner.use()
+        else:
+            for name, val in inner.use():
+                update(name, val, self.attributes)
+
+        self.inner = inner
+
+    def updateOutline(self, outer: Outline):
+        if self.outer is None:
+            self.attributes += outer.use()
+        else:
+            for name, val in outer.use():
+                update(name, val, self.attributes)
+
+        self.outer = outer

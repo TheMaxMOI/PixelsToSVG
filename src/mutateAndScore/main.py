@@ -21,6 +21,7 @@ from .score import mse
 from .utils import bytesToImage
 
 targetImg = imread(SRC_IMAGE_PATH, IMREAD_UNCHANGED)
+height, width = targetImg.shape[0], targetImg.shape[1]
 if targetImg.shape[2] == 4:
     targetImg = cvtColor(targetImg, COLOR_BGRA2RGBA)
 else:
@@ -28,18 +29,16 @@ else:
 
 scoring = lambda svg: mse(
     targetImg,
-    bytesToImage(SVGtoBytes(svg.export(), (targetImg.shape[0], targetImg.shape[1]))),
+    bytesToImage(SVGtoBytes(svg.export(), (height, width))),
 )
-
+mutator = lambda svg: Mutator(svg, height, width).get()
 
 currSVG = getBaseSVG(targetImg)
 currScore = scoring(currSVG)
 
 for _ in range(MAX_ITER):
     candidate = currSVG.copy()
-
-    m = Mutator(candidate)
-    candidate = m.get()
+    candidate = mutator(candidate)
 
     score = scoring(candidate)
     if score < currScore:

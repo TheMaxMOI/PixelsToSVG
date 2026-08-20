@@ -94,6 +94,7 @@ class Tag:
 
     data : list[str | Tag] | None
         List of string or tags that are children.
+        None if the tag instance can't have children.
 
     """
 

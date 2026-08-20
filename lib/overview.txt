@@ -27,10 +27,12 @@ class SVG(Tag):
 class SvgElement(Tag):
     def __init__(self, name, attributes=None, inner=None, outer=None, isEmpty=False):
     def generate(name, attributes, isEmpty):
+    def updateColoring(self, inner: Coloring):
+    def updateOutline(self, outer: Outline):
 
 
 class Rectangle(SvgElement):
-    def __init__(
+    def __init__(self, width: int, height: int, topLeftPos: tuple[int, int] = (0, 0), inner=None, outer=None):
     def changeTopLeftCorner(self, x, y):
     def setCornerXRadius(self, rx):
     def setCornerYRadius(self, ry):
@@ -38,13 +40,13 @@ class Rectangle(SvgElement):
 
 
 class Circle(SvgElement):
-    def __init__(
+    def __init__(self, radius: int, center: tuple[int, int] = (0, 0), inner=None, outer=None):
     def changeCenter(self, x, y):
     def generate(height, width):
 
 
 class Ellipse(SvgElement):
-    def __init__(
+    def __init__(self, rX: int, rY: int, center: tuple[int, int] = (0, 0), inner=None, outer=None):
     def changeCenter(self, x, y):
     def generate(height, width):
 
@@ -90,6 +92,8 @@ class Outline(Appearance):
     def __init__(self, stroke: str, width: float, opacity: float = 1):
     def use(self) -> list[tuple[str, str]]:
     def generate():
+
+
 class Coloring(Appearance):
     def __init__(self, fill: str, opacity: float = 1):
     def generate():
