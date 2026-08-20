@@ -1,3 +1,5 @@
+from time import time
+
 from cv2 import (
     COLOR_BGR2RGBA,
     COLOR_BGRA2RGBA,
@@ -13,9 +15,9 @@ from cv2 import (
 )
 
 from lib.png import SVGtoBytes
-from lib.svg import SVG
 
 from ..imageAnalysis.baseSVG import getBaseSVG
+from ..progressBar import ProgressBar
 from .config import MAX_ITER, SRC_IMAGE_PATH
 from .mutator import Mutator
 from .score import mse
@@ -37,7 +39,11 @@ mutator = lambda svg: Mutator(svg, height, width).get()
 currSVG = getBaseSVG(targetImg)
 currScore = scoring(currSVG)
 
-for _ in range(MAX_ITER):
+start = time()
+bar = ProgressBar()
+bar.set(0, MAX_ITER - 1)
+bar.print()
+for i in range(MAX_ITER):
     candidate = currSVG.copy()
     candidate = mutator(candidate)
 
@@ -46,7 +52,18 @@ for _ in range(MAX_ITER):
         currScore = score
         currSVG = candidate
 
-print(f"The following SVG was found after {MAX_ITER} iterations and has a MSE of {currScore}.")
+    bar.set(i, MAX_ITER - 1)
+    bar.print()
+
+end = time()
+
+
+print(
+    f"The following SVG was found after {MAX_ITER} iterations and has a MSE of {currScore}."
+)
+print(
+    f"It ran for {end - start}ms for an average of {(end - start) / MAX_ITER}ms per interations."
+)
 print()
 print(currSVG.export())
 
