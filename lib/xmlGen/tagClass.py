@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from copy import deepcopy
+
 from .config import INDENT
 from .utils import hasAttribute
 
@@ -167,20 +169,7 @@ class Tag:
         t : Tag
             A new Tag instance with the exact name, attributes, and data.
         """
-        isEmpty = self.data == None
-        t = Tag(self.name, self.attributes, isEmpty)
-
-        if not isEmpty:
-            data = []
-            for elm in self.data:
-                if type(elm) == str:
-                    data.append(elm)
-                else:
-                    data.append(elm.copy())
-
-            t.setData(data)
-
-        return t
+        return deepcopy(self)
 
     def __repr__(self) -> str:
         """Convert the tag to code.

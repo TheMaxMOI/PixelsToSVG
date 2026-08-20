@@ -87,11 +87,14 @@ class Mutator:
         r, g, b = randint(255, len=3)
 
         if random.choice([True, False]):  # Coloring
-            opacity = max(0.05, min(1.0, elm.inner.opacity + random.uniform(-0.1, 0.1)))
+            baseOpacity = 0 if (elm.inner is None) else elm.inner.opacity
+            opacity = max(0.05, min(1.0, baseOpacity + random.uniform(-0.1, 0.1)))
             elm.updateColoring(Coloring(fill=rgb(r, g, b), opacity=round(opacity, 2)))
         else:  # Outline
-            opacity = max(0.05, min(1.0, elm.outer.opacity + random.uniform(-0.1, 0.1)))
-            width = max(0.5, elm.outer.width + random.uniform(-0.5, 0.5))
+            baseOpacity = 0 if (elm.outer is None) else elm.outer.opacity
+            baseWidth = 0 if (elm.outer is None) else elm.outer.width
+            opacity = max(0.05, min(1.0, baseOpacity + random.uniform(-0.1, 0.1)))
+            width = max(0.5, baseWidth + random.uniform(-0.5, 0.5))
 
             elm.updateOutline(
                 Outline(

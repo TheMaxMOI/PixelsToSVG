@@ -1,19 +1,7 @@
-def updateAttribute(attrName, newVal, attributes):
-    i = 0
-    for key, _ in attributes:
+def update(attrName: str, newVal: str, attributes: list[tuple[str, str]]) -> None:
+    """Update an attribute's value in-place, or append it if it doesn't exist."""
+    for i, (key, _) in enumerate(attributes):
         if key == attrName:
-            break
-        i += 1
-
-    if i < len(attributes):
-        attributes[i] = (attrName, newVal)
-        return True
-
-    return False
-
-
-update = lambda attrName, newVal, attributes: (
-    None
-    if updateAttribute(attrName, newVal, attributes)
-    else attributes.append((attrName, newVal))
-)
+            attributes[i] = (attrName, str(newVal))
+            return
+    attributes.append((attrName, str(newVal)))

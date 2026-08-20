@@ -13,16 +13,15 @@ class SvgElement(Tag):
         outer: Outline = None,
         isEmpty: bool = False,
     ):
-        self.inner = inner
-        self.outer = outer
+        super().__init__(name, attributes.copy() if attributes else [], isEmpty)
 
-        allAttributes = attributes.copy() if (attributes) else []
-        if inner != None:
-            allAttributes += inner.use()
-        if outer != None:
-            allAttributes += outer.use()
+        self.inner = None
+        self.outer = None
 
-        super().__init__(name, allAttributes, isEmpty)
+        if inner is not None:
+            self.updateColoring(inner)
+        if outer is not None:
+            self.updateOutline(outer)
 
     @staticmethod
     def generate(name, attributes, isEmpty):
@@ -31,18 +30,14 @@ class SvgElement(Tag):
         )
 
     def updateColoring(self, inner: Coloring):
-        if self.inner is None:
-            self.attributes += inner.use()
-        else:
+        if inner is not None:
             for name, val in inner.use():
                 update(name, val, self.attributes)
 
         self.inner = inner
 
     def updateOutline(self, outer: Outline):
-        if self.outer is None:
-            self.attributes += outer.use()
-        else:
+        if outer is not None:
             for name, val in outer.use():
                 update(name, val, self.attributes)
 

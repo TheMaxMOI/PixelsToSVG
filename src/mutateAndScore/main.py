@@ -1,5 +1,5 @@
 from cv2 import (
-    COLOR_BGR2RGB,
+    COLOR_BGR2RGBA,
     COLOR_BGRA2RGBA,
     IMREAD_UNCHANGED,
     WINDOW_NORMAL,
@@ -13,6 +13,7 @@ from cv2 import (
 )
 
 from lib.png import SVGtoBytes
+from lib.svg import SVG
 
 from ..imageAnalysis.baseSVG import getBaseSVG
 from .config import MAX_ITER, SRC_IMAGE_PATH
@@ -25,11 +26,11 @@ height, width = targetImg.shape[0], targetImg.shape[1]
 if targetImg.shape[2] == 4:
     targetImg = cvtColor(targetImg, COLOR_BGRA2RGBA)
 else:
-    targetImg = cvtColor(targetImg, COLOR_BGR2RGB)
+    targetImg = cvtColor(targetImg, COLOR_BGR2RGBA)
 
 scoring = lambda svg: mse(
     targetImg,
-    bytesToImage(SVGtoBytes(svg.export(), (height, width))),
+    bytesToImage(SVGtoBytes(svg.export(), (width, height))),
 )
 mutator = lambda svg: Mutator(svg, height, width).get()
 

@@ -28,6 +28,16 @@ def SVGtoPNG(
     return theDest
 
 def SVGtoBytes(svg: str, targetSize: tuple[int, int] | None = None) -> bytes:
+    """Converts a SVG string to Image bytes
+
+    Parameters
+    ----------
+    svg : str
+        the SVG string
+
+    targetSize : tuple[int, int]
+        the size to produce the image to. (width, height)
+    """
     renderOpts = {}
     if targetSize is not None:
         renderOpts["width"], renderOpts["height"] = targetSize
