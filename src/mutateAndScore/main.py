@@ -1,5 +1,6 @@
 from time import time
 
+import numpy as np
 from cv2 import (
     COLOR_BGR2RGBA,
     COLOR_BGRA2RGBA,
@@ -45,9 +46,11 @@ def getImage(path=SRC_IMAGE_PATH):
 
 def loopMutateScore(targetImg, barDisplay: bool = True):
     height, width = targetImg.shape[0], targetImg.shape[1]
+
+    targetImgAsFloat = targetImg.astype(np.float32)
     scoring = lambda svg: mse(
-        targetImg,
-        bytesToImage(SVGtoBytes(svg.export(), (width, height))),
+        targetImgAsFloat,
+        bytesToImage(SVGtoBytes(svg.export(), (width, height))).astype(np.float32),
     )
     mutator = lambda svg: Mutator(svg, height, width).get()
 

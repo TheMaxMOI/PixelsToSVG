@@ -1,0 +1,2 @@
+Run notes:
+    - User must run at project root : `python -OO -m src.mutateAndScore.main'
