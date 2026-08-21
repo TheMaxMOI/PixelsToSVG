@@ -8,9 +8,6 @@ from lib.svg.elements.utils.mathHelpers import randint
 from ..randomize.randomSVG import getRandShape
 
 
-def default(noneableValue, attr:str, defaultVal=0):
-    return defaultVal if noneableValue is None else getattr(noneableValue, attr)
-
 class Mutation(Enum):
     GEOMETRY = 0.40
     APPEARANCE = 0.30
@@ -19,14 +16,26 @@ class Mutation(Enum):
     REMOVE = 0.05
 
 
-mutations = list(Mutation)
-weights = [m.value for m in mutations]
+def choose_mutation():
+    r = random.random()
+
+    if r < 0.40:
+        return 0
+    if r < 0.70:
+        return 1
+    if r < 0.85:
+        return 2
+    if r < 0.95:
+        return 3
+    return 4
 
 
 class Mutator:
+    __slots__ = ("elms", "height", "svg", "width")
+
     def __init__(self, svg: SVG, height, width):
         self.svg = svg
-        self.elms = self.svg.data
+        self.elms = svg.data
         self.height = height
         self.width = width
 
@@ -34,71 +43,93 @@ class Mutator:
 
     def get(self):
         self.svg.setData(self.elms)
-
         return self.svg
 
     def mutate(self):
-        if not self.elms:
+        elms = self.elms
+
+        if not elms:
             self.addShape()
             return
 
-        strategy = random.choices(mutations, weights=weights, k=1)[0]
+        strategy = choose_mutation()
+        n = len(elms)
 
-        if strategy == Mutation.SWAP_LAYER and len(self.elms) >= 2:
-            self.swapLayer()
-        elif strategy == Mutation.GEOMETRY:
+        if strategy == 0:
             self.alterGeometry()
-        elif strategy == Mutation.APPEARANCE:
+        elif strategy == 1:
             self.alterAppearance()
-        elif strategy == Mutation.ADD:
+        elif strategy == 2:
+            if n >= 2:
+                self.swapLayer()
+            else:
+                self.alterGeometry()
+        elif strategy == 3:
             self.addShape()
-        elif strategy == Mutation.REMOVE and len(self.elms) > 1:
+        elif n > 1:
             self.removeShape()
-        else:  # default
+        else:
             self.alterGeometry()
 
     def swapLayer(self):
-        idx1, idx2 = random.sample(range(len(self.elms)), 2)
-        self.elms[idx1], self.elms[idx2] = self.elms[idx2], self.elms[idx1]
+        elms = self.elms
+        n = len(elms)
+
+        i = random.randrange(n)
+        j = random.randrange(n - 1)
+
+        if j >= i:
+            j += 1
+
+        elms[i], elms[j] = elms[j], elms[i]
 
     def alterGeometry(self):
         elm = random.choice(self.elms)
 
+        dx, dy = random.randint(-5, 5), random.randint(-5, 5)
         if isinstance(elm, Polygon):
-            idx = random.randrange(len(elm.positions))
-            newX = elm.positions[idx][0] + random.randint(-5, 5)
-            newY = elm.positions[idx][1] + random.randint(-5, 5)
-            elm.updatePoint((newX, newY), idx)
+            positions = elm.positions
+            i = random.randrange(len(positions))
+            x, y = positions[i]
+
+            elm.updatePoint((x + dx, y + dy), i)
 
         elif isinstance(elm, Circle):
-            newX = elm.cx + random.randint(-5, 5)
-            newY = elm.cy + random.randint(-5, 5)
-            elm.changeCenter(newX, newY)
+            elm.changeCenter(elm.cx + dx, elm.cy + dy)
 
         elif isinstance(elm, Rectangle):
-            newX = elm.x + random.randint(-5, 5)
-            newY = elm.y + random.randint(-5, 5)
-            elm.changeTopLeftCorner(newX, newY)
+            elm.changeTopLeftCorner(elm.x + dx, elm.y + dy)
 
     def addShape(self):
-        shape = getRandShape().generate(self.height, self.width)
-        self.elms.append(shape)
+        self.elms.append(getRandShape().generate(self.height, self.width))
 
     def alterAppearance(self):
         elm = random.choice(self.elms)
 
         r, g, b = randint(255, len=3)
 
-        if random.choice([True, False]):  # Coloring
-            baseOpacity = default(elm.inner, "opacity", 0)
+        if random.getrandbits(1):
+            inner = elm.inner
+            baseOpacity = inner.opacity if inner is not None else 0
 
-            opacity = max(0.05, min(1.0, baseOpacity + random.uniform(-0.1, 0.1)))
+            opacity = baseOpacity + random.uniform(-0.1, 0.1)
+            opacity = max(0.05, min(1.0, opacity))
+
             elm.updateColoring(Coloring(fill=rgb(r, g, b), opacity=round(opacity, 2)))
-        else:  # Outline
-            baseOpacity = default(elm.outer, "opacity", 0)
-            baseWidth = default(elm.outer, "width", 0)
 
-            opacity = max(0.05, min(1.0, baseOpacity + random.uniform(-0.1, 0.1)))
+        else:
+            outer = elm.outer
+
+            if outer is None:
+                baseOpacity = 0
+                baseWidth = 0
+            else:
+                baseOpacity = outer.opacity
+                baseWidth = outer.width
+
+            opacity = baseOpacity + random.uniform(-0.1, 0.1)
+            opacity = max(0.05, min(1.0, opacity))
+
             width = max(0.5, baseWidth + random.uniform(-0.5, 0.5))
 
             elm.updateOutline(
@@ -110,5 +141,4 @@ class Mutator:
             )
 
     def removeShape(self):
-        idx = random.randrange(len(self.elms))
-        self.elms.pop(idx)
+        self.elms.pop(random.randrange(len(self.elms)))
