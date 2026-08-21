@@ -8,6 +8,9 @@ from lib.svg.elements.utils.mathHelpers import randint
 from ..randomize.randomSVG import getRandShape
 
 
+def default(noneableValue, attr:str, defaultVal=0):
+    return defaultVal if noneableValue is None else getattr(noneableValue, attr)
+
 class Mutation(Enum):
     GEOMETRY = 0.40
     APPEARANCE = 0.30
@@ -87,12 +90,14 @@ class Mutator:
         r, g, b = randint(255, len=3)
 
         if random.choice([True, False]):  # Coloring
-            baseOpacity = 0 if (elm.inner is None) else elm.inner.opacity
+            baseOpacity = default(elm.inner, "opacity", 0)
+
             opacity = max(0.05, min(1.0, baseOpacity + random.uniform(-0.1, 0.1)))
             elm.updateColoring(Coloring(fill=rgb(r, g, b), opacity=round(opacity, 2)))
         else:  # Outline
-            baseOpacity = 0 if (elm.outer is None) else elm.outer.opacity
-            baseWidth = 0 if (elm.outer is None) else elm.outer.width
+            baseOpacity = default(elm.outer, "opacity", 0)
+            baseWidth = default(elm.outer, "width", 0)
+
             opacity = max(0.05, min(1.0, baseOpacity + random.uniform(-0.1, 0.1)))
             width = max(0.5, baseWidth + random.uniform(-0.5, 0.5))
 
