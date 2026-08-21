@@ -1,8 +1,9 @@
 import numpy as np
 from scipy import ndimage
+from skimage import measure
 from skimage.morphology import dilation
 
-from .utils import distToLine
+from .utils import distToLineVec
 
 
 def neighbours(i: int, j: int, mat: np.ndarray):
@@ -54,56 +55,45 @@ def findOutline(mask: np.ndarray):
     return dilated & ~mask
 
 
-def dfs(i: int, j: int, mask: np.ndarray, func):
-    if not mask[i, j]:
-        return
+def findPolygon(mask: np.ndarray):
+    mask = np.asarray(mask, dtype=bool)
 
-    func(i, j)
-    mask[i, j] = False
-    for n in neighbours(i, j, mask):
-        dfs(n[0], n[1], mask, func)
+    if not mask.any():
+        return []
 
+    contours = measure.find_contours(mask.astype(np.uint8), level=0.5)
+    if not contours:
+        return []
 
-def locatedSmoother(points: list[tuple[int, int]], begin: int, end: int, eps: float):
-    if end - begin < 3:
-        return [points[begin], points[end - 1]]
-
-    distMax = 0
-    idxMax = 0
-
-    for i in range(begin + 1, end - 1):
-        dist = distToLine(points[i], points[begin], points[end - 1])
-        if dist > distMax:
-            distMax = dist
-            idxMax = i
-
-    if distMax > eps:
-        left = locatedSmoother(points, begin, idxMax + 1, eps)
-        right = locatedSmoother(points, idxMax, end, eps)
-        return left[:-1] + right
-    else:
-        return [points[begin], points[end - 1]]
+    largest = max(contours, key=len)
+    return [(round(r), round(c)) for r, c in largest]
 
 
-# RDP Ramer-Douglas-Peucker # because most of the time an edge is described by too many points.
-def smoothPolygon(points: list[tuple[int, int]], eps: float = 1.0):
-    return locatedSmoother(points, 0, len(points), eps)
+def smoothPolygon(points: list, eps: float = 1.0):  # Ramer-Douglas-Peucker
+    n = len(points)
+    if n < 3:
+        return list(points)
 
+    pts = np.asarray(points, dtype=float)
+    keepIdx = {0, n - 1}
 
-def findPolygon(mask: list[tuple[int, int]]):
-    points = []
-    mask = mask.copy()
-    collect = lambda x, y: points.append((x, y))
+    stack = [(0, n - 1)]
+    while stack:
+        lo, hi = stack.pop()
+        if hi - lo < 2:
+            continue
 
-    i, j = 0, 0
-    while i < mask.shape[0] and j < mask.shape[1]:
-        if mask[i, j]:
-            dfs(i, j, mask, collect)
-            break
+        a, b = pts[lo], pts[hi]
+        segment = pts[lo + 1 : hi]
 
-        j += 1
-        if j == mask.shape[1]:
-            j = 0
-            i += 1
+        dists = distToLineVec(segment, a, b)
+        localMax = int(np.argmax(dists))
+        distMax = dists[localMax]
+        idxMax = lo + 1 + localMax
 
-    return points
+        if distMax > eps:
+            keepIdx.add(idxMax)
+            stack.append((lo, idxMax))
+            stack.append((idxMax, hi))
+
+    return [points[i] for i in sorted(keepIdx)]

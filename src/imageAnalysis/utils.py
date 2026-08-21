@@ -14,3 +14,20 @@ def distToLine(p, a, b):
     proj = a + t * v
 
     return np.linalg.norm(p - proj)
+
+
+def distToLineVec(points, a, b):
+    points = np.atleast_2d(np.asarray(points, dtype=float))
+    a = np.asarray(a, dtype=float)
+    b = np.asarray(b, dtype=float)
+
+    v = b - a
+    vNorm2 = np.dot(v, v)
+
+    if vNorm2 == 0:
+        return np.linalg.norm(points - a, axis=1)
+
+    t = (points - a) @ v / vNorm2
+    proj = a + t[:, None] * v
+
+    return np.linalg.norm(points - proj, axis=1)
