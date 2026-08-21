@@ -15,7 +15,7 @@ from cv2 import (
     waitKey,
 )
 
-from .config import PROFILER, PROGRESS_BAR
+from .config import PROFILER, PROGRESS_BAR, SMOOTHING
 
 if PROFILER:
     from cProfile import run
@@ -51,7 +51,7 @@ def loopMutateScore(targetImg, barDisplay: bool = True):
     )
     mutator = lambda svg: Mutator(svg, height, width).get()
 
-    currSVG = getBaseSVG(targetImg)
+    currSVG = getBaseSVG(targetImg, smoothed=SMOOTHING)
     currScore = scoring(currSVG)
 
     start = time()
@@ -73,7 +73,7 @@ def loopMutateScore(targetImg, barDisplay: bool = True):
             bar.print()
 
     end = time()
-    return start - end, currSVG.export(), currScore
+    return end - start, currSVG.export(), currScore
 
 
 def summary(elapsedTime, svg: str, svgScore, shape, imgDisplay: bool):
