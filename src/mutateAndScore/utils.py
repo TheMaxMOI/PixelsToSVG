@@ -1,4 +1,7 @@
-from cv2 import IMREAD_UNCHANGED, imdecode
+from cv2 import IMREAD_UNCHANGED, imdecode, setNumThreads
+
+setNumThreads(0)
+
 from numpy import frombuffer, uint8
 
 

@@ -11,8 +11,11 @@ from cv2 import (
     imshow,
     namedWindow,
     resizeWindow,
+    setNumThreads,
     waitKey,
 )
+
+setNumThreads(0) # Give cv2 all threads possible
 
 from lib.png import SVGtoBytes
 
