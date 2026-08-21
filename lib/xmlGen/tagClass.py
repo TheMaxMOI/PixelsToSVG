@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from copy import deepcopy
+
 from .config import INDENT
 from .utils import hasAttribute
 
@@ -47,13 +49,7 @@ def toString(elm) -> str:
 
 def indent(s: str) -> str:
     """Indent lines from a string."""
-    lines = s.splitlines(keepends=True)
-
-    string = ""
-    for line in lines:
-        string = f"{string}{INDENT}{line}"
-
-    return string
+    return "".join(f"{INDENT}{line}" for line in s.splitlines(keepends=True))
 
 
 def areUniqueAttributes(lst: list[tuple[str, str]]) -> bool:
@@ -94,6 +90,7 @@ class Tag:
 
     data : list[str | Tag] | None
         List of string or tags that are children.
+        None if the tag instance can't have children.
 
     """
 
@@ -166,20 +163,7 @@ class Tag:
         t : Tag
             A new Tag instance with the exact name, attributes, and data.
         """
-        isEmpty = self.data == None
-        t = Tag(self.name, self.attributes, isEmpty)
-
-        if not isEmpty:
-            data = []
-            for elm in self.data:
-                if type(elm) == str:
-                    data.append(elm)
-                else:
-                    data.append(elm.copy())
-
-            t.setData(data)
-
-        return t
+        return deepcopy(self)
 
     def __repr__(self) -> str:
         """Convert the tag to code.
@@ -189,23 +173,15 @@ class Tag:
         s : str
             code representation of the tag.
         """
-        s = f"<{self.name}"
+        attrs = f" {toString(self.attributes)}" if self.attributes else ""
 
-        if self.attributes:
-            s += f" {toString(self.attributes)}"
+        if self.data is None:
+            return f"<{self.name}{attrs}/>"
 
-        if self.data == None:
-            s += "/>"
-            return s
-
-        s += ">\n"
         data = toString(self.data)
-        if data:
-            s += indent(data)
-            s += "\n"
-        s += f"</{self.name}>"
+        content = f"\n{indent(data)}\n" if data else "\n"
 
-        return s
+        return f"<{self.name}{attrs}>{content}</{self.name}>"
 
     def visit(self, func) -> None:
         """Visit the tree while applying a function
