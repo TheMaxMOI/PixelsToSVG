@@ -173,15 +173,23 @@ class Tag:
         s : str
             code representation of the tag.
         """
-        attrs = f" {toString(self.attributes)}" if self.attributes else ""
+        s = f"<{self.name}"
 
-        if self.data is None:
-            return f"<{self.name}{attrs}/>"
+        if self.attributes:
+            s += f" {toString(self.attributes)}"
 
+        if self.data == None:
+            s += "/>"
+            return s
+
+        s += ">\n"
         data = toString(self.data)
-        content = f"\n{indent(data)}\n" if data else "\n"
+        if data:
+            s += indent(data)
+            s += "\n"
+        s += f"</{self.name}>"
 
-        return f"<{self.name}{attrs}>{content}</{self.name}>"
+        return s
 
     def visit(self, func) -> None:
         """Visit the tree while applying a function

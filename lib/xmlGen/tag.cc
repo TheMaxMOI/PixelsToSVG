@@ -1,0 +1,145 @@
+#include "tag.hh"
+
+#include <stdexcept>
+#include <sstream>
+
+Tag::Tag(const std::string &name,
+         const std::vector<attr_t> &attributes,
+         bool isEmpty)
+    : name_{name}, attributes_{attributes}, isEmpty_{isEmpty}
+{
+}
+
+bool Tag::hasAttribute_(attr_t attr) const
+{
+    const auto &[refName, _] = attr;
+    for (const auto &[attrName, attrVal] : attributes_)
+    {
+        if (refName == attrName)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+void Tag::addAttribute(attr_t attr)
+{
+    if (hasAttribute_(attr))
+    {
+        throw std::logic_error("Tag: addAttribute: Attributes should be unique!");
+    }
+
+    attributes_.push_back(attr);
+}
+
+void Tag::setData(const std::vector<data_t> &data)
+{
+    if (isEmpty_)
+    {
+        throw std::logic_error("Tag: setData: This tag was not meant to recieve any data!");
+    }
+
+    data_ = data;
+}
+
+Tag Tag::copy() const
+{
+    return *this;
+}
+
+std::ostream &operator<<(std::ostream &os, const std::vector<attr_t> &attrs)
+{
+    bool isFirst = true;
+    for (const auto &[attrName, attrValue] : attrs)
+    {
+        os << (isFirst ? "" : " ");
+        os << attrName << "=" << "value";
+        isFirst = false;
+    }
+
+    return os;
+}
+
+std::ostream &operator<<(std::ostream &os, const std::vector<data_t> &data)
+{
+    bool isFirst = true;
+    for (const auto &child : data)
+    {
+        if (!isFirst)
+        {
+            os << "\n";
+        }
+        else
+        {
+            isFirst = false;
+        }
+
+        if (std::holds_alternative<std::string>(child))
+        {
+            os << std::get<std::string>(child);
+        }
+        else if (std::holds_alternative<Tag>(child))
+        {
+            os << std::get<Tag>(child);
+        }
+    }
+
+    return os;
+}
+
+std::string indent(const std::string &data)
+{
+    std::stringstream indented;
+
+    bool isLineStart = true;
+    for (char c : data)
+    {
+        if (isLineStart)
+        {
+            indented << INDENT;
+            isLineStart = false;
+        }
+
+        indented << c;
+
+        if (c == '\n')
+        {
+            isLineStart = true;
+        }
+    }
+
+    return indented.str();
+}
+
+std::ostream &operator<<(std::ostream &os, const Tag &tag)
+{
+    os << "<" << tag.name_;
+
+    if (tag.attributes_.size() > 0)
+    {
+        os << " ";
+        os << tag.attributes_;
+    }
+
+    if (tag.isEmpty_)
+    {
+        os << "/>";
+
+        return os;
+    }
+
+    os << ">\n";
+    if (tag.data_.size() > 0)
+    {
+        std::stringstream data;
+        data << tag.data_;
+
+        os << indent(data.str());
+        os << "\n";
+    }
+    os << "</" << tag.name_ << ">";
+
+    return os;
+}
