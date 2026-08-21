@@ -49,13 +49,7 @@ def toString(elm) -> str:
 
 def indent(s: str) -> str:
     """Indent lines from a string."""
-    lines = s.splitlines(keepends=True)
-
-    string = ""
-    for line in lines:
-        string = f"{string}{INDENT}{line}"
-
-    return string
+    return "".join(f"{INDENT}{line}" for line in s.splitlines(keepends=True))
 
 
 def areUniqueAttributes(lst: list[tuple[str, str]]) -> bool:
@@ -186,7 +180,7 @@ class Tag:
 
         data = toString(self.data)
         content = f"\n{indent(data)}\n" if data else "\n"
-        
+
         return f"<{self.name}{attrs}>{content}</{self.name}>"
 
     def visit(self, func) -> None:
