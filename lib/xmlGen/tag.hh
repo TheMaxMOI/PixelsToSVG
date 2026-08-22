@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <variant>
+#include <optional>
 
 #define INDENT "    "
 
@@ -26,7 +27,12 @@ private:
     std::vector<data_t> data_;
     bool isEmpty_;
 
+    virtual void print_(std::ostream &os) const;
+
+protected:
     bool hasAttribute_(attr_t attr) const;
+    bool hasAttribute_(const std::string &refName) const;
+    std::optional<std::string> getAttributeValue_(const std::string &attrName) const;
 
 public:
     Tag(const std::string &name,

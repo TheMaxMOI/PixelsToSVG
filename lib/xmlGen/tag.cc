@@ -13,7 +13,7 @@ Tag::Tag(const std::string &name,
 bool Tag::hasAttribute_(attr_t attr) const
 {
     const auto &[refName, _] = attr;
-    for (const auto &[attrName, attrVal] : attributes_)
+    for (const auto &[attrName, _] : attributes_)
     {
         if (refName == attrName)
         {
@@ -22,6 +22,32 @@ bool Tag::hasAttribute_(attr_t attr) const
     }
 
     return false;
+}
+
+bool Tag::hasAttribute_(const std::string &refName) const
+{
+    for (const auto &[attrName, _] : attributes_)
+    {
+        if (refName == attrName)
+        {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+std::optional<std::string> Tag::getAttributeValue_(const std::string &attrName) const
+{
+    for (const auto &[name, attrVal] : attributes_)
+    {
+        if (name == attrName)
+        {
+            return attrVal;
+        }
+    }
+
+    return std::nullopt;
 }
 
 void Tag::addAttribute(attr_t attr)
@@ -113,33 +139,36 @@ std::string indent(const std::string &data)
     return indented.str();
 }
 
-std::ostream &operator<<(std::ostream &os, const Tag &tag)
+void Tag::print_(std::ostream &os) const
 {
-    os << "<" << tag.name_;
+    os << "<" << name_;
 
-    if (tag.attributes_.size() > 0)
+    if (attributes_.size() > 0)
     {
         os << " ";
-        os << tag.attributes_;
+        os << attributes_;
     }
 
-    if (tag.isEmpty_)
+    if (isEmpty_)
     {
         os << "/>";
-
-        return os;
+        return;
     }
 
     os << ">\n";
-    if (tag.data_.size() > 0)
+    if (data_.size() > 0)
     {
         std::stringstream data;
-        data << tag.data_;
+        data << data_;
 
         os << indent(data.str());
         os << "\n";
     }
-    os << "</" << tag.name_ << ">";
+    os << "</" << name_ << ">";
+}
 
+std::ostream &operator<<(std::ostream &os, const Tag &tag)
+{
+    tag.print_(os);
     return os;
 }
