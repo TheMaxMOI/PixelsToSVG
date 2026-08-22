@@ -81,7 +81,7 @@ std::ostream &operator<<(std::ostream &os, const std::vector<attr_t> &attrs)
     for (const auto &[attrName, attrValue] : attrs)
     {
         os << (isFirst ? "" : " ");
-        os << attrName << "=" << "value";
+        os << attrName << "=" << '"' << attrValue << '"';
         isFirst = false;
     }
 

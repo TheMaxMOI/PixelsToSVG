@@ -33,15 +33,15 @@ void Declaration::print_(std::ostream &os) const
         std::cerr << "You are using an unofficial version of XML\n";
     }
     const auto standalone = getAttributeValue_("standalone");
-    if (!standalone.has_value() && standalone != "yes" && standalone != "no")
+    if (standalone.has_value() && standalone != "yes" && standalone != "no")
     {
         throw std::logic_error("Declaration: print_: The attribute \"standalone\" must have the value \"yes\" or \"no\"!");
     }
 
     std::stringstream growingString;
-    growingString << static_cast<const Tag &>(*this);
+    growingString << static_cast<Tag>(*this);
 
-    const std::string_view tagStr = growingString.str();
+    const std::string tagStr = growingString.str();
 
     os << tagStr.at(0)
        << '?'
