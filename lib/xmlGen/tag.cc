@@ -2,12 +2,23 @@
 
 #include <stdexcept>
 #include <sstream>
+#include <set>
 
 Tag::Tag(const std::string &name,
          const std::vector<attr_t> &attributes,
          bool isEmpty)
     : name_{name}, attributes_{attributes}, isEmpty_{isEmpty}
 {
+    std::set<std::string> set;
+    for (const auto &[attrName, _] : attributes)
+    {
+        if (set.contains(attrName))
+        {
+            throw std::logic_error("Tag: Tag: all attributes must be unique (triggered by:\"" + attrName + "\")");
+        }
+
+        set.insert(attrName);
+    }
 }
 
 bool Tag::hasAttribute_(attr_t attr) const

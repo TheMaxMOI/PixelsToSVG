@@ -26,7 +26,7 @@ void emptyTag()
     std::stringstream repr;
     repr << r;
 
-    assert("rect" == repr.str());
+    assert("<rect/>" == repr.str());
 }
 
 void dataEmptyTag()
