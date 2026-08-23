@@ -11,7 +11,8 @@ private:
     std::optional<Coloring> inner_;
     std::optional<Outline> outer_;
 
-    virtual void updateAttribute_(const attr_t &attr);
+protected:
+    void updateAttribute_(const attr_t &attr);
 
 public:
     Element(const std::string &name,
