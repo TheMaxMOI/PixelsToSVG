@@ -23,13 +23,14 @@ class Tag
 {
 private:
     std::string name_;
-    std::vector<attr_t> attributes_;
     std::vector<data_t> data_;
     bool isEmpty_;
 
     virtual void print_(std::ostream &os) const;
 
 protected:
+    std::vector<attr_t> attributes_;
+
     bool hasAttribute_(attr_t attr) const;
     bool hasAttribute_(const std::string &refName) const;
     std::optional<std::string> getAttributeValue_(const std::string &attrName) const;
