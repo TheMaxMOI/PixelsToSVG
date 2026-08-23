@@ -1,30 +1,26 @@
 from ..svgElementClass import SvgElement
 from ..utils.attributeUpdater import update
-from ..utils.mathHelpers import randint
+from ..utils import randint
 
 
-class Ellipse(SvgElement):
+class Circle(SvgElement):
     isEmpty = True
-    name = "ellipse"
+    name = "circle"
 
     def __init__(
-        self, rX: int, rY: int, center: tuple[int, int] = (0, 0), inner=None, outer=None
+        self, radius: int, center: tuple[int, int] = (0, 0), inner=None, outer=None
     ):
-        self.rX = rX
-        self.rY = rY
+        self.r = radius
         self.x = center[0]
         self.y = center[1]
 
         attributes = [
-            ("rx", f"{self.rX}"),
-            ("ry", f"{self.rY}"),
+            ("r", f"{self.r}"),
             ("cx", f"{self.x}"),
             ("cy", f"{self.y}"),
         ]
 
-        super().__init__(
-            Ellipse.name, attributes, inner, outer, isEmpty=Ellipse.isEmpty
-        )
+        super().__init__(Circle.name, attributes, inner, outer, isEmpty=True)
 
     def changeCenter(self, x, y):
         update("cx", f"{x}", self.attributes)
@@ -35,14 +31,13 @@ class Ellipse(SvgElement):
 
     @staticmethod
     def generate(height, width):
-        rX, rY = randint(min(height, width), len=2)
+        r = randint(min(height, width))
         x, y = randint(width), randint(height)
 
         attributes = [
-            ("rx", f"{rX}"),
-            ("ry", f"{rY}"),
+            ("r", f"{r}"),
             ("cx", f"{x}"),
             ("cy", f"{y}"),
         ]
 
-        return SvgElement.generate(Ellipse.name, attributes, Ellipse.isEmpty)
+        return SvgElement.generate(Circle.name, attributes, Circle.isEmpty)

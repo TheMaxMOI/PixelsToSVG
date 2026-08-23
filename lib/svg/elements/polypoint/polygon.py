@@ -1,7 +1,7 @@
 from ..svgElementClass import SvgElement
 from ..utils.attributeUpdater import update
 from ..utils.format import stringify
-from ..utils.mathHelpers import randint
+from ..utils import randint
 
 
 class Polygon(SvgElement):
