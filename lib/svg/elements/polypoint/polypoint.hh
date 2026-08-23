@@ -9,6 +9,7 @@ class Polypoint : Element
 {
 private:
     std::vector<point_t> points_;
+
     std::vector<std::string> pointsRepr_;
 
     std::string joinWithSpace_(const std::vector<std::string> pointsRepr);
@@ -27,4 +28,14 @@ public:
     void insertPoint(point_t p, size_t i);
     void removePoint(size_t i);
     void updatePoint(point_t p, size_t i);
+
+    // static virtual Polypoint generate(height, width): // To think about
+    //      X = randint(width, len=N)
+    //      Y = randint(height, len=N)
+
+    //      points = zip(X, Y)
+
+    //      attributes = [("points", stringify(points))]
+
+    //      return SvgElement.generate(Polygon.name, attributes, Polygon.isEmpty)
 };
