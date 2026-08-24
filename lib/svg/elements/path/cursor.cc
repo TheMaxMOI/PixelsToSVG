@@ -15,6 +15,11 @@ std::string Cursor::doubleFmt_(double x)
     return std::format("{:.3f}", x);
 }
 
+const std::pair<double, double> &getPosition() const
+{
+    return {x_, y_};
+}
+
 void Cursor::moveTo(double x, double y)
 {
     x_ = x;
