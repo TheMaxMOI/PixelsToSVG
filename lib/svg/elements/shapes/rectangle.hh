@@ -24,5 +24,5 @@ public:
     void setCornerCurvatureX(size_t rx);
     void setCornerCurvatureY(size_t ry);
 
-    // static Rectangle generate(size_t height, size_t width); // TODO
+    static Rectangle generate(size_t height, size_t width);
 };

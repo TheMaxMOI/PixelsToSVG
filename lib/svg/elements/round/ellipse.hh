@@ -15,5 +15,5 @@ public:
             std::optional<Coloring> inner = std::nullopt,
             std::optional<Outline> outer = std::nullopt);
 
-    // static Ellipse generate(size_t height, size_t width); // TODO
+    static Ellipse generate(size_t height, size_t width);
 };

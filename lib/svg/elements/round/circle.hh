@@ -11,5 +11,5 @@ public:
            std::optional<Coloring> inner = std::nullopt,
            std::optional<Outline> outer = std::nullopt);
 
-    // static Circle generate(size_t height, size_t width); // TODO
+    static Circle generate(size_t height, size_t width);
 };

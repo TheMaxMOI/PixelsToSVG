@@ -15,5 +15,5 @@ public:
          const std::tuple<size_t, size_t> &pos2,
          std::optional<Outline> outer);
 
-    // static Line generate(size_t height, size_t width); // TODO
+    static Line generate(size_t height, size_t width);
 };

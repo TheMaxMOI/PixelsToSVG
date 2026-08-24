@@ -1,5 +1,7 @@
 #include "rectangle.hh"
 
+#include "../utils/mathHelpers.hh"
+
 Rectangle::Rectangle(size_t width,
                      size_t height,
                      const std::tuple<size_t, size_t> &topLeftPos = {0, 0},
@@ -42,9 +44,20 @@ void Rectangle::setCornerCurvatureX(size_t rx)
 
     rx_ = rx;
 }
+
 void Rectangle::setCornerCurvatureY(size_t ry)
 {
     updateAttribute_({"ry", std::to_string(ry)});
 
     ry_ = ry;
+}
+
+Rectangle Rectangle::generate(size_t height, size_t width)
+{
+    size_t x = randint(width);
+    size_t y = randint(height);
+    size_t w = randint(width);
+    size_t h = randint(height);
+
+    return Rectangle(w, h, {x, y}, Coloring::generate(), Outline::generate());
 }

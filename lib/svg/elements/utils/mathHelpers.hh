@@ -2,6 +2,9 @@
 
 #include <array>
 
+#define MIN(a, b) \
+        ((a < b) ? a : b)
+
 class Rounder
 {
 private:
