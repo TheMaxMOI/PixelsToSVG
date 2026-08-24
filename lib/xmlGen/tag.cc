@@ -21,6 +21,11 @@ Tag::Tag(const std::string &name,
     }
 }
 
+const std::vector<data_t> &Tag::getData()
+{
+    return data_;
+}
+
 bool Tag::hasAttribute_(attr_t attr) const
 {
     const auto &[refName, _] = attr;

@@ -15,5 +15,5 @@ public:
 
     void generate(std::ostream &os) const;
 
-    // void checkTspan() const; // TODO after Tspan
+    bool checkTspan() const;
 };

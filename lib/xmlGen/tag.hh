@@ -44,6 +44,7 @@ public:
 
     void addAttribute(attr_t attr);
     void setData(const std::vector<data_t> &data);
+    const std::vector<data_t>& getData();
     virtual Tag copy() const;
 
     template <Callable TagFunc>
