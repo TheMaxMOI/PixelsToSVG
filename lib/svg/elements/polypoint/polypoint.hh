@@ -12,7 +12,6 @@ private:
 
     std::vector<std::string> pointsRepr_;
 
-    std::string joinWithSpace_(const std::vector<std::string> pointsRepr);
     std::string stringify_(const point_t &p) const;
     std::string stringify_(const std::vector<point_t> &points) const;
 

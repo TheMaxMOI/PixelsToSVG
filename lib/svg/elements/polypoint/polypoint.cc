@@ -2,27 +2,7 @@
 
 #include <sstream>
 
-std::string Polypoint::joinWithSpace_(const std::vector<std::string> pointsRepr)
-{
-    std::stringstream growingString;
-
-    bool isFirst = true;
-    for (const auto &pointRepr : pointsRepr)
-    {
-        if (isFirst)
-        {
-            isFirst = false;
-        }
-        else
-        {
-            growingString << ' ';
-        }
-
-        growingString << pointRepr;
-    }
-
-    return growingString.str();
-}
+#include "../utils/concatStr.hh"
 
 std::string Polypoint::stringify_(const point_t &p) const
 {
@@ -73,14 +53,14 @@ void Polypoint::popPoint()
 {
     points_.pop_back();
     pointsRepr_.pop_back();
-    updateAttribute_({"points", joinWithSpace_(pointsRepr_)});
+    updateAttribute_({"points", joinWithSpace(pointsRepr_)});
 }
 
 void Polypoint::addPoint(point_t p)
 {
     points_.push_back(p);
     pointsRepr_.push_back(stringify_(p));
-    updateAttribute_({"points", joinWithSpace_(pointsRepr_)});
+    updateAttribute_({"points", joinWithSpace(pointsRepr_)});
 }
 
 void Polypoint::insertPoint(point_t p, size_t i)
@@ -96,7 +76,7 @@ void Polypoint::insertPoint(point_t p, size_t i)
         pointsRepr_.push_back(stringify_(p));
     }
 
-    updateAttribute_({"points", joinWithSpace_(pointsRepr_)});
+    updateAttribute_({"points", joinWithSpace(pointsRepr_)});
 }
 void Polypoint::removePoint(size_t i)
 {
@@ -107,7 +87,7 @@ void Polypoint::removePoint(size_t i)
 
     points_.erase(points_.begin() + i);
     pointsRepr_.erase(pointsRepr_.begin() + i);
-    updateAttribute_({"points", joinWithSpace_(pointsRepr_)});
+    updateAttribute_({"points", joinWithSpace(pointsRepr_)});
 }
 
 void Polypoint::updatePoint(point_t p, size_t i)
@@ -120,5 +100,5 @@ void Polypoint::updatePoint(point_t p, size_t i)
     points_[i] = p;
     pointsRepr_[i] = stringify_(p);
     updateAttribute_({"points", stringify_(points_)});
-    updateAttribute_({"points", joinWithSpace_(pointsRepr_)});
+    updateAttribute_({"points", joinWithSpace(pointsRepr_)});
 }
