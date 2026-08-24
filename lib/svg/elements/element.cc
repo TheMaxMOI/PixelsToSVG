@@ -57,3 +57,8 @@ Element::Element(const std::string &name,
         updateOutline(outer.value());
     }
 }
+
+Element Element::generate(const std::string &name, bool isEmpty)
+{
+    return Element(name, {}, Coloring::generate(), Outline::generate(), isEmpty);
+}

@@ -21,7 +21,7 @@ public:
             std::optional<Outline> outer = std::nullopt,
             bool isEmpty = false);
 
-    // static Element generate(const std::string& name, bool isEmpty); TODO
+    static Element generate(const std::string& name, bool isEmpty);
 
     void updateColoring(const Coloring &inner);
     void updateOutline(const Outline &outer);

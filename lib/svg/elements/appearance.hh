@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../../rgb/rgb.hh"
-#include "utils/mathHelpers.hh"
 #include <vector>
 #include <tuple>
 
@@ -30,7 +28,7 @@ public:
 
     std::vector<std::tuple<std::string, std::string>> use() const override;
 
-    // static Outline generate(); TODO
+    static Outline generate();
 };
 
 class Coloring : public Appearance
@@ -38,5 +36,5 @@ class Coloring : public Appearance
 public:
     Coloring(const std::string &fill, double opacity = 1.0);
 
-    // static Coloring generate(); TODO
+    static Coloring generate();
 };

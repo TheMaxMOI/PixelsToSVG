@@ -110,3 +110,8 @@ inline double random()
     }
     return x;
 }
+
+inline double round(double x, size_t precision) {
+    size_t pow10 = std::pow(10, precision);
+    return floor(x * pow10) / pow10;
+}

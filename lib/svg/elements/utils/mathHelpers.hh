@@ -22,3 +22,4 @@ inline double distInf(const std::array<double, 2> &a, const std::array<double, 2
 inline int randint(int a, int b);
 inline int randint(int max);
 inline double random();
+inline double round(double x, size_t precision);
