@@ -1,15 +1,10 @@
 #pragma once
 
-#include "../element.hh"
+#include "round.hh"
 #include <cstddef>
 
-class Circle : public Element
+class Circle : public Round
 {
-private:
-    size_t r_;
-    size_t x_;
-    size_t y_;
-
 public:
     Circle(size_t radius,
            const std::tuple<size_t, size_t> &center = {0, 0},
@@ -17,6 +12,4 @@ public:
            std::optional<Outline> outer = std::nullopt);
 
     // static Circle generate(size_t height, size_t width); // TODO
-
-    void changeCenter(size_t x, size_t y);
 };

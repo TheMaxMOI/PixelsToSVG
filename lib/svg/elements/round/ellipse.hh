@@ -1,15 +1,12 @@
 #pragma once
 
-#include "../element.hh"
+#include "round.hh"
 #include <cstddef>
 
-class Ellipse : public Element
+class Ellipse : public Round
 {
 private:
-    size_t rX_;
     size_t rY_;
-    size_t x_;
-    size_t y_;
 
 public:
     Ellipse(size_t rX,
@@ -19,6 +16,4 @@ public:
             std::optional<Outline> outer = std::nullopt);
 
     // static Ellipse generate(size_t height, size_t width); // TODO
-
-    void changeCenter(size_t x, size_t y);
 };
