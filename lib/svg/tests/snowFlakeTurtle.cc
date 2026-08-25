@@ -6,7 +6,6 @@
 #include <algorithm>
 #include <iostream>
 
-// FIXME: the output svg was not expected
 int main(void)
 {
     Outline outer{"#ff0000", 1};
@@ -48,7 +47,7 @@ int main(void)
     }
 
     const std::string &curve = t.terminate();
-    Path shape{curve, outer};
+    Path shape{curve, std::nullopt, outer};
 
     SVG svg{420, 370, {{"viewBox", "-1 -1 42 37"}, {"fill-opacity", "0"}}};
     svg.setData({shape});
