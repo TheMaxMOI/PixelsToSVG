@@ -87,7 +87,7 @@ void Cursor::cubicTo(double cx1, double cy1, double cx2, double cy2, double x, d
     x_ = x;
     y_ = y;
     history_.push_back("C" +
-                       doubleFmt_(cx1) + "," + doubleFmt_(cy1) +
+                       doubleFmt_(cx1) + "," + doubleFmt_(cy1) + "," +
                        doubleFmt_(cx2) + "," + doubleFmt_(cy2) +
                        "," + doubleFmt_(x) + "," + doubleFmt_(y));
 }
@@ -131,8 +131,9 @@ void Cursor::ellipticalArcTo(double radius1, double radius2,
     x_ = x;
     y_ = y;
     history_.push_back("A" +
-                       doubleFmt_(radius1) + "," + doubleFmt_(radius2) +
-                       "," + std::to_string(flip) + "," + std::to_string(sweep) +
+                       doubleFmt_(radius1) + "," + doubleFmt_(radius2) + "," +
+                       doubleFmt_(rot) + "," +
+                       std::to_string(flip) + "," + std::to_string(sweep) + "," +
                        doubleFmt_(x) + "," + doubleFmt_(y));
 }
 
