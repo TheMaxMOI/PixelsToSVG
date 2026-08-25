@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <iostream>
 
+// FIXME: the output svg was not expected
 int main(void)
 {
     Outline outer{"#ff0000", 1};
@@ -22,7 +23,7 @@ int main(void)
     double scale = 20;
     std::transform(vertices.begin(), vertices.end(),
                    vertices.begin(),
-                   [scale](const std::tuple<int, int> &p) -> std::tuple<int, int>
+                   [scale](const std::tuple<double, double> &p) -> std::tuple<double, double>
                    {
                        return {std::get<0>(p) * scale, std::get<1>(p) * scale};
                    });

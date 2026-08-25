@@ -21,7 +21,7 @@ Tag::Tag(const std::string &name,
     }
 }
 
-const std::vector<data_t> &Tag::getData()
+const std::vector<data_t> &Tag::getData() const
 {
     return data_;
 }
@@ -181,6 +181,11 @@ void Tag::print_(std::ostream &os) const
         os << "\n";
     }
     os << "</" << name_ << ">";
+}
+
+const std::string &Tag::getName() const
+{
+    return name_;
 }
 
 std::ostream &operator<<(std::ostream &os, const Tag &tag)

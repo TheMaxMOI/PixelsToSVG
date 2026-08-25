@@ -10,10 +10,11 @@ class SVG : public Tag
 private:
     size_t width_;
     size_t height_;
-public:
-    SVG(size_t width, size_t height, const std::vector<attr_t>& additionalAttrs = {});
 
-    void generate(std::ostream &os) const;
+    virtual void print_(std::ostream &os) const override;
+
+public:
+    SVG(size_t width, size_t height, const std::vector<attr_t> &additionalAttrs = {});
 
     bool checkTspan() const;
 };

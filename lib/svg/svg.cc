@@ -2,10 +2,20 @@
 
 #include <functional>
 
+#include "../xmlGen/declaration.hh"
 #include "elements/shapes/text.hh"
 
+/* it is done like this rather a downcast (dynamic cast)
+because containers' definitions would have to be changed
+currently we're loosing information by pushing the element
+by value.
+Lazy fix is assert with name. True maintainable code would
+change value to ptr to not loose this extra information.
+
+TODO: optional
+*/
 #define ISINSTANCE(tag, clazz) \
-    (dynamic_cast<clazz *>(&tag) != nullptr)
+    (tag.getName() == clazz)
 
 SVG::SVG(size_t width, size_t height, const std::vector<attr_t> &additionalAttrs)
     : Tag("svg", additionalAttrs, false), width_{width}, height_{height}
@@ -15,14 +25,17 @@ SVG::SVG(size_t width, size_t height, const std::vector<attr_t> &additionalAttrs
     addAttribute({"xmlns", "http://www.w3.org/2000/svg"});
 }
 
-void SVG::generate(std::ostream &os) const
+void SVG::print_(std::ostream &os) const
 {
-    // checkTspan then throw error if needed
+    if (!checkTspan())
+    {
+        throw std::logic_error("SVG: print_: Tspan instances must be children of other Tspan or Text instances!");
+    }
 
     Declaration d{{{"version", "1.0"}, {"encoding", "UTF-8"}}};
 
     os << d << "\n"
-       << *this;
+       << static_cast<Tag>(*this);
 }
 
 bool SVG::checkTspan() const
@@ -31,10 +44,10 @@ bool SVG::checkTspan() const
 
     check = [&check](Tag tag, std::optional<Tag> parent) -> bool
     {
-        if (ISINSTANCE(tag, Tspan))
+        if (ISINSTANCE(tag, "tspan"))
         {
             if (!parent.has_value() ||
-                !ISINSTANCE(parent.value(), Text) && !ISINSTANCE(parent.value(), Tspan))
+                !ISINSTANCE(parent.value(), "text") && !ISINSTANCE(parent.value(), "tspan"))
             {
                 return false;
             }
@@ -42,23 +55,23 @@ bool SVG::checkTspan() const
 
         const auto &data = tag.getData();
 
-        if (data.size() > 0)
+        if (data.size() == 0)
         {
-            for (const auto &variantChild : data)
-            {
-                if (!std::holds_alternative<Tag>(variantChild))
-                {
-                    continue;
-                }
+            return true;
+        }
 
-                auto child = std::get<Tag>(variantChild);
-                if (!check(child, tag))
-                {
-                    return false;
-                }
+        for (const auto &variantChild : data)
+        {
+            if (!std::holds_alternative<Tag>(variantChild))
+            {
+                continue;
             }
 
-            return true;
+            auto child = std::get<Tag>(variantChild);
+            if (!check(child, tag))
+            {
+                return false;
+            }
         }
 
         return true;
