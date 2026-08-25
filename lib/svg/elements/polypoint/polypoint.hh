@@ -3,9 +3,9 @@
 #include "../element.hh"
 #include <cstddef>
 
-using point_t = std::tuple<size_t, size_t>;
+using point_t = std::tuple<double, double>;
 
-class Polypoint : Element
+class Polypoint : public Element
 {
 private:
     std::vector<point_t> points_;
