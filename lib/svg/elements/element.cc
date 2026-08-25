@@ -42,9 +42,9 @@ void Element::updateOutline(const Outline &outer)
 
 Element::Element(const std::string &name,
                  const std::vector<attr_t> &attributes,
-                 std::optional<Coloring> inner = std::nullopt,
-                 std::optional<Outline> outer = std::nullopt,
-                 bool isEmpty = false)
+                 std::optional<Coloring> inner,
+                 std::optional<Outline> outer,
+                 bool isEmpty)
     : Tag{name, attributes, isEmpty}
 {
     if (inner.has_value())

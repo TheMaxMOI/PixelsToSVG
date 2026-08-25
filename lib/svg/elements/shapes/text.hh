@@ -13,9 +13,9 @@ private:
 
 protected:
     TextElement(const std::string &name,
-                const std::tuple<size_t, size_t> &bottomLeftPos = {0, 0},
-                std::optional<Coloring> inner = std::nullopt,
-                std::optional<Outline> outer = std::nullopt);
+                const std::tuple<size_t, size_t> &bottomLeftPos,
+                std::optional<Coloring> inner,
+                std::optional<Outline> outer);
 
 public:
     void rotate(int degree);

@@ -35,11 +35,11 @@ std::vector<std::tuple<std::string, std::string>> Outline::use() const
 Outline Outline::generate()
 {
     const auto &color = rgb(randint(MAX_UINT8), randint(MAX_UINT8), randint(MAX_UINT8));
-    return Outline(color, randint(10), round(random(), 2));
+    return Outline(color, randint(10), round(my_random(), 2));
 }
 
 Coloring Coloring::generate()
 {
     const auto &color = rgb(randint(MAX_UINT8), randint(MAX_UINT8), randint(MAX_UINT8));
-    return Coloring(color, round(random(), 2));
+    return Coloring(color, round(my_random(), 2));
 }

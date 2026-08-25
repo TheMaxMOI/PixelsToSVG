@@ -49,7 +49,7 @@ public:
     Turtle &switchPen();
     PenPosition getPenPosition();
     size_t getRotation();
-    const std::pair<double, double> &getPosition();
+    const std::pair<double, double> getPosition();
     Turtle &rotate(int degree);
     Turtle &teleport(double x, double y);
     Turtle &move(double dist);

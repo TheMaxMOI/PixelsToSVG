@@ -1,7 +1,7 @@
 #include "turtle.hh"
 
-Turtle::Turtle(double x = 0., double y = 0.,
-               size_t rot = 0, size_t precision = 3)
+Turtle::Turtle(double x, double y,
+               size_t rot, size_t precision)
     : x_{x}, y_{y}, rot_{rot}, cursor_{Cursor(x, y)}, round_{Rounder(precision)}
 {
 }
@@ -23,7 +23,7 @@ size_t Turtle::getRotation()
     return rot_;
 }
 
-const std::pair<double, double> &Turtle::getPosition()
+const std::pair<double, double> Turtle::getPosition()
 {
     return {x_, y_};
 }
@@ -59,16 +59,16 @@ Turtle &Turtle::teleport(double x, double y)
         break;
     }
 
-    const auto [x, y] = cursor_.getPosition();
-    x_ = x;
-    y_ = y;
+    const auto [newX, newY] = cursor_.getPosition();
+    x_ = newX;
+    y_ = newY;
 
     return *this;
 }
 
 Turtle &Turtle::move(double dist)
 {
-    const auto [dx, dy] = round_(dist * cos(rot_), dist * sin(rot_));
+    const auto [dx, dy] = round_(dist * my_cos(rot_), dist * my_sin(rot_));
 
     return teleport(x_ + dx, y_ + dy);
 }
@@ -83,16 +83,16 @@ std::pair<double, double> Turtle::sidewaysOffset_(double dist, Side side)
 {
     double direction = (side == RIGHT) ? -1. : 1.;
 
-    double offsetX = direction * -sin(rot_) * dist;
-    double offsetY = direction * cos(rot_) * dist;
+    double offsetX = direction * -my_sin(rot_) * dist;
+    double offsetY = direction * my_cos(rot_) * dist;
 
     return {offsetX, offsetY};
 }
 
 std::pair<double, double> Turtle::forwardOffset_(double dist)
 {
-    double offsetX = cos(rot_) * dist;
-    double offsetY = sin(rot_) * dist;
+    double offsetX = my_cos(rot_) * dist;
+    double offsetY = my_sin(rot_) * dist;
 
     return {offsetX, offsetY};
 }
@@ -161,9 +161,9 @@ Turtle &Turtle::curveTo(double x, double y, Side side, Curve type)
         cursor_.ellipticalArcTo(radius, radius, 0., false, sweep, x, y);
     }
 
-    const auto [x, y] = cursor_.getPosition();
-    x_ = x;
-    y_ = y;
+    const auto [newX, newY] = cursor_.getPosition();
+    x_ = newX;
+    y_ = newY;
 
     return *this;
 }

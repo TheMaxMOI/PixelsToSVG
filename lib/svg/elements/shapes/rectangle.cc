@@ -4,9 +4,9 @@
 
 Rectangle::Rectangle(size_t width,
                      size_t height,
-                     const std::tuple<size_t, size_t> &topLeftPos = {0, 0},
-                     std::optional<Coloring> inner = std::nullopt,
-                     std::optional<Outline> outer = std::nullopt)
+                     const std::tuple<size_t, size_t> &topLeftPos,
+                     std::optional<Coloring> inner,
+                     std::optional<Outline> outer)
     : Element("rect",
               {{"width", std::to_string(width)},
                {"height", std::to_string(height)},

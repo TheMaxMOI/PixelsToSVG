@@ -2,7 +2,7 @@
 
 #include <sstream>
 
-std::string joinWithSpace_(const std::vector<std::string> stringList)
+std::string joinWithSpace(const std::vector<std::string> stringList)
 {
     std::stringstream growingString;
 

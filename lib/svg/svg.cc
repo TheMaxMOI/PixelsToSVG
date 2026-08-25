@@ -2,7 +2,7 @@
 
 #include <functional>
 
-#include "elements/text.hh"
+#include "elements/shapes/text.hh"
 
 #define ISINSTANCE(tag, clazz) \
     (dynamic_cast<clazz *>(&tag) != nullptr)

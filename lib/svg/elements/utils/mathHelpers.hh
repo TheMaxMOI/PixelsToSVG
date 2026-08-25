@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <cstddef>
 
 #define MIN(a, b) \
         ((a < b) ? a : b)
@@ -18,11 +19,11 @@ public:
     std::pair<double, double> operator()(double x, double y);
 };
 
-inline double sin(double degree);
-inline double cos(double degree);
-inline double dist2(const std::array<double, 2> &a, const std::array<double, 2> &b);
-inline double distInf(const std::array<double, 2> &a, const std::array<double, 2> &b);
-inline int randint(int a, int b);
-inline int randint(int max);
-inline double random();
-inline double round(double x, size_t precision);
+double my_sin(double degree);
+double my_cos(double degree);
+double dist2(const std::array<double, 2> &a, const std::array<double, 2> &b);
+double distInf(const std::array<double, 2> &a, const std::array<double, 2> &b);
+int randint(int a, int b);
+int randint(int max);
+double my_random();
+double round(double x, size_t precision);

@@ -1,15 +1,9 @@
 #include "text.hh"
 
-void TextElement::rotate(int degree)
-{
-    int n = degree % 360 + 360;
-    rot_ = (rot_ + n) % 360;
-}
-
 TextElement::TextElement(const std::string &name,
-                         const std::tuple<size_t, size_t> &bottomLeftPos = {0, 0},
-                         std::optional<Coloring> inner = std::nullopt,
-                         std::optional<Outline> outer = std::nullopt)
+                         const std::tuple<size_t, size_t> &bottomLeftPos,
+                         std::optional<Coloring> inner,
+                         std::optional<Outline> outer)
     : Element{name,
               {
                   {"x", std::to_string(std::get<0>(bottomLeftPos))},
@@ -25,16 +19,22 @@ TextElement::TextElement(const std::string &name,
     }
 }
 
+void TextElement::rotate(int degree)
+{
+    int n = degree % 360 + 360;
+    rot_ = (rot_ + n) % 360;
+}
+
 Text::Text(const std::tuple<size_t, size_t> &bottomLeftPos,
-           std::optional<Coloring> inner = std::nullopt,
-           std::optional<Outline> outer = std::nullopt)
+           std::optional<Coloring> inner,
+           std::optional<Outline> outer)
     : TextElement{"text", bottomLeftPos, inner, outer}
 {
 }
 
 Tspan::Tspan(const std::tuple<size_t, size_t> &bottomLeftPos,
-             std::optional<Coloring> inner = std::nullopt,
-             std::optional<Outline> outer = std::nullopt)
+             std::optional<Coloring> inner,
+             std::optional<Outline> outer)
     : TextElement("tspan", bottomLeftPos, inner, outer)
 {
 }

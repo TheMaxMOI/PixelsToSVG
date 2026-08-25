@@ -16,7 +16,7 @@ private:
 public:
     Cursor(double x, double y);
 
-    const std::pair<double, double> &getPosition() const;
+    const std::pair<double, double> getPosition() const;
     void moveTo(double x, double y);
     void lineTo(double x, double y);
     void horizontalTo(double x);
