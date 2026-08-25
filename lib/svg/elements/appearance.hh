@@ -12,7 +12,6 @@ protected:
     double opacity_;
 
     Appearance(const std::string &coloring_key, const std::string &color, double opacity);
-    std::string doubleFmt_(double x) const;
 
 public:
     virtual ~Appearance() = default;

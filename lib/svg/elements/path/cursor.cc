@@ -3,16 +3,12 @@
 #include <format>
 
 #include "../utils/concatStr.hh"
+#include "../utils/doubleFormat.hh"
 
 Cursor::Cursor(double x, double y)
     : x_{x}, y_{y}
 {
     moveTo(x, y);
-}
-
-std::string Cursor::doubleFmt_(double x)
-{
-    return std::format("{:.3f}", x);
 }
 
 const std::pair<double, double> Cursor::getPosition() const
@@ -24,7 +20,7 @@ void Cursor::moveTo(double x, double y)
 {
     x_ = x;
     y_ = y;
-    history_.push_back("M" + doubleFmt_(x) + "," + doubleFmt_(y));
+    history_.push_back("M" + doubleFmt(x) + "," + doubleFmt(y));
 
     editing_ = true;
 }
@@ -38,7 +34,7 @@ void Cursor::lineTo(double x, double y)
 
     x_ = x;
     y_ = y;
-    history_.push_back("L" + doubleFmt_(x) + "," + doubleFmt_(y));
+    history_.push_back("L" + doubleFmt(x) + "," + doubleFmt(y));
 }
 
 void Cursor::horizontalTo(double x)
@@ -49,7 +45,7 @@ void Cursor::horizontalTo(double x)
     }
 
     x_ = x;
-    history_.push_back("H" + doubleFmt_(x));
+    history_.push_back("H" + doubleFmt(x));
 }
 
 void Cursor::verticalTo(double y)
@@ -60,7 +56,7 @@ void Cursor::verticalTo(double y)
     }
 
     y_ = y;
-    history_.push_back("V" + doubleFmt_(y));
+    history_.push_back("V" + doubleFmt(y));
 }
 
 void Cursor::quadraticTo(double cx, double cy, double x, double y)
@@ -73,8 +69,8 @@ void Cursor::quadraticTo(double cx, double cy, double x, double y)
     x_ = x;
     y_ = y;
     history_.push_back("Q" +
-                       doubleFmt_(cx) + "," + doubleFmt_(cy) +
-                       "," + doubleFmt_(x) + "," + doubleFmt_(y));
+                       doubleFmt(cx) + "," + doubleFmt(cy) +
+                       "," + doubleFmt(x) + "," + doubleFmt(y));
 }
 
 void Cursor::cubicTo(double cx1, double cy1, double cx2, double cy2, double x, double y)
@@ -87,9 +83,9 @@ void Cursor::cubicTo(double cx1, double cy1, double cx2, double cy2, double x, d
     x_ = x;
     y_ = y;
     history_.push_back("C" +
-                       doubleFmt_(cx1) + "," + doubleFmt_(cy1) + "," +
-                       doubleFmt_(cx2) + "," + doubleFmt_(cy2) +
-                       "," + doubleFmt_(x) + "," + doubleFmt_(y));
+                       doubleFmt(cx1) + "," + doubleFmt(cy1) + "," +
+                       doubleFmt(cx2) + "," + doubleFmt(cy2) +
+                       "," + doubleFmt(x) + "," + doubleFmt(y));
 }
 
 void Cursor::smoothQuadraticTo(double x, double y)
@@ -101,7 +97,7 @@ void Cursor::smoothQuadraticTo(double x, double y)
 
     x_ = x;
     y_ = y;
-    history_.push_back("T" + doubleFmt_(x) + "," + doubleFmt_(y));
+    history_.push_back("T" + doubleFmt(x) + "," + doubleFmt(y));
 }
 
 void Cursor::smoothCubicTo(double cx, double cy, double x, double y)
@@ -114,8 +110,8 @@ void Cursor::smoothCubicTo(double cx, double cy, double x, double y)
     x_ = x;
     y_ = y;
     history_.push_back("S" +
-                       doubleFmt_(cx) + "," + doubleFmt_(cy) +
-                       "," + doubleFmt_(x) + "," + doubleFmt_(y));
+                       doubleFmt(cx) + "," + doubleFmt(cy) +
+                       "," + doubleFmt(x) + "," + doubleFmt(y));
 }
 
 void Cursor::ellipticalArcTo(double radius1, double radius2,
@@ -131,10 +127,10 @@ void Cursor::ellipticalArcTo(double radius1, double radius2,
     x_ = x;
     y_ = y;
     history_.push_back("A" +
-                       doubleFmt_(radius1) + "," + doubleFmt_(radius2) + "," +
-                       doubleFmt_(rot) + "," +
+                       doubleFmt(radius1) + "," + doubleFmt(radius2) + "," +
+                       doubleFmt(rot) + "," +
                        std::to_string(flip) + "," + std::to_string(sweep) + "," +
-                       doubleFmt_(x) + "," + doubleFmt_(y));
+                       doubleFmt(x) + "," + doubleFmt(y));
 }
 
 void Cursor::stopHere()

@@ -1,7 +1,6 @@
 #include "../svg.hh"
 #include "../elements/appearance.hh"
-#include "../elements/path/path.hh"
-#include "../elements/path/turtle.hh"
+#include "../elements/polypoint/polygon.hh"
 
 #include <algorithm>
 #include <iostream>
@@ -28,27 +27,7 @@ int main(void)
                        return {std::get<0>(p) * scale, std::get<1>(p) * scale};
                    });
 
-    std::vector<std::tuple<double, double>> path = vertices;
-    path.push_back(vertices.at(0));
-
-    Turtle t{};
-    bool isFirst = true;
-    for (auto [x, y] : path)
-    {
-        if (isFirst)
-        {
-            isFirst = false;
-            t.teleport(x, y);
-            t.switchPen();
-        }
-        else
-        {
-            t.curveTo(x, y, Turtle::LEFT, Turtle::ARC);
-        }
-    }
-
-    const std::string &curve = t.terminate();
-    Path shape{curve, inner, outer};
+    Polygon shape{vertices, inner, outer};
 
     SVG svg{420, 370, {{"viewBox", "-1 -1 42 37"}}};
     svg.setData({shape});

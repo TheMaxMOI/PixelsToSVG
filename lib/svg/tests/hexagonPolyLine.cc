@@ -7,6 +7,7 @@
 
 int main(void)
 {
+    Coloring inner{"#000000", 0};
     Outline outer{"#ff0000", 1};
     double sqrt3 = 1.732;
 
@@ -25,12 +26,11 @@ int main(void)
                    {
                        return {std::get<0>(p) * scale, std::get<1>(p) * scale};
                    });
-    
+
     vertices.push_back(vertices[0]);
-    Polyline shape{vertices, std::nullopt, outer};
+    Polyline shape{vertices, inner, outer};
 
-
-    SVG svg{420, 370, {{"viewBox", "-1 -1 42 37"}, {"fill-opacity", "0"}}};
+    SVG svg{420, 370, {{"viewBox", "-1 -1 42 37"}}};
     svg.setData({shape});
 
     std::cout << svg << "\n";

@@ -1,14 +1,16 @@
 #include "polypoint.hh"
 
 #include <sstream>
+#include <format>
 
 #include "../utils/concatStr.hh"
+#include "../utils/doubleFormat.hh"
 
 std::string Polypoint::stringify_(const point_t &p) const
 {
     auto [x, y] = p;
 
-    return std::to_string(x) + ',' + std::to_string(y);
+    return doubleFmt(x) + ',' + doubleFmt(y);
 }
 
 std::string Polypoint::stringify_(const std::vector<point_t> &points) const

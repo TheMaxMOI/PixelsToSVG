@@ -4,7 +4,6 @@
 #include "../elements/path/cursor.hh"
 #include "../elements/shapes/rectangle.hh"
 
-#include <algorithm>
 #include <iostream>
 
 int main(void)

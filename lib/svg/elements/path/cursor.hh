@@ -11,8 +11,6 @@ private:
     bool editing_ = false;
     std::vector<std::string> history_;
 
-    std::string doubleFmt_(double x);
-
 public:
     Cursor(double x, double y);
 
