@@ -1,2 +1,0 @@
-randomize/randomSVG.py:def getSVG(shapeAmount: int): # create a random svg
-imageAnalysis/baseSVG.py:def getBaseSVG(img, background: bool = False, smoothed: bool = False): # get the simplest base - image analysis to get the color then the shape of the biggest area of that color / background is the mean of other colors

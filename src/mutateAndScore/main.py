@@ -26,7 +26,7 @@ setNumThreads(0)  # Give cv2 all threads possible
 from lib.png import SVGtoBytes
 
 from ..imageAnalysis.baseSVG import getBaseSVG
-from ..progressBar import ProgressBar
+from ...progressBar.progressBar import ProgressBar
 from .config import MAX_ITER, SRC_IMAGE_PATH
 from .mutator import Mutator
 from .score import mse
