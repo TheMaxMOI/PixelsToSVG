@@ -41,15 +41,12 @@ double ProgressBar::percentage_() const
 
 void ProgressBar::wipe_(size_t n)
 {
-    int max = MAX(n, previousLen_);
-    for (int i = 0; i < max; i++)
+    if (previousLen_ > n)
     {
-        std::cout << ' ';
+        std::cout << std::string(previousLen_ - n, ' ');
     }
 
-    std::cout << '\r';
-
-    previousLen_ = max;
+    previousLen_ = n;
 }
 
 void ProgressBar::print()
@@ -86,13 +83,20 @@ void ProgressBar::print()
         }
     }
 
-    barMaking << ' ' << std::format("{:.2f}", percent) << '%';
-    barMaking << " - time: " << time(nullptr) - startingDate_ << "ms";
+    std::stringstream statsMaking;
+    statsMaking << ' ' << std::format("{:.2f}", percent) << '%';
+    statsMaking << " - time: " << time(nullptr) - startingDate_ << "s";
 
-    barMaking << (percent > 99) ? '\n' : '\r';
+    const auto &stats = statsMaking.str();
+    const auto &full_bar = barMaking.str() + stats;
 
-    const auto &str = barMaking.str();
+    size_t trueSize = 100 + stats.length();
 
-    wipe_(str.length());
-    std::cout << str;
+    std::cout << '\r' << full_bar;
+    wipe_(trueSize);
+
+    if (percent >= 100)
+    {
+        std::cout << '\n';
+    }
 }

@@ -3,16 +3,20 @@
 #include <chrono>
 #include "progressBar.hh"
 
-int main() {
+int main()
+{
     ProgressBar bar;
-    size_t maxSteps = 100;
+    int steps[3] = {1, 2, 5};
+    size_t maxSteps = 123102;
 
-    for (size_t i = 0; i <= maxSteps; ++i) {
+    size_t i = 0;
+    while (i <= maxSteps)
+    {
         bar.updateAndShow(i, maxSteps);
-        
-        // Pause briefly so you can watch it update in real time
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        int step = steps[i % 3];
+        i += step;
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 
     return 0;
-} 
+}
