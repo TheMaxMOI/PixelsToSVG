@@ -3,9 +3,9 @@
 #include <chrono>
 #include "progressBar.hh"
 
-int main()
+int main(void)
 {
-    ProgressBar bar;
+    ProgressBar bar{1};
     int steps[3] = {1, 2, 5};
     size_t maxSteps = 123102;
 

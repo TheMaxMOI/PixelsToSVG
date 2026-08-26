@@ -12,9 +12,13 @@
 #define MAX(a, b) \
     (((a) <= (b)) ? (b) : (a))
 
-ProgressBar::ProgressBar()
-    : currentVal_{0}, maxVal_{0}, startingDate_{time(nullptr)}
+ProgressBar::ProgressBar(size_t size)
+    : currentVal_{0}, maxVal_{0}, startingDate_{time(nullptr)}, style_{(size == 1) ? SHORT : LARGE}, size_{size}
 {
+    if (!size)
+    {
+        throw std::logic_error("0-sized bar doesn't make sense!");
+    }
 }
 
 void ProgressBar::set(size_t current, size_t max)
@@ -49,25 +53,25 @@ void ProgressBar::wipe_(size_t n)
     previousLen_ = n;
 }
 
-void ProgressBar::print()
+std::string ProgressBar::getLargeBar_(double percent, size_t intPercent) const
 {
-    double percent = percentage_();
-    size_t intPercent = floor(percent);
-
     std::stringstream barMaking;
 
     if (percent == 100)
     {
-        for (int i = 0; i < 100; i++)
+        for (int i = 0; i < size_; i++)
         {
             barMaking << DONE;
         }
     }
     else // (percent < 100)
     {
-        int numDone = (intPercent >= 2) ? intPercent - 2 : 0;
-        int numBeforeDone = intPercent - numDone;
-        int numTodo = 100 - intPercent;
+        int maxBeforeDone = MAX(round(2.0 * size_ / 100.0), 1);
+        int resizedPercent = round(intPercent / 100.0 * size_);
+
+        int numDone = (resizedPercent >= maxBeforeDone) ? resizedPercent - maxBeforeDone : 0;
+        int numBeforeDone = resizedPercent - numDone;
+        int numTodo = size_ - resizedPercent;
 
         for (int i = 0; i < numDone; i++)
         {
@@ -83,17 +87,58 @@ void ProgressBar::print()
         }
     }
 
+    return barMaking.str();
+}
+
+#define FRAME_AMOUNT 4
+static const char* frames = "\\|/-";
+std::string ProgressBar::getShortBar_(size_t intPercent) const
+{
+    return std::string{frames[intPercent%FRAME_AMOUNT]};
+}
+
+std::string ProgressBar::getBar_(double percent, size_t intPercent) const
+{
+    switch (style_)
+    {
+    case SHORT:
+        return getShortBar_(intPercent);
+    case LARGE:
+        return getLargeBar_(percent, intPercent);
+    default:
+        return {};
+    }
+}
+
+size_t ProgressBar::trueBarSize_() const
+{
+    switch (style_)
+    {
+    case LARGE:
+        return size_;
+    case SHORT:
+        return 1;
+    default:
+        return 0;
+    }
+}
+
+void ProgressBar::print()
+{
+    double percent = percentage_();
+    size_t intPercent = floor(percent);
+
+    const auto &bar = getBar_(percent, intPercent);
+
     std::stringstream statsMaking;
     statsMaking << ' ' << std::format("{:.2f}", percent) << '%';
     statsMaking << " - time: " << time(nullptr) - startingDate_ << "s";
 
     const auto &stats = statsMaking.str();
-    const auto &full_bar = barMaking.str() + stats;
-
-    size_t trueSize = 100 + stats.length();
+    const auto &full_bar = bar + stats;
 
     std::cout << '\r' << full_bar;
-    wipe_(trueSize);
+    wipe_(trueBarSize_() + stats.length());
 
     if (percent >= 100)
     {
