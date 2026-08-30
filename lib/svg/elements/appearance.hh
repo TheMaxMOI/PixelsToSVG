@@ -1,8 +1,8 @@
 #pragma once
 
-#include <vector>
 #include <string>
 #include <tuple>
+#include <vector>
 
 class Appearance
 {
@@ -11,7 +11,8 @@ protected:
     const std::string color_;
     double opacity_;
 
-    Appearance(const std::string &coloring_key, const std::string &color, double opacity);
+    Appearance(const std::string& coloring_key, const std::string& color,
+               double opacity);
 
 public:
     virtual ~Appearance() = default;
@@ -25,7 +26,7 @@ private:
     double width_;
 
 public:
-    Outline(const std::string &stroke, double width, double opacity = 1.0);
+    Outline(const std::string& stroke, double width, double opacity = 1.0);
 
     std::vector<std::tuple<std::string, std::string>> use() const override;
 
@@ -35,7 +36,7 @@ public:
 class Coloring : public Appearance
 {
 public:
-    Coloring(const std::string &fill, double opacity = 1.0);
+    Coloring(const std::string& fill, double opacity = 1.0);
 
     static Coloring generate();
 };

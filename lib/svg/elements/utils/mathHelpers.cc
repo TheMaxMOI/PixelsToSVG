@@ -1,15 +1,16 @@
 #include "mathHelpers.hh"
 
+#include <algorithm>
 #include <cmath>
 #include <random>
-#include <algorithm>
 
 const double a = 2.0 * std::numbers::pi / 3.0;
-const double I = (3.0 / std::numbers::pi) * std::log(2.0 + std::sqrt(3.0)) - 0.96;
+const double I =
+    (3.0 / std::numbers::pi) * std::log(2.0 + std::sqrt(3.0)) - 0.96;
 const double K = 1.0 / I;
 const double LN_2_PLUS_SQRT_3 = std::log(2.0 + std::sqrt(3.0));
 
-std::mt19937_64 &getRDMengine()
+std::mt19937_64& getRDMengine()
 {
     thread_local std::mt19937_64 engine(std::random_device{}());
     return engine;
@@ -24,9 +25,8 @@ double my_round(double x, int p)
 }
 
 Rounder::Rounder(int p)
-    : precision_{p}
-{
-}
+    : precision_{ p }
+{}
 
 std::pair<double, double> Rounder::operator()(double x, double y)
 {
@@ -34,7 +34,7 @@ std::pair<double, double> Rounder::operator()(double x, double y)
     double newY = my_round(dy_ + y, precision_);
     dx_ += x - newX;
     dy_ += y - newY;
-    return {newX, newY};
+    return { newX, newY };
 }
 
 double my_sin(double degree)
@@ -47,22 +47,22 @@ double my_cos(double degree)
     return std::cos(degree * std::numbers::pi / 180.0);
 }
 
-double norm2(const std::array<double, 2> &v)
+double norm2(const std::array<double, 2>& v)
 {
     return std::hypot(v[0], v[1]);
 }
 
-double dist2(const std::array<double, 2> &a, const std::array<double, 2> &b)
+double dist2(const std::array<double, 2>& a, const std::array<double, 2>& b)
 {
     return std::hypot(a[0] - b[0], a[1] - b[1]);
 }
 
-double normInf(const std::array<double, 2> &v)
+double normInf(const std::array<double, 2>& v)
 {
     return std::max(std::abs(v[0]), std::abs(v[1]));
 }
 
-double distInf(const std::array<double, 2> &a, const std::array<double, 2> &b)
+double distInf(const std::array<double, 2>& a, const std::array<double, 2>& b)
 {
     return std::max(std::abs(a[0] - b[0]), std::abs(a[1] - b[1]));
 }
@@ -86,7 +86,10 @@ double f(double x)
 double F(double x)
 {
     double u = a * (x - 0.5);
-    return K * ((1.0 / a) * (std::log(1.0 / std::cos(u) + std::tan(u)) + LN_2_PLUS_SQRT_3) - 0.96 * x);
+    return K
+        * ((1.0 / a)
+               * (std::log(1.0 / std::cos(u) + std::tan(u)) + LN_2_PLUS_SQRT_3)
+           - 0.96 * x);
 }
 
 double my_random()

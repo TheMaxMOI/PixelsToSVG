@@ -1,12 +1,13 @@
+#include <chrono>
 #include <iostream>
 #include <thread>
-#include <chrono>
+
 #include "progressBar.hh"
 
 int main(void)
 {
     ProgressBar bar;
-    int steps[3] = {1, 2, 5};
+    int steps[3] = { 1, 2, 5 };
     size_t maxSteps = 123102;
 
     size_t i = 0;

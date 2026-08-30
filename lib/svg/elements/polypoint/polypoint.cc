@@ -1,24 +1,24 @@
 #include "polypoint.hh"
 
-#include <sstream>
 #include <format>
+#include <sstream>
 
 #include "../utils/concatStr.hh"
 #include "../utils/doubleFormat.hh"
 
-std::string Polypoint::stringify_(const point_t &p) const
+std::string Polypoint::stringify_(const point_t& p) const
 {
     auto [x, y] = p;
 
     return doubleFmt(x) + ',' + doubleFmt(y);
 }
 
-std::string Polypoint::stringify_(const std::vector<point_t> &points) const
+std::string Polypoint::stringify_(const std::vector<point_t>& points) const
 {
     std::stringstream growingString;
 
     bool isFirst = true;
-    for (const auto &p : points)
+    for (const auto& p : points)
     {
         if (isFirst)
         {
@@ -35,17 +35,13 @@ std::string Polypoint::stringify_(const std::vector<point_t> &points) const
     return growingString.str();
 }
 
-Polypoint::Polypoint(const std::string &name,
-                     const std::vector<point_t> &points,
+Polypoint::Polypoint(const std::string& name,
+                     const std::vector<point_t>& points,
                      std::optional<Coloring> inner,
                      std::optional<Outline> outer)
-    : Element{name,
-              {{"points", stringify_(points)}},
-              inner,
-              outer,
-              true}
+    : Element{ name, { { "points", stringify_(points) } }, inner, outer, true }
 {
-    for (const auto &p : points)
+    for (const auto& p : points)
     {
         pointsRepr_.push_back(stringify_(p));
     }
@@ -55,14 +51,14 @@ void Polypoint::popPoint()
 {
     points_.pop_back();
     pointsRepr_.pop_back();
-    updateAttribute_({"points", joinWithSpace(pointsRepr_)});
+    updateAttribute_({ "points", joinWithSpace(pointsRepr_) });
 }
 
 void Polypoint::addPoint(point_t p)
 {
     points_.push_back(p);
     pointsRepr_.push_back(stringify_(p));
-    updateAttribute_({"points", joinWithSpace(pointsRepr_)});
+    updateAttribute_({ "points", joinWithSpace(pointsRepr_) });
 }
 
 void Polypoint::insertPoint(point_t p, size_t i)
@@ -78,29 +74,31 @@ void Polypoint::insertPoint(point_t p, size_t i)
         pointsRepr_.push_back(stringify_(p));
     }
 
-    updateAttribute_({"points", joinWithSpace(pointsRepr_)});
+    updateAttribute_({ "points", joinWithSpace(pointsRepr_) });
 }
 void Polypoint::removePoint(size_t i)
 {
     if (i >= points_.size())
     {
-        throw std::logic_error("Polypoint: removePoint: Out of range index to remove point!");
+        throw std::logic_error(
+            "Polypoint: removePoint: Out of range index to remove point!");
     }
 
     points_.erase(points_.begin() + i);
     pointsRepr_.erase(pointsRepr_.begin() + i);
-    updateAttribute_({"points", joinWithSpace(pointsRepr_)});
+    updateAttribute_({ "points", joinWithSpace(pointsRepr_) });
 }
 
 void Polypoint::updatePoint(point_t p, size_t i)
 {
     if (i >= points_.size())
     {
-        throw std::logic_error("Polypoint: updatePoint: Out of range index to update point!");
+        throw std::logic_error(
+            "Polypoint: updatePoint: Out of range index to update point!");
     }
 
     points_[i] = p;
     pointsRepr_[i] = stringify_(p);
-    updateAttribute_({"points", stringify_(points_)});
-    updateAttribute_({"points", joinWithSpace(pointsRepr_)});
+    updateAttribute_({ "points", stringify_(points_) });
+    updateAttribute_({ "points", joinWithSpace(pointsRepr_) });
 }

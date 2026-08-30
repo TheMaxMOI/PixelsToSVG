@@ -1,35 +1,38 @@
 #include "tag.hh"
 
-#include <stdexcept>
-#include <sstream>
 #include <set>
+#include <sstream>
+#include <stdexcept>
 
-Tag::Tag(const std::string &name,
-         const std::vector<attr_t> &attributes,
+Tag::Tag(const std::string& name, const std::vector<attr_t>& attributes,
          bool isEmpty)
-    : name_{name}, attributes_{attributes}, isEmpty_{isEmpty}
+    : name_{ name }
+    , attributes_{ attributes }
+    , isEmpty_{ isEmpty }
 {
     std::set<std::string> set;
-    for (const auto &[attrName, _] : attributes)
+    for (const auto& [attrName, _] : attributes)
     {
         if (set.contains(attrName))
         {
-            throw std::logic_error("Tag: Tag: all attributes must be unique (triggered by:\"" + attrName + "\")");
+            throw std::logic_error(
+                "Tag: Tag: all attributes must be unique (triggered by:\""
+                + attrName + "\")");
         }
 
         set.insert(attrName);
     }
 }
 
-const std::vector<data_t> &Tag::getData() const
+const std::vector<data_t>& Tag::getData() const
 {
     return data_;
 }
 
 bool Tag::hasAttribute_(attr_t attr) const
 {
-    const auto &[refName, _] = attr;
-    for (const auto &[attrName, _] : attributes_)
+    const auto& [refName, _] = attr;
+    for (const auto& [attrName, _] : attributes_)
     {
         if (refName == attrName)
         {
@@ -40,9 +43,9 @@ bool Tag::hasAttribute_(attr_t attr) const
     return false;
 }
 
-bool Tag::hasAttribute_(const std::string &refName) const
+bool Tag::hasAttribute_(const std::string& refName) const
 {
-    for (const auto &[attrName, _] : attributes_)
+    for (const auto& [attrName, _] : attributes_)
     {
         if (refName == attrName)
         {
@@ -53,9 +56,10 @@ bool Tag::hasAttribute_(const std::string &refName) const
     return false;
 }
 
-std::optional<std::string> Tag::getAttributeValue_(const std::string &attrName) const
+std::optional<std::string>
+Tag::getAttributeValue_(const std::string& attrName) const
 {
-    for (const auto &[name, attrVal] : attributes_)
+    for (const auto& [name, attrVal] : attributes_)
     {
         if (name == attrName)
         {
@@ -70,17 +74,19 @@ void Tag::addAttribute(attr_t attr)
 {
     if (hasAttribute_(attr))
     {
-        throw std::logic_error("Tag: addAttribute: Attributes should be unique!");
+        throw std::logic_error(
+            "Tag: addAttribute: Attributes should be unique!");
     }
 
     attributes_.push_back(attr);
 }
 
-void Tag::setData(const std::vector<data_t> &data)
+void Tag::setData(const std::vector<data_t>& data)
 {
     if (isEmpty_)
     {
-        throw std::logic_error("Tag: setData: This tag was not meant to recieve any data!");
+        throw std::logic_error(
+            "Tag: setData: This tag was not meant to recieve any data!");
     }
 
     data_ = data;
@@ -91,10 +97,10 @@ Tag Tag::copy() const
     return *this;
 }
 
-std::ostream &operator<<(std::ostream &os, const std::vector<attr_t> &attrs)
+std::ostream& operator<<(std::ostream& os, const std::vector<attr_t>& attrs)
 {
     bool isFirst = true;
-    for (const auto &[attrName, attrValue] : attrs)
+    for (const auto& [attrName, attrValue] : attrs)
     {
         os << (isFirst ? "" : " ");
         os << attrName << "=" << '"' << attrValue << '"';
@@ -104,10 +110,10 @@ std::ostream &operator<<(std::ostream &os, const std::vector<attr_t> &attrs)
     return os;
 }
 
-std::ostream &operator<<(std::ostream &os, const std::vector<data_t> &data)
+std::ostream& operator<<(std::ostream& os, const std::vector<data_t>& data)
 {
     bool isFirst = true;
-    for (const auto &child : data)
+    for (const auto& child : data)
     {
         if (!isFirst)
         {
@@ -131,7 +137,7 @@ std::ostream &operator<<(std::ostream &os, const std::vector<data_t> &data)
     return os;
 }
 
-std::string indent(const std::string &data)
+std::string indent(const std::string& data)
 {
     std::stringstream indented;
 
@@ -155,7 +161,7 @@ std::string indent(const std::string &data)
     return indented.str();
 }
 
-void Tag::print_(std::ostream &os) const
+void Tag::print_(std::ostream& os) const
 {
     os << "<" << name_;
 
@@ -183,12 +189,12 @@ void Tag::print_(std::ostream &os) const
     os << "</" << name_ << ">";
 }
 
-const std::string &Tag::getName() const
+const std::string& Tag::getName() const
 {
     return name_;
 }
 
-std::ostream &operator<<(std::ostream &os, const Tag &tag)
+std::ostream& operator<<(std::ostream& os, const Tag& tag)
 {
     tag.print_(os);
     return os;

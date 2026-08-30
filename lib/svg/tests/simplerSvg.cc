@@ -1,38 +1,38 @@
-#include "../svg.hh"
-#include "../elements/appearance.hh"
-#include "../elements/path/path.hh"
-#include "../elements/path/cursor.hh"
-#include "../elements/shapes/rectangle.hh"
-
 #include <iostream>
+
+#include "../elements/appearance.hh"
+#include "../elements/path/cursor.hh"
+#include "../elements/path/path.hh"
+#include "../elements/shapes/rectangle.hh"
+#include "../svg.hh"
 
 int main(void)
 {
-    Coloring inner{"#2582fb"};
-    Rectangle r{29, 36, {0, 0}, inner};
-    r.addAttribute({"transform", "translate(13 8)"});
+    Coloring inner{ "#2582fb" };
+    Rectangle r{ 29, 36, { 0, 0 }, inner };
+    r.addAttribute({ "transform", "translate(13 8)" });
     r.setCornerCurvatureX(4);
 
-    Rectangle rbase{14, 14, {0, 0}, inner};
+    Rectangle rbase{ 14, 14, { 0, 0 }, inner };
     auto r1 = rbase.copy();
     auto r2 = rbase.copy();
     auto r3 = rbase.copy();
     auto r4 = rbase.copy();
-    r1.addAttribute({"transform", "translate(18 39) rotate(-45)"});
-    r2.addAttribute({"transform", "translate(7.899 26) rotate(-45)"});
-    r3.addAttribute({"transform", "translate(26.899 26) rotate(-45)"});
-    r4.addAttribute({"transform", "translate(18 13) rotate(-45)"});
+    r1.addAttribute({ "transform", "translate(18 39) rotate(-45)" });
+    r2.addAttribute({ "transform", "translate(7.899 26) rotate(-45)" });
+    r3.addAttribute({ "transform", "translate(26.899 26) rotate(-45)" });
+    r4.addAttribute({ "transform", "translate(18 13) rotate(-45)" });
 
-    Tag g_bottom{"g", {{"id", "bottom"}}};
-    Tag g_left{"g", {{"id", "left"}}};
-    Tag g_right{"g", {{"id", "right"}}};
-    Tag g_top{"g", {{"id", "top"}}};
-    g_bottom.setData({r1});
-    g_left.setData({r2});
-    g_right.setData({r3});
-    g_top.setData({r4});
+    Tag g_bottom{ "g", { { "id", "bottom" } } };
+    Tag g_left{ "g", { { "id", "left" } } };
+    Tag g_right{ "g", { { "id", "right" } } };
+    Tag g_top{ "g", { { "id", "top" } } };
+    g_bottom.setData({ r1 });
+    g_left.setData({ r2 });
+    g_right.setData({ r3 });
+    g_top.setData({ r4 });
 
-    Cursor c{13.968, 15.17};
+    Cursor c{ 13.968, 15.17 };
     c.ellipticalArcTo(2.7, 2.7, 0, 0, 1, 11.541, 13.92);
     c.ellipticalArcTo(6.713, 6.713, 0, 0, 1, 10.728, 10.276);
     c.ellipticalArcTo(7.215, 7.215, 0, 0, 1, 11.596, 6.3759999999999994);
@@ -53,11 +53,11 @@ int main(void)
     c.ellipticalArcTo(1.315, 1.315, 0, 0, 0, 14.05, 6.3);
     c.stopHere();
 
-    Path path{c.toPath(), Coloring{"#fff"}};
-    path.addAttribute({"transform","translate(13.5 15.689)"});
+    Path path{ c.toPath(), Coloring{ "#fff" } };
+    path.addAttribute({ "transform", "translate(13.5 15.689)" });
 
-    SVG svg{53, 52, {{"viewBox", "0 0 53 52"}, {"version", "1.1"}}};
-    svg.setData({r, g_bottom, g_left, g_right, g_top, path});
+    SVG svg{ 53, 52, { { "viewBox", "0 0 53 52" }, { "version", "1.1" } } };
+    svg.setData({ r, g_bottom, g_left, g_right, g_top, path });
 
     std::cout << svg << "\n";
 }

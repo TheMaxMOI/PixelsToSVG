@@ -3,8 +3,7 @@
 #include <array>
 #include <cstddef>
 
-#define MIN(a, b) \
-        ((a < b) ? a : b)
+#define MIN(a, b) ((a < b) ? a : b)
 
 class Rounder
 {
@@ -21,8 +20,8 @@ public:
 
 double my_sin(double degree);
 double my_cos(double degree);
-double dist2(const std::array<double, 2> &a, const std::array<double, 2> &b);
-double distInf(const std::array<double, 2> &a, const std::array<double, 2> &b);
+double dist2(const std::array<double, 2>& a, const std::array<double, 2>& b);
+double distInf(const std::array<double, 2>& a, const std::array<double, 2>& b);
 int randint(int a, int b);
 int randint(int max);
 double my_random();

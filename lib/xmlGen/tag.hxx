@@ -12,7 +12,7 @@ void Tag::visit(TagFunc f) const
         return;
     }
 
-    for (const data_t &child : data_)
+    for (const data_t& child : data_)
     {
         if (std::holds_alternative<Tag>(child))
         {

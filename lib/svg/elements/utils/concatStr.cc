@@ -7,7 +7,7 @@ std::string joinWithSpace(const std::vector<std::string> stringList)
     std::stringstream growingString;
 
     bool isFirst = true;
-    for (const auto &str : stringList)
+    for (const auto& str : stringList)
     {
         if (isFirst)
         {

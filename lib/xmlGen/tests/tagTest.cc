@@ -9,9 +9,9 @@ void errorDupAttributesInit()
     try
     {
         res = false;
-        Tag g{"g", {{"id", "bottom"}, {"id", "left"}}};
+        Tag g{ "g", { { "id", "bottom" }, { "id", "left" } } };
     }
-    catch (const std::logic_error &e)
+    catch (const std::logic_error& e)
     {
         res = true;
     }
@@ -21,7 +21,7 @@ void errorDupAttributesInit()
 
 void emptyTag()
 {
-    Tag r{"rect", {}, true};
+    Tag r{ "rect", {}, true };
 
     std::stringstream repr;
     repr << r;
@@ -31,15 +31,15 @@ void emptyTag()
 
 void dataEmptyTag()
 {
-    Tag r{"rect", {}, true};
+    Tag r{ "rect", {}, true };
 
     bool res;
     try
     {
         res = false;
-        r.setData({"text"});
+        r.setData({ "text" });
     }
-    catch (const std::logic_error &e)
+    catch (const std::logic_error& e)
     {
         res = true;
     }
@@ -49,15 +49,15 @@ void dataEmptyTag()
 
 void errorDupAttributesAdd()
 {
-    Tag g{"g", {{"id", "an_id"}}};
+    Tag g{ "g", { { "id", "an_id" } } };
 
     bool res;
     try
     {
         res = false;
-        g.addAttribute({"id", "other_id"});
+        g.addAttribute({ "id", "other_id" });
     }
-    catch (const std::logic_error &e)
+    catch (const std::logic_error& e)
     {
         res = true;
     }
@@ -67,9 +67,9 @@ void errorDupAttributesAdd()
 
 void copyAdressCheck()
 {
-    Tag child{"rect", {{"width", "10"}}, true};
-    Tag parent{"g", {{"id", "group"}}};
-    parent.setData({child, "text"});
+    Tag child{ "rect", { { "width", "10" } }, true };
+    Tag parent{ "g", { { "id", "group" } } };
+    parent.setData({ child, "text" });
 
     Tag clone = parent.copy();
 
@@ -80,9 +80,9 @@ void copyAdressCheck()
 
 void copyCheckRepr()
 {
-    Tag child{"rect", {{"width", "10"}}, true};
-    Tag parent{"g", {{"id", "group"}}};
-    parent.setData({child, "text"});
+    Tag child{ "rect", { { "width", "10" } }, true };
+    Tag parent{ "g", { { "id", "group" } } };
+    parent.setData({ child, "text" });
 
     Tag clone = parent.copy();
 
@@ -96,13 +96,13 @@ void copyCheckRepr()
 
 void copyProduceIndependantClone()
 {
-    Tag child{"rect", {{"width", "10"}}, true};
-    Tag parent{"g", {{"id", "group"}}};
-    parent.setData({child, "text"});
+    Tag child{ "rect", { { "width", "10" } }, true };
+    Tag parent{ "g", { { "id", "group" } } };
+    parent.setData({ child, "text" });
 
     Tag clone = parent.copy();
 
-    clone.addAttribute({"class", "copy"});
+    clone.addAttribute({ "class", "copy" });
 
     std::stringstream repr_parent;
     repr_parent << parent;

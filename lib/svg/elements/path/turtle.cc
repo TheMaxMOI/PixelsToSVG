@@ -1,12 +1,14 @@
 #include "turtle.hh"
 
-Turtle::Turtle(double x, double y,
-               size_t rot, size_t precision)
-    : x_{x}, y_{y}, rot_{rot}, cursor_{Cursor(x, y)}, round_{Rounder(precision)}
-{
-}
+Turtle::Turtle(double x, double y, size_t rot, size_t precision)
+    : x_{ x }
+    , y_{ y }
+    , rot_{ rot }
+    , cursor_{ Cursor(x, y) }
+    , round_{ Rounder(precision) }
+{}
 
-Turtle &Turtle::switchPen()
+Turtle& Turtle::switchPen()
 {
     penPos_ = (penPos_ == UP) ? DOWN : UP;
 
@@ -25,10 +27,10 @@ size_t Turtle::getRotation()
 
 const std::pair<double, double> Turtle::getPosition()
 {
-    return {x_, y_};
+    return { x_, y_ };
 }
 
-Turtle &Turtle::rotate(int degree)
+Turtle& Turtle::rotate(int degree)
 {
     int angle = degree % 360 + 360;
     rot_ = (rot_ + angle) % 360;
@@ -36,7 +38,7 @@ Turtle &Turtle::rotate(int degree)
     return *this;
 }
 
-Turtle &Turtle::teleport(double x, double y)
+Turtle& Turtle::teleport(double x, double y)
 {
     switch (penPos_)
     {
@@ -66,7 +68,7 @@ Turtle &Turtle::teleport(double x, double y)
     return *this;
 }
 
-Turtle &Turtle::move(double dist)
+Turtle& Turtle::move(double dist)
 {
     const auto [dx, dy] = round_(dist * my_cos(rot_), dist * my_sin(rot_));
 
@@ -86,7 +88,7 @@ std::pair<double, double> Turtle::sidewaysOffset_(double dist, Side side)
     double offsetX = direction * -my_sin(rot_) * dist;
     double offsetY = direction * my_cos(rot_) * dist;
 
-    return {offsetX, offsetY};
+    return { offsetX, offsetY };
 }
 
 std::pair<double, double> Turtle::forwardOffset_(double dist)
@@ -94,10 +96,10 @@ std::pair<double, double> Turtle::forwardOffset_(double dist)
     double offsetX = my_cos(rot_) * dist;
     double offsetY = my_sin(rot_) * dist;
 
-    return {offsetX, offsetY};
+    return { offsetX, offsetY };
 }
 
-Turtle &Turtle::curveTo(double x, double y, Side side, Curve type)
+Turtle& Turtle::curveTo(double x, double y, Side side, Curve type)
 {
     if (penPos_ == UP)
     {
@@ -108,9 +110,9 @@ Turtle &Turtle::curveTo(double x, double y, Side side, Curve type)
     double radius = 0.;
 
     if (type < ARC)
-        distance = dist2({x_, y_}, {x, y});
+        distance = dist2({ x_, y_ }, { x, y });
     else
-        radius = distInf({x_, y_}, {x, y});
+        radius = distInf({ x_, y_ }, { x, y });
 
     if (type == QUADRATIC)
     {

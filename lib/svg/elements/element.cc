@@ -2,13 +2,13 @@
 
 #include <cstddef>
 
-void Element::updateAttribute_(const attr_t &attr)
+void Element::updateAttribute_(const attr_t& attr)
 {
-    const auto &[attrName, attrVal] = attr;
+    const auto& [attrName, attrVal] = attr;
 
     for (size_t i = 0; i < attributes_.size(); i++)
     {
-        const auto &[name, _] = attributes_.at(i);
+        const auto& [name, _] = attributes_.at(i);
 
         if (attrName == name)
         {
@@ -20,32 +20,30 @@ void Element::updateAttribute_(const attr_t &attr)
     attributes_.push_back(attr);
 }
 
-void Element::updateColoring(const Coloring &inner)
+void Element::updateColoring(const Coloring& inner)
 {
     inner_.emplace(inner);
 
-    for (const attr_t &attr : inner.use())
+    for (const attr_t& attr : inner.use())
     {
         updateAttribute_(attr);
     }
 }
 
-void Element::updateOutline(const Outline &outer)
+void Element::updateOutline(const Outline& outer)
 {
     outer_.emplace(outer);
 
-    for (const attr_t &attr : outer.use())
+    for (const attr_t& attr : outer.use())
     {
         updateAttribute_(attr);
     }
 }
 
-Element::Element(const std::string &name,
-                 const std::vector<attr_t> &attributes,
-                 std::optional<Coloring> inner,
-                 std::optional<Outline> outer,
+Element::Element(const std::string& name, const std::vector<attr_t>& attributes,
+                 std::optional<Coloring> inner, std::optional<Outline> outer,
                  bool isEmpty)
-    : Tag{name, attributes, isEmpty}
+    : Tag{ name, attributes, isEmpty }
 {
     if (inner.has_value())
     {
@@ -58,7 +56,8 @@ Element::Element(const std::string &name,
     }
 }
 
-Element Element::generate(const std::string &name, bool isEmpty)
+Element Element::generate(const std::string& name, bool isEmpty)
 {
-    return Element(name, {}, Coloring::generate(), Outline::generate(), isEmpty);
+    return Element(name, {}, Coloring::generate(), Outline::generate(),
+                   isEmpty);
 }

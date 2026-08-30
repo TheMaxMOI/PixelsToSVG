@@ -12,17 +12,15 @@ private:
     std::optional<Outline> outer_;
 
 protected:
-    void updateAttribute_(const attr_t &attr);
+    void updateAttribute_(const attr_t& attr);
 
 public:
-    Element(const std::string &name,
-            const std::vector<attr_t> &attributes,
+    Element(const std::string& name, const std::vector<attr_t>& attributes,
             std::optional<Coloring> inner = std::nullopt,
-            std::optional<Outline> outer = std::nullopt,
-            bool isEmpty = false);
+            std::optional<Outline> outer = std::nullopt, bool isEmpty = false);
 
     static Element generate(const std::string& name, bool isEmpty);
 
-    void updateColoring(const Coloring &inner);
-    void updateOutline(const Outline &outer);
+    void updateColoring(const Coloring& inner);
+    void updateOutline(const Outline& outer);
 };

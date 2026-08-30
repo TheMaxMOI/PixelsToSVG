@@ -6,7 +6,8 @@
 
 /* TODO
 Make it print without delaying the thread
-Make it print a bar followed by the actual percentage then the time of the ongoing task
+Make it print a bar followed by the actual percentage then the time of the
+ongoing task
 example : █████▒▒░░░░░ 51.5% - time : 4305ms - avg-speed : 1%/s
 
 TODO : later if size = 1

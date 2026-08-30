@@ -5,15 +5,18 @@
 #define TODO "░"
 
 #include <cmath>
-#include <sstream>
 #include <format>
 #include <iostream>
+#include <sstream>
 
-#define MAX(a, b) \
-    (((a) <= (b)) ? (b) : (a))
+#define MAX(a, b) (((a) <= (b)) ? (b) : (a))
 
 ProgressBar::ProgressBar(size_t size)
-    : currentVal_{0}, maxVal_{0}, startingDate_{time(nullptr)}, style_{(size == 1) ? SHORT : LARGE}, size_{size}
+    : currentVal_{ 0 }
+    , maxVal_{ 0 }
+    , startingDate_{ time(nullptr) }
+    , style_{ (size == 1) ? SHORT : LARGE }
+    , size_{ size }
 {
     if (!size)
     {
@@ -69,7 +72,9 @@ std::string ProgressBar::getLargeBar_(double percent, size_t intPercent) const
         int maxBeforeDone = MAX(round(2.0 * size_ / 100.0), 1);
         int resizedPercent = round(intPercent / 100.0 * size_);
 
-        int numDone = (resizedPercent >= maxBeforeDone) ? resizedPercent - maxBeforeDone : 0;
+        int numDone = (resizedPercent >= maxBeforeDone)
+            ? resizedPercent - maxBeforeDone
+            : 0;
         int numBeforeDone = resizedPercent - numDone;
         int numTodo = size_ - resizedPercent;
 
@@ -94,7 +99,7 @@ std::string ProgressBar::getLargeBar_(double percent, size_t intPercent) const
 static const char* frames = "\\|/-";
 std::string ProgressBar::getShortBar_(size_t intPercent) const
 {
-    return std::string{frames[intPercent%FRAME_AMOUNT]};
+    return std::string{ frames[intPercent % FRAME_AMOUNT] };
 }
 
 std::string ProgressBar::getBar_(double percent, size_t intPercent) const
@@ -128,7 +133,7 @@ void ProgressBar::print()
     double percent = percentage_();
     size_t intPercent = floor(percent);
 
-    const auto &bar = getBar_(percent, intPercent);
+    const auto& bar = getBar_(percent, intPercent);
 
     std::stringstream statsMaking;
     const auto elapsed = time(nullptr) - startingDate_;
@@ -136,8 +141,8 @@ void ProgressBar::print()
     statsMaking << " - time: " << elapsed << "s";
     statsMaking << " - avg-speed: " << percent / elapsed << "%/s";
 
-    const auto &stats = statsMaking.str();
-    const auto &full_bar = bar + stats;
+    const auto& stats = statsMaking.str();
+    const auto& full_bar = bar + stats;
 
     std::cout << '\r' << full_bar;
     wipe_(trueBarSize_() + stats.length());

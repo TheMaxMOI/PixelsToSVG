@@ -2,8 +2,8 @@
 
 #include <cstddef>
 
-#include "cursor.hh"
 #include "../utils/mathHelpers.hh"
+#include "cursor.hh"
 
 class Turtle
 {
@@ -41,18 +41,16 @@ private:
     std::pair<double, double> forwardOffset_(double dist);
 
 public:
-    Turtle(double x = 0.,
-           double y = 0.,
-           size_t rot = 0,
-           size_t precision = 3);
+    Turtle(double x = 0., double y = 0., size_t rot = 0, size_t precision = 3);
 
-    Turtle &switchPen();
+    Turtle& switchPen();
     PenPosition getPenPosition();
     size_t getRotation();
     const std::pair<double, double> getPosition();
-    Turtle &rotate(int degree);
-    Turtle &teleport(double x, double y);
-    Turtle &move(double dist);
-    Turtle &curveTo(double x, double y, Side side = LEFT, Curve type = QUADRATIC);
+    Turtle& rotate(int degree);
+    Turtle& teleport(double x, double y);
+    Turtle& move(double dist);
+    Turtle& curveTo(double x, double y, Side side = LEFT,
+                    Curve type = QUADRATIC);
     std::string terminate();
 };

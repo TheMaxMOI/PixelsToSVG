@@ -1,6 +1,6 @@
 #pragma once
 
-#include <string>
 #include <cstddef>
+#include <string>
 
 std::string doubleFmt(double x, size_t precision = 3);

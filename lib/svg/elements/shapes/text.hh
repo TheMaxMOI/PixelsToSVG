@@ -12,10 +12,9 @@ private:
     size_t rot_ = 0;
 
 protected:
-    TextElement(const std::string &name,
-                const std::tuple<size_t, size_t> &bottomLeftPos,
-                std::optional<Coloring> inner,
-                std::optional<Outline> outer);
+    TextElement(const std::string& name,
+                const std::tuple<size_t, size_t>& bottomLeftPos,
+                std::optional<Coloring> inner, std::optional<Outline> outer);
 
 public:
     void rotate(int degree);
@@ -24,7 +23,7 @@ public:
 class Text : public TextElement
 {
 public:
-    Text(const std::tuple<size_t, size_t> &bottomLeftPos = {0, 0},
+    Text(const std::tuple<size_t, size_t>& bottomLeftPos = { 0, 0 },
          std::optional<Coloring> inner = std::nullopt,
          std::optional<Outline> outer = std::nullopt);
 };
@@ -32,7 +31,7 @@ public:
 class Tspan : public TextElement
 {
 public:
-    Tspan(const std::tuple<size_t, size_t> &bottomLeftPos = {0, 0},
+    Tspan(const std::tuple<size_t, size_t>& bottomLeftPos = { 0, 0 },
           std::optional<Coloring> inner = std::nullopt,
           std::optional<Outline> outer = std::nullopt);
 };

@@ -14,53 +14,55 @@ change value to ptr to not loose this extra information.
 
 TODO: optional
 */
-#define ISINSTANCE(tag, clazz) \
-    (tag.getName() == clazz)
+#define ISINSTANCE(tag, clazz) (tag.getName() == clazz)
 
-SVG::SVG(size_t width, size_t height, const std::vector<attr_t> &additionalAttrs)
-    : Tag("svg", additionalAttrs, false), width_{width}, height_{height}
+SVG::SVG(size_t width, size_t height,
+         const std::vector<attr_t>& additionalAttrs)
+    : Tag("svg", additionalAttrs, false)
+    , width_{ width }
+    , height_{ height }
 {
-    addAttribute({"width", std::to_string(width)});
-    addAttribute({"height", std::to_string(height)});
-    addAttribute({"xmlns", "http://www.w3.org/2000/svg"});
+    addAttribute({ "width", std::to_string(width) });
+    addAttribute({ "height", std::to_string(height) });
+    addAttribute({ "xmlns", "http://www.w3.org/2000/svg" });
 }
 
-void SVG::print_(std::ostream &os) const
+void SVG::print_(std::ostream& os) const
 {
     if (!checkTspan())
     {
-        throw std::logic_error("SVG: print_: Tspan instances must be children of other Tspan or Text instances!");
+        throw std::logic_error("SVG: print_: Tspan instances must be children "
+                               "of other Tspan or Text instances!");
     }
 
-    Declaration d{{{"version", "1.0"}, {"encoding", "UTF-8"}}};
+    Declaration d{ { { "version", "1.0" }, { "encoding", "UTF-8" } } };
 
-    os << d << "\n"
-       << static_cast<Tag>(*this);
+    os << d << "\n" << static_cast<Tag>(*this);
 }
 
 bool SVG::checkTspan() const
 {
     std::function<bool(Tag, std::optional<Tag>)> check;
 
-    check = [&check](Tag tag, std::optional<Tag> parent) -> bool
-    {
+    check = [&check](Tag tag, std::optional<Tag> parent) -> bool {
         if (ISINSTANCE(tag, "tspan"))
         {
-            if (!parent.has_value() ||
-                !ISINSTANCE(parent.value(), "text") && !ISINSTANCE(parent.value(), "tspan"))
+            if (!parent.has_value()
+                || !ISINSTANCE(parent.value(), "text")
+                    && !ISINSTANCE(parent.value(), "tspan"))
             {
                 return false;
             }
         }
 
-        const auto &data = tag.getData();
+        const auto& data = tag.getData();
 
         if (data.size() == 0)
         {
             return true;
         }
 
-        for (const auto &variantChild : data)
+        for (const auto& variantChild : data)
         {
             if (!std::holds_alternative<Tag>(variantChild))
             {
