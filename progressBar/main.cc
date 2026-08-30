@@ -5,7 +5,7 @@
 
 int main(void)
 {
-    ProgressBar bar{1};
+    ProgressBar bar;
     int steps[3] = {1, 2, 5};
     size_t maxSteps = 123102;
 

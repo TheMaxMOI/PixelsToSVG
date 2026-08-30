@@ -59,7 +59,7 @@ std::string ProgressBar::getLargeBar_(double percent, size_t intPercent) const
 
     if (percent == 100)
     {
-        for (int i = 0; i < size_; i++)
+        for (size_t i = 0; i < size_; i++)
         {
             barMaking << DONE;
         }
@@ -131,8 +131,10 @@ void ProgressBar::print()
     const auto &bar = getBar_(percent, intPercent);
 
     std::stringstream statsMaking;
+    const auto elapsed = time(nullptr) - startingDate_;
     statsMaking << ' ' << std::format("{:.2f}", percent) << '%';
-    statsMaking << " - time: " << time(nullptr) - startingDate_ << "s";
+    statsMaking << " - time: " << elapsed << "s";
+    statsMaking << " - avg-speed: " << percent / elapsed << "%/s";
 
     const auto &stats = statsMaking.str();
     const auto &full_bar = bar + stats;
