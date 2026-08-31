@@ -7,8 +7,8 @@
 Tag::Tag(const std::string& name, const std::vector<attr_t>& attributes,
          bool isEmpty)
     : name_{ name }
-    , attributes_{ attributes }
     , isEmpty_{ isEmpty }
+    , attributes_{ attributes }
 {
     std::set<std::string> set;
     for (const auto& [attrName, _] : attributes)
