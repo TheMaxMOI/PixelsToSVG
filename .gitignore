@@ -4,3 +4,5 @@ __pycache__/
 .venv/
 img_output/*
 img_output/
+.temp/*
+.temp/

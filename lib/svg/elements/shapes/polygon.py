@@ -1,3 +1,8 @@
+import math
+
+import cv2
+import numpy as np
+
 from ..svgElementClass import SvgElement
 from ..utils.attributeUpdater import update
 from ..utils.format import stringify
@@ -50,3 +55,25 @@ class Polygon(SvgElement):
     #     attributes = [("points", stringify(points))]
 
     #     return SvgElement.generate(Polygon.name, attributes, Polygon.isEmpty)
+
+    def strokePad(self):
+        return math.ceil(self.outer.width / 2) + 1 if self.outer else 0
+
+    def boundingBox(self):
+        xs = [p[0] for p in self.points]
+        ys = [p[1] for p in self.points]
+        pad = self.strokePad()
+        return (min(xs) - pad, min(ys) - pad, max(xs) + pad, max(ys) + pad)
+
+    def paintOnMask(self, mask, filled: bool, origin: tuple[int, int]):
+        Ox, Oy = origin
+        pts = np.array([(x - Ox, y - Oy) for x, y in self.points], dtype=np.int32)
+        pts = pts.reshape((-1, 1, 2))
+
+        if filled:
+            cv2.fillPoly(mask, [pts], 255, lineType=cv2.LINE_AA)
+        else:
+            width = max(1, round(self.outer.width)) if self.outer else 1
+            cv2.polylines(
+                mask, [pts], isClosed=True, color=255, thickness=width, lineType=cv2.LINE_AA
+            )

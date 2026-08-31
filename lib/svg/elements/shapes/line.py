@@ -1,5 +1,10 @@
+import math
+
+import cv2
+
 from ..svgElementClass import SvgElement
 from ..utils.mathHelpers import randint
+from ..appearanceClass import Outline
 
 
 class Line(SvgElement):
@@ -32,4 +37,23 @@ class Line(SvgElement):
             ("y2", f"{y2}"),
         ]
 
-        return SvgElement.generate(Line.name, attributes, Line.isEmpty)
+        return Line((x1,y1),(x2,y2), Outline.generate())
+
+    def strokePad(self):
+        return math.ceil(self.outer.width / 2) + 1 if self.outer else 0
+
+    def boundingBox(self):
+        pad = self.strokePad()
+        x0, x1 = sorted((self.x1, self.x2))
+        y0, y1 = sorted((self.y1, self.y2))
+        return (x0 - pad, y0 - pad, x1 + pad, y1 + pad)
+
+    def paintOnMask(self, mask, filled: bool, origin: tuple[int, int]):
+        if filled:
+            return
+
+        Ox, Oy = origin
+        p1 = (self.x1 - Ox, self.y1 - Oy)
+        p2 = (self.x2 - Ox, self.y2 - Oy)
+        width = max(1, round(self.outer.width)) if self.outer else 1
+        cv2.line(mask, p1, p2, 255, width, lineType=cv2.LINE_AA)

@@ -1,6 +1,11 @@
+import math
+
+import cv2
+
 from lib.xmlGen import getAttrValue
 
 from ..svgElementClass import SvgElement
+from ..appearanceClass import Coloring, Outline
 from ..utils.attributeUpdater import update
 from ..utils.mathHelpers import randint
 
@@ -65,4 +70,27 @@ class Rectangle(SvgElement):
             ("y", f"{y}"),
         ]
 
-        return SvgElement.generate(Rectangle.name, attributes, Rectangle.isEmpty)
+        return Rectangle(w,h,(x,y), Coloring.generate(), Outline.generate())
+
+    def strokePad(self):
+        return math.ceil(self.outer.width / 2) + 1 if self.outer else 0
+
+    def boundingBox(self):
+        pad = self.strokePad()
+        return (
+            self.x - pad,
+            self.y - pad,
+            self.x + self.width + pad,
+            self.y + self.height + pad,
+        )
+
+    def paintOnMask(self, mask, filled: bool, origin: tuple[int, int]): # Corner Rounding skipped
+        Ox, Oy = origin
+        topLeft = (self.x - Ox, self.y - Oy)
+        bottomRight = (self.x + self.width - Ox, self.y + self.height - Oy)
+
+        if filled:
+            cv2.rectangle(mask, topLeft, bottomRight, 255, -1, lineType=cv2.LINE_AA)
+        else:
+            width = max(1, round(self.outer.width)) if self.outer else 1
+            cv2.rectangle(mask, topLeft, bottomRight, 255, width, lineType=cv2.LINE_AA)

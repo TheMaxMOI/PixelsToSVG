@@ -2,7 +2,7 @@ import random
 from enum import Enum
 
 from lib.rgb import rgb
-from lib.svg import SVG, Circle, Coloring, Outline, Polygon, Rectangle
+from lib.svg import SVG, Circle, Coloring, Outline, Polygon, Rectangle, Ellipse
 from lib.svg.elements.utils.mathHelpers import randint
 
 from ..randomize.randomSVG import getRandShape
@@ -70,9 +70,9 @@ class Mutator:
             newY = elm.positions[idx][1] + random.randint(-5, 5)
             elm.updatePoint((newX, newY), idx)
 
-        elif isinstance(elm, Circle):
-            newX = elm.cx + random.randint(-5, 5)
-            newY = elm.cy + random.randint(-5, 5)
+        elif isinstance(elm, (Ellipse, Circle)):
+            newX = elm.x + random.randint(-5, 5)
+            newY = elm.y + random.randint(-5, 5)
             elm.changeCenter(newX, newY)
 
         elif isinstance(elm, Rectangle):
