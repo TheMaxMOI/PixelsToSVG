@@ -8,7 +8,7 @@ int main(void)
 {
     ProgressBar bar;
     int steps[3] = { 1, 2, 5 };
-    size_t maxSteps = 123102;
+    size_t maxSteps = 1231;
 
     size_t i = 0;
     while (i <= maxSteps)

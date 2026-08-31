@@ -74,8 +74,8 @@ void copyAdressCheck()
     Tag clone = parent.copy();
 
     assert(&clone != &parent);
-    // can't really test more without changing anything else
-    // visitor pattern would be great
+    assert(&clone.getData() != &parent.getData());
+    assert(&std::get<Tag>(clone.getData()[0]) != &child);
 }
 
 void copyCheckRepr()
