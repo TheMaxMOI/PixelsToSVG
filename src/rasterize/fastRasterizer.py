@@ -1,5 +1,5 @@
 import numpy as np
-from ..rgb import hexToRGB
+from ...lib.rgb import hexToRGB
 
 def blendOver(canvas: np.ndarray, mask: np.ndarray, colorRGB, opacity: float) -> None: # Porter-Duff
     if opacity <= 0:

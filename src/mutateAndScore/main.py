@@ -29,7 +29,7 @@ from lib.png import SVGtoBytes
 from ..imageAnalysis.baseSVG import getBaseSVG
 from ..progressBar import ProgressBar
 from .config import MAX_ITER, SRC_IMAGE_PATH
-from lib.rasterize.fastRasterizer import rasterize
+from rasterize.fastRasterizer import rasterize
 from .mutator import Mutator
 from .score import mse
 from .utils import bytesToImage
