@@ -18,7 +18,8 @@ from cv2 import (
 from .config import PROFILER, PROGRESS_BAR, SMOOTHING
 
 if PROFILER:
-    from cProfile import run
+    from cProfile import Profile
+    from pstats import Stats
 
 
 setNumThreads(0)  # Give cv2 all threads possible
@@ -26,11 +27,11 @@ setNumThreads(0)  # Give cv2 all threads possible
 from lib.png import SVGtoBytes
 
 from ..imageAnalysis.baseSVG import getBaseSVG
-from ...progressBar.progressBar import ProgressBar
+from ..progressBar import ProgressBar
 from .config import MAX_ITER, SRC_IMAGE_PATH
+from rasterize.fastRasterizer import rasterize
 from .mutator import Mutator
 from .score import mse
-from .utils import bytesToImage
 
 
 def getImage(path=SRC_IMAGE_PATH):
@@ -45,10 +46,7 @@ def getImage(path=SRC_IMAGE_PATH):
 
 def loopMutateScore(targetImg, barDisplay: bool = True):
     height, width = targetImg.shape[0], targetImg.shape[1]
-    scoring = lambda svg: mse(
-        targetImg,
-        bytesToImage(SVGtoBytes(svg.export(), (width, height))),
-    )
+    scoring = lambda svg: mse(targetImg, rasterize(svg, height, width))
     mutator = lambda svg: Mutator(svg, height, width).get()
 
     currSVG = getBaseSVG(targetImg, smoothed=SMOOTHING)
@@ -102,7 +100,12 @@ def main():
     elapsed, svg, score = loopMutateScore(targetImg, PROGRESS_BAR)
     summary(elapsed, svg, score, targetImg.shape, False)
 
+
 if PROFILER:
-    run("main()")
+    profiler = Profile()
+    profiler.enable()
+    main()
+    profiler.disable()
+    Stats(profiler).sort_stats("cumulative").print_stats(20)
 else:
     main()

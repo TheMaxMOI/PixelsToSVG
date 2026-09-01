@@ -1,0 +1,14 @@
+#pragma once
+
+#include <optional>
+#include <opencv2/core.hpp>
+
+#include "../../lib/svg/svg.hh"
+
+void blendOver(cv::Mat& canvas, const cv::Mat& mask, const cv::Vec3f& colorRGB, double opacity);
+
+std::optional<cv::Rect> clipBB(const lib::BBox& bbox, int height, int width);
+
+void rasterizeShape(const lib::Shape& shape, cv::Mat& canvas, int height, int width);
+
+cv::Mat rasterize(const lib::SVG& svg, int height, int width);
