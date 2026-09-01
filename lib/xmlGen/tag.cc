@@ -4,6 +4,50 @@
 #include <sstream>
 #include <stdexcept>
 
+namespace
+{
+    std::ostream& operator<<(std::ostream& os, const std::vector<attr_t>& attrs)
+    {
+        bool isFirst = true;
+        for (const auto& [attrName, attrValue] : attrs)
+        {
+            os << (isFirst ? "" : " ");
+            os << attrName << "=" << '"' << attrValue << '"';
+            isFirst = false;
+        }
+
+        return os;
+    }
+
+    std::ostream& operator<<(std::ostream& os, const std::vector<data_t>& data)
+    {
+        bool isFirst = true;
+        for (const auto& child : data)
+        {
+            if (!isFirst)
+            {
+                os << "\n";
+            }
+            else
+            {
+                isFirst = false;
+            }
+
+            if (std::holds_alternative<std::string>(child))
+            {
+                os << std::get<std::string>(child);
+            }
+            else if (std::holds_alternative<Tag>(child))
+            {
+                os << std::get<Tag>(child);
+            }
+        }
+
+        return os;
+    }
+
+} // namespace
+
 Tag::Tag(const std::string& name, const std::vector<attr_t>& attributes,
          bool isEmpty)
     : name_{ name }
@@ -97,46 +141,6 @@ Tag Tag::copy() const
     return *this;
 }
 
-std::ostream& operator<<(std::ostream& os, const std::vector<attr_t>& attrs)
-{
-    bool isFirst = true;
-    for (const auto& [attrName, attrValue] : attrs)
-    {
-        os << (isFirst ? "" : " ");
-        os << attrName << "=" << '"' << attrValue << '"';
-        isFirst = false;
-    }
-
-    return os;
-}
-
-std::ostream& operator<<(std::ostream& os, const std::vector<data_t>& data)
-{
-    bool isFirst = true;
-    for (const auto& child : data)
-    {
-        if (!isFirst)
-        {
-            os << "\n";
-        }
-        else
-        {
-            isFirst = false;
-        }
-
-        if (std::holds_alternative<std::string>(child))
-        {
-            os << std::get<std::string>(child);
-        }
-        else if (std::holds_alternative<Tag>(child))
-        {
-            os << std::get<Tag>(child);
-        }
-    }
-
-    return os;
-}
-
 std::string indent(const std::string& data)
 {
     std::stringstream indented;
@@ -168,7 +172,7 @@ void Tag::print_(std::ostream& os) const
     if (attributes_.size() > 0)
     {
         os << " ";
-        os << attributes_;
+        ::operator<<(os, attributes_);
     }
 
     if (isEmpty_)
@@ -181,7 +185,7 @@ void Tag::print_(std::ostream& os) const
     if (data_.size() > 0)
     {
         std::stringstream data;
-        data << data_;
+        ::operator<<(data, data_);
 
         os << indent(data.str());
         os << "\n";

@@ -1,14 +1,13 @@
 #pragma once
+#include <cstddef>
 #include <functional>
 #include <vector>
 
-#include "../../lib/svg/svg.hh"
 #include "../../lib/svg/elements/round/circle.hh"
 #include "../../lib/svg/elements/round/ellipse.hh"
 #include "../../lib/svg/elements/shapes/line.hh"
 #include "../../lib/svg/elements/shapes/rectangle.hh"
-
-#include <cstddef>
+#include "../../lib/svg/svg.hh"
 
 #define MIN_HEIGHT 16
 #define MAX_HEIGHT 3096
@@ -17,7 +16,7 @@
 
 using ShapeFactory = std::function<Tag(size_t height, size_t width)>;
 
-const std::vector<ShapeFactory> &shapeFactories();
+const std::vector<ShapeFactory>& shapeFactories();
 
 std::vector<ShapeFactory> getRandShapeFactories(size_t amount);
 

@@ -54,7 +54,4 @@ public:
                const Tag& tag); // could be replaced with a visitor
 };
 
-std::ostream& operator<<(std::ostream& os, const std::vector<attr_t>& attrs);
-std::ostream& operator<<(std::ostream& os, const std::vector<data_t>& data);
-
 #include "tag.hxx"

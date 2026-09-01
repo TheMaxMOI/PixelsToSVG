@@ -6,34 +6,37 @@
 #include "../utils/concatStr.hh"
 #include "../utils/doubleFormat.hh"
 
-std::string Polypoint::stringify_(const point_t& p) const
+namespace
 {
-    auto [x, y] = p;
-
-    return doubleFmt(x) + ',' + doubleFmt(y);
-}
-
-std::string Polypoint::stringify_(const std::vector<point_t>& points) const
-{
-    std::stringstream growingString;
-
-    bool isFirst = true;
-    for (const auto& p : points)
+    std::string stringify_(const point_t& p)
     {
-        if (isFirst)
-        {
-            isFirst = false;
-        }
-        else
-        {
-            growingString << ' ';
-        }
+        auto [x, y] = p;
 
-        growingString << stringify_(p);
+        return doubleFmt(x) + ',' + doubleFmt(y);
     }
 
-    return growingString.str();
-}
+    std::string stringify_(const std::vector<point_t>& points)
+    {
+        std::stringstream growingString;
+
+        bool isFirst = true;
+        for (const auto& p : points)
+        {
+            if (isFirst)
+            {
+                isFirst = false;
+            }
+            else
+            {
+                growingString << ' ';
+            }
+
+            growingString << stringify_(p);
+        }
+
+        return growingString.str();
+    }
+} // namespace
 
 Polypoint::Polypoint(const std::string& name,
                      const std::vector<point_t>& points,

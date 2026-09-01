@@ -1,11 +1,12 @@
 #pragma once
 
-#include <optional>
 #include <opencv2/core.hpp>
+#include <optional>
 
 #include "../../lib/svg/svg.hh"
 
-void blendOver(cv::Mat& canvas, const cv::Mat& mask, const cv::Vec3f& colorRGB, double opacity);
+void blendOver(cv::Mat& canvas, const cv::Mat& mask, const cv::Vec3f& colorRGB,
+               double opacity);
 
 std::optional<cv::Rect> clipBB(const BBox& bbox, int height, int width);
 

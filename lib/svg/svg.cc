@@ -47,7 +47,9 @@ bool SVG::checkTspan() const
     check = [&check](Tag tag, std::optional<Tag> parent) -> bool {
         if (ISINSTANCE(tag, "tspan"))
         {
-            if (!parent.has_value() || (!ISINSTANCE(parent.value(), "text") && !ISINSTANCE(parent.value(), "tspan")))
+            if (!parent.has_value()
+                || (!ISINSTANCE(parent.value(), "text")
+                    && !ISINSTANCE(parent.value(), "tspan")))
             {
                 return false;
             }

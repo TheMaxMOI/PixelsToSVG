@@ -2,7 +2,8 @@
 
 #include <opencv2/core.hpp>
 
-double mse(const cv::Mat& target, const cv::Mat& candidate) {
+double mse(const cv::Mat& target, const cv::Mat& candidate)
+{
     CV_Assert(target.size() == candidate.size());
     CV_Assert(target.channels() == candidate.channels());
 
@@ -17,7 +18,8 @@ double mse(const cv::Mat& target, const cv::Mat& candidate) {
     const int channels = target.channels();
 
     double total = 0.0;
-    for (int c = 0; c < channels; ++c) total += perChannelMean[c];
+    for (int c = 0; c < channels; ++c)
+        total += perChannelMean[c];
 
     return total / channels;
 }

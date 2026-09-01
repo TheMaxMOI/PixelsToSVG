@@ -4,7 +4,8 @@
 
 // TODO replace this with main(int argc, char* argv[])
 
-#define SRC_IMAGE_PATH "C:/Users/Maximilien/Pictures/Perso/Fonds/Img/default.png"
+#define SRC_IMAGE_PATH                                                         \
+    "C:/Users/Maximilien/Pictures/Perso/Fonds/Img/default.png"
 
 #define SMOOTHING true
 

@@ -1,9 +1,17 @@
 #pragma once
 #include "../../lib/svg/svg.hh"
 
-enum class MutationKind { Geometry, Appearance, SwapLayer, Add, Remove };
+enum class MutationKind
+{
+    Geometry,
+    Appearance,
+    SwapLayer,
+    Add,
+    Remove
+};
 
-class Mutator {
+class Mutator
+{
 public:
     Mutator(SVG& svg, int height, int width);
 
