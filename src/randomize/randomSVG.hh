@@ -3,6 +3,10 @@
 #include <vector>
 
 #include "../../lib/svg/svg.hh"
+#include "../../lib/svg/elements/round/circle.hh"
+#include "../../lib/svg/elements/round/ellipse.hh"
+#include "../../lib/svg/elements/shapes/line.hh"
+#include "../../lib/svg/elements/shapes/rectangle.hh"
 
 #include <cstddef>
 
@@ -11,7 +15,7 @@
 #define MIN_WIDTH 16
 #define MAX_WIDTH 4128
 
-using ShapeFactory = std::function<lib::ShapePtr(size_t height, size_t width)>;
+using ShapeFactory = std::function<Tag(size_t height, size_t width)>;
 
 const std::vector<ShapeFactory> &shapeFactories();
 

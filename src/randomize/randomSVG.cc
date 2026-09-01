@@ -13,12 +13,10 @@ std::mt19937& rng() {
 
 const std::vector<ShapeFactory>& shapeFactories() {
     static const std::vector<ShapeFactory> factories = {
-        [](size_t h, size_t w) { return Circle::generate(h, w); },
-        [](size_t h, size_t w) { return Ellipse::generate(h, w); },
-        [](size_t h, size_t w) { return Line::generate(h, w); },
-        // Polygon / Polyline intentionally excluded -- commented out in
-        // randomSVG.py's `shapes` list too.
-        [](size_t h, size_t w) { return Rectangle::generate(h, w); },
+        [](size_t h, size_t w) { return Tag{Circle::generate(h, w)}; },
+        [](size_t h, size_t w) { return Tag{Ellipse::generate(h, w)}; },
+        [](size_t h, size_t w) { return Tag{Line::generate(h, w)}; },
+        [](size_t h, size_t w) { return Tag{Rectangle::generate(h, w)}; },
     };
     return factories;
 }
@@ -42,14 +40,12 @@ ShapeFactory getRandShapeFactory() {
 }
 
 SVG getSVG(size_t shapeAmount) {
-    // numpy's randint(low, high) is high-exclusive; uniform_int_distribution
-    // is inclusive on both ends, hence the "- 1".
     std::uniform_int_distribution<size_t> hDist(MIN_HEIGHT, MAX_HEIGHT - 1);
     std::uniform_int_distribution<size_t> wDist(MIN_WIDTH, MAX_WIDTH - 1);
     const size_t h = hDist(rng());
     const size_t w = wDist(rng());
 
-    std::vector<lib::ShapePtr> data;
+    std::vector<data_t> data;
     data.reserve(static_cast<size_t>(shapeAmount));
     for (const auto& factory : getRandShapeFactories(shapeAmount)) {
         data.push_back(factory(h, w));

@@ -42,8 +42,6 @@ void blendOver(cv::Mat& canvas, const cv::Mat& mask, const cv::Vec3f& colorRGB, 
 }
 
 std::optional<cv::Rect> clipBB(const lib::BBox& bbox, int height, int width) {
-    // Python's int() truncates toward zero; static_cast<int> does the same,
-    // so behavior matches for negative bbox coordinates too.
     int x0 = std::max(0, static_cast<int>(bbox.x0));
     int y0 = std::max(0, static_cast<int>(bbox.y0));
     int x1 = std::min(width, static_cast<int>(bbox.x1));
@@ -53,12 +51,12 @@ std::optional<cv::Rect> clipBB(const lib::BBox& bbox, int height, int width) {
     return cv::Rect(x0, y0, x1 - x0, y1 - y0);
 }
 
-void rasterizeShape(const lib::Shape& shape, cv::Mat& canvas, int height, int width) {
+void rasterizeShape(const Shape& shape, cv::Mat& canvas, int height, int width) {
     auto clipped = clipBB(shape.boundingBox(), height, width);
     if (!clipped) return;
 
     cv::Rect region = *clipped;
-    cv::Mat view = canvas(region); // shares data with canvas, like a numpy slice
+    cv::Mat view = canvas(region);
 
     if (shape.inner().has_value()) {
         cv::Mat mask = cv::Mat::zeros(region.height, region.width, CV_8UC1);
@@ -68,12 +66,12 @@ void rasterizeShape(const lib::Shape& shape, cv::Mat& canvas, int height, int wi
 
     if (shape.outer().has_value()) {
         cv::Mat mask = cv::Mat::zeros(region.height, region.width, CV_8UC1);
-        shape.paintOnMask(mask, /*filled=*/false, region.tl());
+        shape.paintOnMask(mask, false, region.tl());
         blendOver(view, mask, lib::hexToRGB(shape.outer()->color), shape.outer()->opacity);
     }
 }
 
-cv::Mat rasterize(const lib::SVG& svg, int height, int width) {
+cv::Mat rasterize(const SVG& svg, size_t height, size_t width) {
     cv::Mat canvas = cv::Mat::zeros(height, width, CV_8UC4);
     for (const auto& elm : svg.data()) {
         rasterizeShape(*elm, canvas, height, width);

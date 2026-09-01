@@ -1,41 +1,25 @@
 from time import time
 
-from cv2 import (
-    COLOR_BGR2RGBA,
-    COLOR_BGRA2RGBA,
-    IMREAD_UNCHANGED,
-    WINDOW_NORMAL,
-    cvtColor,
-    destroyAllWindows,
-    imread,
-    imshow,
-    namedWindow,
-    resizeWindow,
-    setNumThreads,
-    waitKey,
-)
+from .config import PROGRESS_BAR, SMOOTHING
 
-from .config import PROFILER, PROGRESS_BAR, SMOOTHING
-
-if PROFILER:
-    from cProfile import Profile
-    from pstats import Stats
-
-
-setNumThreads(0)  # Give cv2 all threads possible
-
-from lib.png import SVGtoBytes
-
-from ..imageAnalysis.baseSVG import getBaseSVG
-from ..progressBar import ProgressBar
 from .config import MAX_ITER, SRC_IMAGE_PATH
-from rasterize.fastRasterizer import rasterize
-from .mutator import Mutator
-from .score import mse
 
 
 def getImage(path=SRC_IMAGE_PATH):
+    from cv2 import (
+        COLOR_BGR2RGBA,
+        COLOR_BGRA2RGBA,
+        IMREAD_UNCHANGED,
+        cvtColor,
+        imread,
+        setNumThreads,
+    )
+
     targetImg = imread(path, IMREAD_UNCHANGED)
+    if targetImg is None:
+        raise FileNotFoundError(f"Could not read image: {path}")
+    if targetImg.ndim == 2:
+        return cvtColor(targetImg, COLOR_BGR2RGBA)
     if targetImg.shape[2] == 4:
         targetImg = cvtColor(targetImg, COLOR_BGRA2RGBA)
     else:
@@ -84,28 +68,10 @@ def summary(elapsedTime, svg: str, svgScore, shape, imgDisplay: bool):
     print()
     print(svg)
 
-    img = bytesToImage(SVGtoBytes(svg, (shape[0], shape[1])))
-
-    if imgDisplay:
-        windowName = "Final Image"
-        namedWindow(windowName, WINDOW_NORMAL)
-        resizeWindow(windowName, 1920, 1080)
-        imshow(windowName, img)
-        waitKey(0)
-        destroyAllWindows()
-
-
 def main():
     targetImg = getImage()
     elapsed, svg, score = loopMutateScore(targetImg, PROGRESS_BAR)
     summary(elapsed, svg, score, targetImg.shape, False)
 
-
-if PROFILER:
-    profiler = Profile()
-    profiler.enable()
-    main()
-    profiler.disable()
-    Stats(profiler).sort_stats("cumulative").print_stats(20)
-else:
+if __name__ == "__main__":
     main()
