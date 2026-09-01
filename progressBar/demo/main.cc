@@ -2,11 +2,13 @@
 #include <iostream>
 #include <thread>
 
-#include "progressBar.hh"
+#include "../progressBar.hh"
+
+#define BAR_SIZE 100
 
 int main(void)
 {
-    ProgressBar bar;
+    ProgressBar bar{BAR_SIZE};
     int steps[3] = { 1, 2, 5 };
     size_t maxSteps = 1231;
 

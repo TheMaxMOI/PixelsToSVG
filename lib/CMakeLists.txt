@@ -83,41 +83,28 @@ target_link_libraries(svg PUBLIC
 # Tests
 # ============================================================
 
-function(add_svg_test TEST_NAME)
+function(add_module_test MODULE_NAME TEST_NAME)
     add_executable(${TEST_NAME}
-        svg/tests/${TEST_NAME}.cc
+        ${MODULE_NAME}/tests/${TEST_NAME}.cc
     )
 
-    target_link_libraries(${TEST_NAME} PRIVATE svg)
+    target_link_libraries(${TEST_NAME} PRIVATE ${MODULE_NAME})
 
     target_include_directories(${TEST_NAME} PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}
     )
 endfunction()
 
-add_svg_test(hexagonLines)
-add_svg_test(hexagonPolygon)
-add_svg_test(hexagonPolyLine)
-add_svg_test(hexagonTurtle)
-add_svg_test(simplerSvg)
-add_svg_test(snowFlakeTurtle)
-add_svg_test(tspanCheck)
+add_module_test(xmlGen aSvg)
+add_module_test(xmlGen tagTest)
 
-
-function(add_xmlgen_test TEST_NAME)
-    add_executable(${TEST_NAME}
-        xmlGen/tests/${TEST_NAME}.cc
-    )
-
-    target_link_libraries(${TEST_NAME} PRIVATE xmlGen)
-
-    target_include_directories(${TEST_NAME} PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}
-    )
-endfunction()
-
-add_xmlgen_test(aSvg)
-add_xmlgen_test(tagTest)
+add_module_test(svg hexagonLines)
+add_module_test(svg hexagonPolygon)
+add_module_test(svg hexagonPolyLine)
+add_module_test(svg hexagonTurtle)
+add_module_test(svg simplerSvg)
+add_module_test(svg snowFlakeTurtle)
+add_module_test(svg tspanCheck)
 
 # ============================================================
 # CTest
